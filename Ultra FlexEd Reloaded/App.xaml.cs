@@ -1,4 +1,6 @@
-﻿using System;
+﻿//TODO: Make custom command "CTRL+F"
+//TODO: Make custom command "CTRL+T"
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;

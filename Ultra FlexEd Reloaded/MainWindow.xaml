@@ -3,10 +3,172 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Ultra_FlexEd_Reloaded"
+        xmlns:controls="clr-namespace:Ultra_FlexEd_Reloaded.UserControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Ultra FlexEd Reloaded"
+		SizeToContent="WidthAndHeight"
+		Loaded="Window_Loaded"
+		SizeChanged="Window_SizeChanged"
+		x:Name="Main">
+	<DockPanel>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="_File">
+				<MenuItem Header="_New" Command="ApplicationCommands.New">
+					<MenuItem.Icon>
+						<Image Source="icons/new.png"></Image>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Open" Command="ApplicationCommands.Open">
+					<MenuItem.Icon>
+						<Image Source="icons/open.png"></Image>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Save" Command="ApplicationCommands.Save">
+					<MenuItem.Icon>
+						<Image Source="icons/save.png"></Image>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Save _As..." Command="ApplicationCommands.SaveAs">
+					<MenuItem.Icon>
+						<Image Source="icons/save as.png"></Image>
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator/>
+				<MenuItem Header="Start FlexBall"/>
+				<MenuItem Header="Test"/>
+				<Separator/>
+				<MenuItem Header="Level Set Name"/>
+				<Separator/>
+				<MenuItem Header="_Exit"/>
+			</MenuItem>
+			<MenuItem Header="_Level">
+				<MenuItem Header="_Add">
+					<MenuItem.Icon>
+						<Image Source="icons/add.png"></Image>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Insert">
+					<MenuItem.Icon>
+						<Image Source="icons/add.png"></Image>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Clear">
+					<MenuItem.Icon>
+						<Image Source="icons/clear.png"></Image>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Delete">
+					<MenuItem.Icon>
+						<Image Source="icons/delete.png"></Image>
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator/>
+				<MenuItem Header="Level Name"/>
+				<MenuItem Header="Import background..."/>
+			</MenuItem>
+		</Menu>
+		<Grid DockPanel.Dock="Bottom">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="210"/>
+			</Grid.ColumnDefinitions>
+			<Grid x:Name="Bricks" MinWidth="600" MinHeight="375" Background="Black" Grid.Column="0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+			</Grid>
+			<Grid Grid.Column="1">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="47*"/>
+					<RowDefinition Height="39*"/>
+					<RowDefinition Height="auto"/>
+				</Grid.RowDefinitions>
+				<Border Grid.Row="0" x:Name="BrickListBorder" HorizontalAlignment="Left" Height="auto">
+					<ListBox Width="210" Height="{Binding ActualHeight, ElementName=BrickListBorder}" ItemsSource="{Binding Path=BrickTypes, ElementName=Main}">
+						<!--<controls:ImageListBoxItem/>
+						<controls:ImageListBoxItem/>
+						<controls:ImageListBoxItem/>
+						<controls:ImageListBoxItem/>
+						<controls:ImageListBoxItem/>
+						<controls:ImageListBoxItem/>
+						<controls:ImageListBoxItem/>
+						<controls:ImageListBoxItem/>-->
+					</ListBox>
+				</Border>
+				<Border Grid.Row="1" x:Name="LevelListBorder" HorizontalAlignment="Left" Height="auto">
+					<ListBox Width="210" Height="{Binding ActualHeight, ElementName=LevelListBorder}">
+						<ListBoxItem Content="Blue, Blue Everywhere..." FontWeight="Bold"/>
+					</ListBox>
+				</Border>
+				<Grid Grid.Row="2">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<controls:LockableToggleButton x:Name="SingleBrickButton" Content="P" Checked="SingleBrickButton_Checked" Grid.Column="0"/>
+					<controls:LockableToggleButton x:Name="FillButton" Content="F" Checked="FillButton_Checked" Grid.Column="1"/>
+					<controls:LockableToggleButton x:Name="LineButton" Content="L" Click="Button_Call_Window" Grid.Column="2"/>
+					<controls:LockableToggleButton x:Name="RectangleButton" Content="R" Click="Button_Call_Window" Grid.Column="3"/>
+					<Button Content="UP" Click="Button_Call_Window" Grid.Column="4"/>
+					<Button Content="+B" Click="Button_Call_Window" Grid.Row="1" Grid.Column="0"/>
+					<Button Content="+L" Click="Button_Call_Window" Grid.Row="1" Grid.Column="1"/>
+					<ToggleButton Content="Hidden" Click="Button_Call_Window" Grid.Row="1" Grid.Column="3"/>
+					<Button Content="DOWN" Click="Button_Call_Window" Grid.Row="1" Grid.Column="4"/>
+				</Grid>
+			</Grid>
+		</Grid>
+	</DockPanel>
 </Window>

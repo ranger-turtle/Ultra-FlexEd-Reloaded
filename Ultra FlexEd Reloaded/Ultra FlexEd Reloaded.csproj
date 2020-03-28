@@ -34,6 +34,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ufer.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -55,6 +61,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DialogWindows\BrickWindow.xaml.cs">
+      <DependentUpon>BrickWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LevelManagement\ILevelManagementGUI.cs" />
+    <Compile Include="LevelManagement\LevelManager.cs" />
+    <Compile Include="UserControls\Brick.xaml.cs">
+      <DependentUpon>Brick.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ImageListBoxItem.xaml.cs">
+      <DependentUpon>ImageListBoxItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\LockableToggleButton.xaml.cs">
+      <DependentUpon>LockableToggleButton.xaml</DependentUpon>
+    </Compile>
+    <Page Include="DialogWindows\BrickWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -67,6 +91,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\Brick.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ImageListBoxItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\LockableToggleButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -93,6 +129,42 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\add.png" />
+    <Resource Include="icons\delete.png" />
+    <Resource Include="icons\new.png" />
+    <Resource Include="icons\open.png" />
+    <Resource Include="icons\save as.png" />
+    <Resource Include="icons\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Default Assets\Bricks\brick1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ufer.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BrickProperties\LevelSetData.csproj">
+      <Project>{1b7d0c81-015d-4bf6-9ead-f1f09992b0a5}</Project>
+      <Name>LevelSetData</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Default Assets\Bricks\brick10.png" />
+    <Resource Include="Default Assets\Bricks\brick11.png" />
+    <Resource Include="Default Assets\Bricks\brick12.png" />
+    <Resource Include="Default Assets\Bricks\brick2.png" />
+    <Resource Include="Default Assets\Bricks\brick3.png" />
+    <Resource Include="Default Assets\Bricks\brick4.png" />
+    <Resource Include="Default Assets\Bricks\brick5.png" />
+    <Resource Include="Default Assets\Bricks\brick6.png" />
+    <Resource Include="Default Assets\Bricks\brick7.png" />
+    <Resource Include="Default Assets\Bricks\brick8.png" />
+    <Resource Include="Default Assets\Bricks\brick9.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
