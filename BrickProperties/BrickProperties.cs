@@ -5,69 +5,81 @@ namespace LevelSetData
 	[Serializable]
 	public enum BreakAnimationType
 	{
-		FADE, EXPLODE
+		Fade, Explode
 	}
 
 	[Serializable]
 	public enum DirectionalBrickType
 	{
-		FUSE, PUSH
+		None, Fuse, Push
 	}
 	
 	[Serializable]
 	public enum Direction
 	{
-		UP, RIGHT, DOWN, LEFT
+		Up, Right, Down, Left
 	}
 
+	/**
+	 * <summary><para>Properties of the brick saved in the *.brick file.</para>
+	 * <para>Id of the brick is counted from 1.</para></summary>
+	 */
 	[Serializable]
 	public class BrickProperties
 	{
-		public uint Id { get; set; }
+		[Serializable]
+		public struct Color
+		{
+			public byte Red { get; set; }
+			public byte Green { get; set; }
+			public byte Blue { get; set; }
+		}
+		public const int PIXEL_WIDTH = 60;
+		public const int PIXEL_HEIGHT = 30;
+
+		public int Id { get; set; }
 		public float[][] FrameDurations { get; set; }
 		public byte Durability { get; set; } = 1;
 		public byte ExplosionRadius { get; set; } = 0;
+		private bool _requiredToComplete = true;
+		public bool RequiredToComplete
+		{
+			get => _requiredToComplete;
+			set
+			{
+				_requiredToComplete = value;
+				if (value == true) NormalResistant = false;
+			}
+		}
 		private bool _normalResistant;
 		public bool NormalResistant
 		{
-			get { return _normalResistant; }
+			get => _normalResistant;
 			set
 			{
 				_normalResistant = value;
-				if (value == true)
-				{
-					_requiredToComplete = false;
-				}
+				if (value == true) RequiredToComplete = false;
 			}
-		}
-		private bool _requiredToComplete;
-		public bool RequiredToComplete
-		{
-			get { return _requiredToComplete; }
-			set { if (!NormalResistant) _requiredToComplete = value; }
 		}
 		public bool ExplosionResistant { get; set; }
 		public bool OokimResistant { get; set; }
 		public float BonusProbability { get; set; } = 0.2f;
-		public BreakAnimationType BreakAnimationType { get; set; } = BreakAnimationType.FADE;
-		public bool ChimneyLike { get; set; } = false;
-		public byte ParticleX { get; set; } = 0;
-		public byte ParticleY { get; set; } = 0;
-		public byte[] RGB { get; set; }
-		public uint DetonateId { get; set; } = 0;
-		public uint TeleportId { get; set; } = 0;
-		public uint FallingTurnId { get; set; } = 0;
-		public uint OldBlockTypeId { get; set; } = 0;
-		public uint NewBlockTypeId { get; set; } = 0;
-		public DirectionalBrickType? DirectionalBrickType { get; set; }
-		public Direction? Direction { get; set; }
+		public BreakAnimationType BreakAnimationType { get; set; } = BreakAnimationType.Fade;
+		public bool ChimneyLike { get; set; }
+		public byte ParticleX { get; set; }
+		public byte ParticleY { get; set; }
+		public Color Color1 { get; set; }
+		public Color Color2 { get; set; }
+		public int DetonateId { get; set; }
+		public int TeleportId { get; set; }
+		public int FallingTurnId { get; set; }
+		public int OldBlockTypeId { get; set; }
+		public int NewBlockTypeId { get; set; }
+		public DirectionalBrickType DirectionalBrickType { get; set; }
+		public Direction Direction { get; set; }
 
-		public bool IsExplosive
-		{
-			get
-			{
-				return ExplosionRadius > 0;
-			}
-		}
+		public bool IsExplosive => ExplosionRadius > 0;
+
+		public bool IsTeleporter => TeleportId > 0;
 	}
 }

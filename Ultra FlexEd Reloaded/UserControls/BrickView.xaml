@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Ultra_FlexEd_Reloaded.UserControls.Brick"
+﻿<UserControl x:Class="Ultra_FlexEd_Reloaded.UserControls.BrickView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Ultra_FlexEd_Reloaded.UserControls"
              mc:Ignorable="d" 
 			 x:Name="BrickControl"
+			 Cursor="Hand"
              d:DesignHeight="15" d:DesignWidth="30" Width="30" Height="15" Background="Transparent">
 	<Grid>
 		<Label Content="H" FontFamily="Arial" FontSize="10" Foreground="Red" Background="Maroon" Padding="0" Panel.ZIndex="2" Visibility="{Binding Hidden, Converter={local:BoolToVisibilityConverter}, ElementName=BrickControl}" Height="11" Width="8" HorizontalAlignment="Left" VerticalAlignment="Top"/>

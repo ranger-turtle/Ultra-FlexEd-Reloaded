@@ -39,7 +39,7 @@
 				<Separator/>
 				<MenuItem Header="Level Set Name"/>
 				<Separator/>
-				<MenuItem Header="_Exit"/>
+				<MenuItem Header="_Exit" Click="Exit"/>
 			</MenuItem>
 			<MenuItem Header="_Level">
 				<MenuItem Header="_Add">
@@ -130,7 +130,7 @@
 					<RowDefinition Height="auto"/>
 				</Grid.RowDefinitions>
 				<Border Grid.Row="0" x:Name="BrickListBorder" HorizontalAlignment="Left" Height="auto">
-					<ListBox Width="210" Height="{Binding ActualHeight, ElementName=BrickListBorder}" ItemsSource="{Binding Path=BrickTypes, ElementName=Main}">
+					<ListBox x:Name="BrickListBox" Width="210" Height="{Binding ActualHeight, ElementName=BrickListBorder}" ItemsSource="{Binding Path=BrickListBoxItems, ElementName=Main, Mode=TwoWay}" SelectionMode="Single">
 						<!--<controls:ImageListBoxItem/>
 						<controls:ImageListBoxItem/>
 						<controls:ImageListBoxItem/>
@@ -157,16 +157,28 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="*"/>
 						<RowDefinition Height="*"/>
+						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
 					<controls:LockableToggleButton x:Name="SingleBrickButton" Content="P" Checked="SingleBrickButton_Checked" Grid.Column="0"/>
 					<controls:LockableToggleButton x:Name="FillButton" Content="F" Checked="FillButton_Checked" Grid.Column="1"/>
-					<controls:LockableToggleButton x:Name="LineButton" Content="L" Click="Button_Call_Window" Grid.Column="2"/>
-					<controls:LockableToggleButton x:Name="RectangleButton" Content="R" Click="Button_Call_Window" Grid.Column="3"/>
-					<Button Content="UP" Click="Button_Call_Window" Grid.Column="4"/>
-					<Button Content="+B" Click="Button_Call_Window" Grid.Row="1" Grid.Column="0"/>
-					<Button Content="+L" Click="Button_Call_Window" Grid.Row="1" Grid.Column="1"/>
-					<ToggleButton Content="Hidden" Click="Button_Call_Window" Grid.Row="1" Grid.Column="3"/>
-					<Button Content="DOWN" Click="Button_Call_Window" Grid.Row="1" Grid.Column="4"/>
+					<controls:LockableToggleButton x:Name="LineButton" Content="L" Checked="LineButton_Checked" Grid.Column="2"/>
+					<controls:LockableToggleButton x:Name="RectangleButton" Content="R" Checked="RectangleButton_Checked" Grid.Column="3"/>
+					<Button Content="UP" IsEnabled="False" Grid.Column="4"/>
+					<Button Content="+B" Click="AddBrick_Clicked" Grid.Row="1" Grid.Column="0"/>
+					<Button Content="+L" IsEnabled="False" Grid.Row="1" Grid.Column="1"/>
+					<ToggleButton Content="Hidden" Click="HiddenMode_Click" Grid.Row="1" Grid.Column="3"/>
+					<Button Content="DOWN" IsEnabled="False" Grid.Row="1" Grid.Column="4"/>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="5">
+						<StackPanel.Resources>
+							<Style TargetType="Label">
+								<Setter Property="FontSize" Value="15"/>
+							</Style>
+						</StackPanel.Resources>
+						<Label Content="X:"/>
+						<Label Content="0" x:Name="xCord"/>
+						<Label Content="Y:"/>
+						<Label Content="0" x:Name="yCord"/>
+					</StackPanel>
 				</Grid>
 			</Grid>
 		</Grid>

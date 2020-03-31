@@ -3,25 +3,117 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
 		xmlns:lsdata="clr-namespace:LevelSetData;assembly=LevelSetData"
-        xmlns:UserControls="clr-namespace:Ultra_FlexEd_Reloaded.UserControls" x:Class="Ultra_FlexEd_Reloaded.DialogWindows.BrickWindow"
+        x:Class="Ultra_FlexEd_Reloaded.DialogWindows.BrickWindow"
         mc:Ignorable="d"
 		x:Name="BrickWin"
-        Height="450" Width="800">
+		Title="Add New Brick Type"
+        Height="380" Width="944">
 	<Window.DataContext>
-		<lsdata:BrickProperties />
+		<lsdata:BrickProperties x:Name="BrickProperties" />
 	</Window.DataContext>
+	<Window.Resources>
+		<ObjectDataProvider x:Key="BreakAnimationTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="lsdata:BreakAnimationType"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="DirectionalBrickTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="lsdata:DirectionalBrickType"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="DirectionTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="lsdata:Direction"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+	</Window.Resources>
 	<Grid>
-		<Label Content="Durability (1-30):" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="104"/>
-		<Slider x:Name="DurabilitySlider" HorizontalAlignment="Left" TickFrequency="1" Minimum="1" Maximum="30" SmallChange="1" Value="{Binding Durability}" Margin="119,15,0,0" VerticalAlignment="Top" RenderTransformOrigin="-10.667,5.111" Width="171"/>
-		<Label Content="{Binding Durability}" HorizontalAlignment="Left" Margin="295,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.079,-0.282"/>
-		<Label Content="Sprite Nr." HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.605,-0.346" Width="63"/>
-		<Slider x:Name="SpriteNumSlider" HorizontalAlignment="Left" TickFrequency="1" Minimum="1" Maximum="{Binding Durability}" SmallChange="1" Value="{Binding SpriteNum, ElementName=BrickWin}" Margin="119,46,0,0" VerticalAlignment="Top" RenderTransformOrigin="-10.667,5.111" Width="171"/>
-		<Label x:Name="SpriteNumLabel" Content="{Binding SpriteNum, ElementName=BrickWin}" HorizontalAlignment="Left" Margin="295,41,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.079,-0.282"/>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<Grid.Resources>
+			<Style TargetType="{x:Type CheckBox}">
+				<Setter Property="Margin" Value="4,0,0,0"/>
+			</Style>
+			<Style TargetType="{x:Type Button}">
+				<Setter Property="Margin" Value="5,0,5,0"/>
+				<Setter Property="Padding" Value="5"/>
+				<Setter Property="MinWidth" Value="80"/>
+			</Style>
+			<Style TargetType="Slider">
+				<Setter Property="MinWidth" Value="170"/>
+			</Style>
+		</Grid.Resources>
+		<StackPanel Orientation="Horizontal" Grid.Row="0">
+			<Label Content="Brick Name" VerticalAlignment="Center" />
+			<TextBox TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding BrickName, ElementName=BrickWin}" VerticalAlignment="Center" MinWidth="200" Margin="0,16"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1">
+			<Label Content="Durability (1-30):" VerticalAlignment="Center" MinWidth="104"/>
+			<Slider x:Name="DurabilitySlider" TickFrequency="1" Minimum="1" Maximum="30" SmallChange="1" Value="{Binding Durability}" VerticalAlignment="Center" />
+			<Label Content="{Binding Durability}" VerticalAlignment="Center"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" Grid.Row="2">
+			<Label Content="Frame Sheet" VerticalAlignment="Center" MinWidth="104"/>
+			<Slider x:Name="FrameSheetSlider" TickFrequency="1" Minimum="1" Maximum="{Binding Durability}" SmallChange="1" Value="{Binding FrameSheetNum, ElementName=BrickWin}" VerticalAlignment="Center" />
+			<Label x:Name="FrameSheetNumLabel" Content="{Binding FrameSheetNum, ElementName=BrickWin}" VerticalAlignment="Center"/>
+		</StackPanel>
+		<StackPanel x:Name="FrameSection" Orientation="Horizontal" Grid.Row="3" IsEnabled="False">
+			<Label Content="Frame" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="104"/>
+			<Slider x:Name="FrameSlider" HorizontalAlignment="Right" TickFrequency="1" Minimum="1" Maximum="1" SmallChange="1" Value="{Binding FrameNum, ElementName=BrickWin}" VerticalAlignment="Center" />
+			<Label x:Name="FrameNumLabel" Content="{Binding FrameNum, ElementName=BrickWin}" VerticalAlignment="Center"/>
+		</StackPanel>
 
-		<UserControls:Brick x:Name="BrickImage" HorizontalAlignment="Left" Margin="15,72,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Top" Height="16" Width="31"/>
-		<TextBox HorizontalAlignment="Left" Height="23" Margin="81,95,0,0" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="New Brick" VerticalAlignment="Top" Width="120"/>
-		<Button Content="Import Image..." HorizontalAlignment="Left" Margin="51,70,0,0" VerticalAlignment="Top" Width="94" Click="ImportImage"/>
-
+		<StackPanel Orientation="Horizontal" Grid.Row="4">
+			<Border Margin="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="30" Width="60">
+				<Image x:Name="BrickImage" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill"/>
+			</Border>
+			<Button x:Name="ImportButton" Content="Import Image..." VerticalAlignment="Center" MinWidth="94" Click="ImportImage"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4">
+			<Label Content="Explosion Radius" VerticalAlignment="Center" />
+			<Slider x:Name="ExplosionSlider" TickFrequency="1" Minimum="0" Maximum="25" SmallChange="1" Value="{Binding ExplosionRadius}" VerticalAlignment="Center"/>
+			<Label Content="{Binding ExplosionRadius}" VerticalAlignment="Center"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="4">
+			<Label Content="Bonus Probability" VerticalAlignment="Center" />
+			<Slider x:Name="BonusProbabilitySlider" TickFrequency="0.01" Minimum="0" Maximum="1" SmallChange="0.01" Value="{Binding BonusProbability}" VerticalAlignment="Center"/>
+			<Label Content="{Binding BonusProbability}" ContentStringFormat="{}{0:0.##}" VerticalAlignment="Center"/>
+		</StackPanel>
+		<CheckBox x:Name="RequiredToCompleteCheckBox" IsChecked="{Binding Path=RequiredToComplete}" VerticalAlignment="Center" Content="Required To Complete" Grid.Column="1" Grid.Row="0"/>
+		<CheckBox x:Name="NormalResistantCheckBox" IsChecked="{Binding Path=NormalResistant}" VerticalAlignment="Center" Content="Normal Resistant" Grid.Column="1" Grid.Row="1"/>
+		<CheckBox IsChecked="{Binding ExplosionResistant}" VerticalAlignment="Center" Content="Explosion Resistant" Grid.Column="1" Grid.Row="2"/>
+		<CheckBox IsChecked="{Binding OokimResistant}" VerticalAlignment="Center" Content="Ookim Resistant" Grid.Column="1" Grid.Row="3"/>
+		<CheckBox IsChecked="{Binding ChimneyLike}" VerticalAlignment="Center" Content="Chimney Like" Grid.Column="2" Grid.Row="0"/>
+		<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="5">
+			<Label Content="Break Animation Type" VerticalAlignment="Center" />
+			<ComboBox ItemsSource="{Binding Source={StaticResource BreakAnimationTypes}}" SelectedItem="{Binding BreakAnimationType}" VerticalAlignment="Center"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="5">
+			<Label Content="Directional Brick Type" VerticalAlignment="Center" />
+			<ComboBox ItemsSource="{Binding Source={StaticResource DirectionalBrickTypes}}" SelectedItem="{Binding DirectionalBrickType}" VerticalAlignment="Center"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="5">
+			<Label Content="Direction Type" VerticalAlignment="Center" />
+			<ComboBox ItemsSource="{Binding Source={StaticResource DirectionTypes}}" SelectedItem="{Binding Direction}" VerticalAlignment="Center"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Column="2" Grid.Row="6">
+			<Button Content="OK" VerticalAlignment="Center" IsDefault="True" Click="Ok_Clicked"/>
+			<Button Content="Cancel" VerticalAlignment="Center" Click="Cancel_Clicked"/>
+		</StackPanel>
 	</Grid>
 </Window>

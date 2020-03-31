@@ -23,37 +23,27 @@ namespace Ultra_FlexEd_Reloaded.UserControls
 	public class BoolToVisibilityConverter : MarkupExtension, IValueConverter
 	{
 		public object Convert(object value, Type targetType,
-							  object parameter, CultureInfo culture)
-		{
-			return ((bool)value) ? Visibility.Visible : Visibility.Hidden;
-		}
+							  object parameter, CultureInfo culture) => ((bool)value) ? Visibility.Visible : Visibility.Hidden;
 
 		public object ConvertBack(object value, Type targetType,
-								  object parameter, CultureInfo culture)
-		{
-			return Binding.DoNothing;
-		}
+								  object parameter, CultureInfo culture) => Binding.DoNothing;
 
-		public override object ProvideValue(IServiceProvider serviceProvider)
-		{
-			return this;
-		}
+		public override object ProvideValue(IServiceProvider serviceProvider) => this;
 	}
 
-	public partial class Brick : UserControl
+	public partial class BrickView : UserControl
     {
 		public static readonly DependencyProperty HiddenProperty =
-			DependencyProperty.Register("Hidden", typeof(bool), typeof(Brick), new PropertyMetadata(false));
+			DependencyProperty.Register("Hidden", typeof(bool), typeof(BrickView), new PropertyMetadata(false));
 
 		public bool Hidden
 		{
-			get { return (bool)GetValue(HiddenProperty); }
-			set { SetValue(HiddenProperty, value); }
+			get => (bool)GetValue(HiddenProperty);
+			set => SetValue(HiddenProperty, value);
 		}
 
-        public Brick()
-        {
-            InitializeComponent();
-        }
+		public int BrickId { get; set; }
+
+		public BrickView() => InitializeComponent();
 	}
 }

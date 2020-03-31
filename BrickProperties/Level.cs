@@ -8,14 +8,16 @@ namespace LevelSetData
 {
 	public class BrickInLevel
 	{
-		public uint BrickId { get; set; }
+		public int BrickId { get; set; }
 		public bool Hidden { get; set; }
 	}
 
+	//TODO Add sound types
 	public class Level
 	{
 		public string Name { get; set; } = "New Level";
 		public string BackgroundName { get; set; }
+		public string Music { get; set; }
 		public BrickInLevel[,] Bricks { get; set; } = new BrickInLevel[LevelSet.ROWS, LevelSet.COLUMNS];
 
 		public Level()
@@ -32,5 +34,7 @@ namespace LevelSetData
 			Name = name;
 			BackgroundName = backgroundName;
 		}
+
+		public override string ToString() => Name;
 	}
 }

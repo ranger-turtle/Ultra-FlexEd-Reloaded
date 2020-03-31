@@ -3,11 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:lm="clr-namespace:Ultra_FlexEd_Reloaded.LevelManagement"
              mc:Ignorable="d"
 			 VerticalAlignment="Center"
-			 VerticalContentAlignment="Center">
+			 VerticalContentAlignment="Center"
+			 Padding="2,0,0,0"
+			 Height="19">
 	<DockPanel>
-		<Image x:Name="Image" DockPanel.Dock="Left" Width="30" Height="15" Stretch="Fill"/>
-		<Label x:Name="Label" DockPanel.Dock="Left" ToolTip="{Binding Path=Content, ElementName=Label}" Width="auto" FontWeight="Bold" Padding="5,0,0,0"/>
+		<Image x:Name="Image" Source="{Binding Image}" DockPanel.Dock="Left" Width="30" Height="15" Stretch="Fill"/>
+		<Label x:Name="Label" DockPanel.Dock="Left" Content="{Binding BrickName}" ToolTip="{Binding Path=Content, ElementName=Label}" Width="auto" FontWeight="Bold" Padding="5,0,0,0"/>
 	</DockPanel>
 </ListBoxItem>

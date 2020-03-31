@@ -8,12 +8,28 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Ultra_FlexEd_Reloaded</RootNamespace>
     <AssemblyName>Ultra FlexEd Reloaded</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -24,6 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>ufer.ico</ApplicationIcon>
@@ -64,10 +82,13 @@
     <Compile Include="DialogWindows\BrickWindow.xaml.cs">
       <DependentUpon>BrickWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LevelManagement\ILevelManagementGUI.cs" />
-    <Compile Include="LevelManagement\LevelManager.cs" />
-    <Compile Include="UserControls\Brick.xaml.cs">
-      <DependentUpon>Brick.xaml</DependentUpon>
+    <Compile Include="DialogWindows\BrickWindow.xaml.help.cs">
+      <DependentUpon>BrickWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LevelManagement\BrickType.cs" />
+    <Compile Include="LevelManagement\LevelSetManager.cs" />
+    <Compile Include="UserControls\BrickView.xaml.cs">
+      <DependentUpon>BrickView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ImageListBoxItem.xaml.cs">
       <DependentUpon>ImageListBoxItem.xaml</DependentUpon>
@@ -76,8 +97,8 @@
       <DependentUpon>LockableToggleButton.xaml</DependentUpon>
     </Compile>
     <Page Include="DialogWindows\BrickWindow.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -91,7 +112,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="UserControls\Brick.xaml">
+    <Page Include="UserControls\BrickView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -142,29 +163,41 @@
     <Resource Include="icons\clear.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Default Assets\Bricks\brick1.png" />
+    <Resource Include="Default Bricks\Bricks\brick1.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ufer.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Default Bricks\Bricks\brick10.png" />
+    <Resource Include="Default Bricks\Bricks\brick11.png" />
+    <Resource Include="Default Bricks\Bricks\brick12.png" />
+    <Resource Include="Default Bricks\Bricks\brick2.png" />
+    <Resource Include="Default Bricks\Bricks\brick3.png" />
+    <Resource Include="Default Bricks\Bricks\brick4.png" />
+    <Resource Include="Default Bricks\Bricks\brick5.png" />
+    <Resource Include="Default Bricks\Bricks\brick6.png" />
+    <Resource Include="Default Bricks\Bricks\brick7.png" />
+    <Resource Include="Default Bricks\Bricks\brick8.png" />
+    <Resource Include="Default Bricks\Bricks\brick9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BrickProperties\LevelSetData.csproj">
       <Project>{1b7d0c81-015d-4bf6-9ead-f1f09992b0a5}</Project>
       <Name>LevelSetData</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Default Assets\Bricks\brick10.png" />
-    <Resource Include="Default Assets\Bricks\brick11.png" />
-    <Resource Include="Default Assets\Bricks\brick12.png" />
-    <Resource Include="Default Assets\Bricks\brick2.png" />
-    <Resource Include="Default Assets\Bricks\brick3.png" />
-    <Resource Include="Default Assets\Bricks\brick4.png" />
-    <Resource Include="Default Assets\Bricks\brick5.png" />
-    <Resource Include="Default Assets\Bricks\brick6.png" />
-    <Resource Include="Default Assets\Bricks\brick7.png" />
-    <Resource Include="Default Assets\Bricks\brick8.png" />
-    <Resource Include="Default Assets\Bricks\brick9.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
