@@ -58,6 +58,9 @@
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Ultra_FlexEd_Reloaded.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -79,14 +82,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BitmapMethods.cs" />
+    <Compile Include="BrickType.cs" />
     <Compile Include="DialogWindows\BrickWindow.xaml.cs">
       <DependentUpon>BrickWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DialogWindows\BrickWindow.xaml.help.cs">
       <DependentUpon>BrickWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LevelManagement\BrickType.cs" />
-    <Compile Include="LevelManagement\LevelSetManager.cs" />
+    <Compile Include="DialogWindows\CreateOrImportLevelWindow.xaml.cs">
+      <DependentUpon>CreateOrImportLevelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\LevelChooseWindow.xaml.cs">
+      <DependentUpon>LevelChooseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\LevelSetWindow.xaml.cs">
+      <DependentUpon>LevelSetWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\LevelWindow.xaml.cs">
+      <DependentUpon>LevelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.MenuOptions.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.LevelHandle.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\BrickView.xaml.cs">
       <DependentUpon>BrickView.xaml</DependentUpon>
     </Compile>
@@ -99,6 +120,22 @@
     <Page Include="DialogWindows\BrickWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DialogWindows\CreateOrImportLevelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\LevelChooseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\LevelSetWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\LevelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -197,6 +234,10 @@
     <ProjectReference Include="..\BrickProperties\LevelSetData.csproj">
       <Project>{1b7d0c81-015d-4bf6-9ead-f1f09992b0a5}</Project>
       <Name>LevelSetData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LevelSetManagement\LevelSetManagement.csproj">
+      <Project>{6e61b6ed-98d0-40c4-8b6e-4e3c9fc17f25}</Project>
+      <Name>LevelSetManagement</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

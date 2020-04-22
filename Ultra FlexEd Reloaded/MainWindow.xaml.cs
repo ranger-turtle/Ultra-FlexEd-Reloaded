@@ -2,25 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Ultra_FlexEd_Reloaded.DialogWindows;
-using Ultra_FlexEd_Reloaded.LevelManagement;
+using LevelSetManagement;
 using Ultra_FlexEd_Reloaded.UserControls;
 
 namespace Ultra_FlexEd_Reloaded
@@ -28,13 +17,10 @@ namespace Ultra_FlexEd_Reloaded
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	//TODO Implement save and load for old and new level sets
-	//TODO Make level handling
-	//TODO Implement edit and remove brick types
 	public partial class MainWindow : Window
 	{
 		private BrickView[,] _bricksInEditor = new BrickView[LevelSet.ROWS, LevelSet.COLUMNS];
-		private LevelSetManager _levelSetManager = new LevelSetManager();
+		private LevelSetManager _levelSetManager = LevelSetManager.GetInstance();
 		private MouseEventHandler _currentBrickMouseHoverHandler;
 		private MouseButtonEventHandler _currentBrickMouseLeftHandler, _currentBrickMouseRightHandler, _currentBrickMouseReleaseHandler;
 		private LockableToggleButton _currentPaintModeButton;
@@ -45,6 +31,13 @@ namespace Ultra_FlexEd_Reloaded
 			get => GetValue(BrickListBoxItemsProperty) as ObservableCollection<ImageListBoxItem>;
 			set => SetValue(BrickListBoxItemsProperty, value);
 		}
+		public static readonly DependencyProperty LevelListBoxItemsProperty =
+			DependencyProperty.Register("LevelListBoxItems", typeof(ObservableCollection<ListBoxItem>), typeof(MainWindow));
+		public ObservableCollection<ListBoxItem> LevelListBoxItems
+		{
+			get => GetValue(LevelListBoxItemsProperty) as ObservableCollection<ListBoxItem>;
+			set => SetValue(LevelListBoxItemsProperty, value);
+		}
 		internal ImageSource CurrentBitmap { get; set; }
 
 		private bool _ready;
@@ -53,7 +46,9 @@ namespace Ultra_FlexEd_Reloaded
 
 		public MainWindow()
 		{
+			ApplicationCommands.SaveAs.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control | ModifierKeys.Shift));
 			InitializeComponent();
+			Title = SmallUtilities.MakeTitle();
 			for (int i = 0; i < LevelSet.ROWS; i++)
 			{
 				for (int j = 0; j < LevelSet.COLUMNS; j++)
@@ -79,11 +74,22 @@ namespace Ultra_FlexEd_Reloaded
 				BrickListBox.SelectedItem = BrickListBoxItems[0];
 				CurrentBitmap = BrickListBoxItems[0].Image.Source;
 			}
+			LevelListBoxItems = new ObservableCollection<ListBoxItem>
+			{
+				PrepareLevelToListBox(_levelSetManager.CurrentLevelName)
+			};
+			LevelListBox.SelectedIndex = 0;
 			SingleBrickButton.IsChecked = true;
 			_currentPaintModeButton = SingleBrickButton;
 			_currentPaintModeButton.LockToggle = true;
 			SwitchHoverErase(EraseHoverEvent);
 			_ready = true;
+			_levelSetManager.UpdateTitle = Change;
+		}
+
+		private void Change(object sender, EventArgs e)
+		{
+			Title = SmallUtilities.MakeTitle(_levelSetManager.FilePath, _levelSetManager.Changed);
 		}
 
 		private void UpdateCoordinates(object sender, RoutedEventArgs e)
@@ -97,10 +103,19 @@ namespace Ultra_FlexEd_Reloaded
 		{
 			ImageListBoxItem imageListBoxItem = new ImageListBoxItem(id, _levelSetManager.GetBrickFolder(id), brickName);
 			imageListBoxItem.Selected += SetCurrentBrick_Selected;
+			imageListBoxItem.ContextMenu = FindResource("BrickContextMenu") as ContextMenu;
 			BrickListBoxItems.Add(imageListBoxItem);
 			List<ImageListBoxItem> list = BrickListBoxItems.ToList();
 			list.Sort((blbi1, blbi2) => blbi1.BrickId.CompareTo(blbi2.BrickId));
 			BrickListBoxItems = new ObservableCollection<ImageListBoxItem>(list);
+		}
+
+		private ListBoxItem PrepareLevelToListBox(string levelName)
+		{
+			ListBoxItem listBoxItem = new ListBoxItem() { Content = levelName != "" && levelName != null ? levelName : "[Unnamed]" };
+			listBoxItem.Selected += SetCurrentLevel_Selected;
+			listBoxItem.ContextMenu = FindResource("LevelContextMenu") as ContextMenu;
+			return listBoxItem;
 		}
 
 		private void SwitchHoverErase(MouseButtonEventHandler @event)
@@ -133,18 +148,82 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void AddBrick_Clicked(object sender, RoutedEventArgs e)
 		{
-			BrickWindow brickWindow = new BrickWindow(_levelSetManager)
+			BrickWindow brickWindow = new BrickWindow()
 			{
 				Owner = this
 			};
 			bool? confirmed = brickWindow.ShowDialog();
 			if (confirmed == true)
 			{
-				BrickProperties brickProperties = brickWindow.BrickProperties;
-				_levelSetManager.AddBrickToLevelSet(brickWindow.BrickName, brickProperties, brickWindow.FrameSheetNames, null);
+				BrickProperties brickProperties = brickWindow.DataContext as BrickProperties;
+				_levelSetManager.AddBrickToLevelSet(brickWindow.BrickName, brickProperties, brickWindow.FrameSheetMetadata, null);
 				AddNewBrickTypeToListBox(brickProperties.Id, brickWindow.BrickName);
-				MessageBox.Show($@"Brick ""{brickWindow.BrickName}"" saved successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+				MessageBox.Show($@"Brick ""{brickWindow.BrickName}"" added successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 			}
+		}
+
+		private void ExecuteMenuCommandFromListItem<T>(object sender, Action<T> action) where T : UIElement
+		{
+			if (sender is MenuItem mi)
+			{
+				if (mi.CommandParameter is ContextMenu cm)
+				{
+					T imageListBoxItem = (T)cm.PlacementTarget;
+					action(imageListBoxItem);
+				}
+			}
+		}
+
+		private void EditBrick_Clicked(object sender, RoutedEventArgs e)
+		{
+			ExecuteMenuCommandFromListItem<ImageListBoxItem>(sender, EditBrick);
+		}
+
+		private void EditBrick(ImageListBoxItem imageListBoxItem)
+		{
+			BrickWindow brickWindow = new BrickWindow(_levelSetManager.GetBrickById(imageListBoxItem.BrickId), imageListBoxItem.Label.Content as string, _levelSetManager.CurrentLevelName)
+			{
+				Owner = this
+			};
+			bool? confirmed = brickWindow.ShowDialog();
+			if (confirmed == true)
+			{
+				BrickProperties brickProperties = brickWindow.DataContext as BrickProperties;
+				imageListBoxItem.ClearImage();
+				_levelSetManager.UpdateBrick(brickWindow.BrickName, brickProperties, brickWindow.FrameSheetMetadata, null);
+				imageListBoxItem.Update(_levelSetManager.GetBrickFolder(imageListBoxItem.BrickId), brickWindow.BrickName);
+				foreach (BrickView brickView in _bricksInEditor)
+					if (imageListBoxItem.BrickId == brickView.BrickId)
+						brickView.Image.Source = imageListBoxItem.Image.Source;
+				if (imageListBoxItem.BrickId == _levelSetManager.CurrentBrickId)
+					CurrentBitmap = imageListBoxItem.Image.Source;
+				MessageBox.Show($@"Brick ""{brickWindow.BrickName}"" changed successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+			}
+		}
+
+		private void RemoveBrick_Clicked(object sender, RoutedEventArgs e)
+		{
+			ExecuteMenuCommandFromListItem<ImageListBoxItem>(sender, RemoveBrick);
+		}
+
+		private void RemoveBrick(ImageListBoxItem imageListBoxItem)
+		{
+			MessageBoxResult result = MessageBox.Show($"Are you sure to delete brick?{Environment.NewLine}If you do so, bricks existing in levels will disappear and level set will be saved.", "Brick remove", MessageBoxButton.YesNo, MessageBoxImage.Question);
+			if (result == MessageBoxResult.Yes)
+			{
+				_levelSetManager.RemoveBrick(imageListBoxItem.BrickId);
+				RefreshBoard();
+				int removedItemIndex = BrickListBoxItems.IndexOf(imageListBoxItem);
+				int offset = removedItemIndex != BrickListBoxItems.Count - 1 ? 1 : -1;
+				BrickListBox.SelectedItem = BrickListBoxItems[removedItemIndex + offset];
+				BrickListBoxItems.Remove(imageListBoxItem);
+			}
+		}
+
+		private void SetCurrentLevel_Selected(object sender, RoutedEventArgs e)
+		{
+			_levelSetManager.CurrentLevelIndex = LevelListBoxItems.IndexOf(sender as ListBoxItem);
+			RefreshBoard();
 		}
 
 		private void RefreshBoard()
@@ -154,7 +233,7 @@ namespace Ultra_FlexEd_Reloaded
 			{
 				x = Grid.GetColumn(brickView);
 				y = Grid.GetRow(brickView);
-				BrickInLevel brickInLevel = _levelSetManager.CurrentLevel.Bricks[y, x];
+				BrickInLevel brickInLevel = _levelSetManager.CopyBrickInCurrentLevel(x, y);
 				brickView.BrickId = brickInLevel.BrickId;
 				brickView.Image.Source = brickView.BrickId != 0 ? BrickListBoxItems.First(blbi => blbi.BrickId == brickView.BrickId).Image.Source : null;
 				brickView.Hidden = brickInLevel.Hidden;
@@ -170,9 +249,12 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void UpdateBrickInLevel(int brickX, int brickY, bool erase)
 		{
-			BrickInLevel brickInLevel = _levelSetManager.LevelSet.Levels[_levelSetManager.CurrentLevelIndex].Bricks[brickY, brickX];
-			brickInLevel.Hidden = _bricksInEditor[brickY, brickX].Hidden;
-			brickInLevel.BrickId = _bricksInEditor[brickY, brickX].BrickId;
+			BrickInLevel brickInLevel = new BrickInLevel
+			{
+				Hidden = erase ? false : _bricksInEditor[brickY, brickX].Hidden,
+				BrickId = erase ? 0 : _bricksInEditor[brickY, brickX].BrickId
+			};
+			_levelSetManager.UpdateBrickInLevel(brickX, brickY, brickInLevel);
 		}
 
 		private void PutBrickAndUpdateItInLevel(BrickView brick, bool erase)
@@ -185,17 +267,30 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void EraseHoverEvent(object sender, MouseButtonEventArgs e)
 		{
-			foreach (BrickView brick in _bricksInEditor)
+			if (_currentBrickMouseHoverHandler != null)//Bug fix on click file in filedialog over board preview
 			{
-				brick.MouseEnter -= _currentBrickMouseHoverHandler;
+				foreach (BrickView brick in _bricksInEditor)
+				{
+					brick.MouseEnter -= _currentBrickMouseHoverHandler;
+				}
+				_currentBrickMouseHoverHandler = null;
 			}
-			_currentBrickMouseHoverHandler = null;
 		}
 
 		private void PutSingleBrick(object sender, RoutedEventArgs e)
 		{
-			PutBrickAndUpdateItInLevel(sender as BrickView, false);
-			SwitchHoverEvent(PutSingleBrick);
+			BrickView brickView = sender as BrickView;
+			//TODO Move condition to independent event handler which picks current brick after click
+			//TODO add brick pick
+			if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
+			{
+				PutBrickAndUpdateItInLevel(brickView, false);
+				SwitchHoverEvent(PutSingleBrick);
+			}
+			else
+			{
+				BrickListBox.SelectedItem = BrickListBoxItems.First(blbi => blbi.BrickId == brickView.BrickId);
+			}
 		}
 
 		private void RemoveSingleBrick(object sender, RoutedEventArgs e)
@@ -399,9 +494,7 @@ namespace Ultra_FlexEd_Reloaded
 			{
 				int brickX = Grid.GetColumn(brickView);
 				int brickY = Grid.GetRow(brickView);
-				BrickInLevel brickInLevel = _levelSetManager.LevelSet.Levels[_levelSetManager.CurrentLevelIndex].Bricks[brickY, brickX];
-				brickInLevel.BrickId = brickView.BrickId;
-				brickInLevel.Hidden = brickView.Hidden;
+				UpdateBrickInLevel(brickX, brickY, brickView.Hidden);
 			}
 			EraseHoverEvent(sender, e);
 		}
@@ -504,6 +597,13 @@ namespace Ultra_FlexEd_Reloaded
 			}
 		}
 
-		private void Exit(object sender, RoutedEventArgs e) => Close();
+		private void Reset()
+		{
+			_levelSetManager.Reset();
+			BrickListBoxItems = new ObservableCollection<ImageListBoxItem>(BrickListBoxItems.TakeWhile(blbi => blbi.BrickId <= LevelSetManager.DEFAULT_BRICK_QUANTITY));
+			LevelListBoxItems = new ObservableCollection<ListBoxItem>() { PrepareLevelToListBox(_levelSetManager.CurrentLevelName) };
+			RefreshBoard();
+			Title = SmallUtilities.MakeTitle();
+		}
 	}
 }

@@ -10,9 +10,9 @@
 		x:Name="BrickWin"
 		Title="Add New Brick Type"
         Height="380" Width="944">
-	<Window.DataContext>
+	<!--<Window.DataContext>
 		<lsdata:BrickProperties x:Name="BrickProperties" />
-	</Window.DataContext>
+	</Window.DataContext>-->
 	<Window.Resources>
 		<ObjectDataProvider x:Key="BreakAnimationTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
 			<ObjectDataProvider.MethodParameters>
@@ -46,13 +46,14 @@
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 		<Grid.Resources>
-			<Style TargetType="{x:Type CheckBox}">
+			<Style TargetType="CheckBox">
 				<Setter Property="Margin" Value="4,0,0,0"/>
 			</Style>
-			<Style TargetType="{x:Type Button}">
+			<Style TargetType="Button">
 				<Setter Property="Margin" Value="5,0,5,0"/>
 				<Setter Property="Padding" Value="5"/>
 				<Setter Property="MinWidth" Value="80"/>
+				<Setter Property="VerticalAlignment" Value="Center"/>
 			</Style>
 			<Style TargetType="Slider">
 				<Setter Property="MinWidth" Value="170"/>
@@ -60,7 +61,7 @@
 		</Grid.Resources>
 		<StackPanel Orientation="Horizontal" Grid.Row="0">
 			<Label Content="Brick Name" VerticalAlignment="Center" />
-			<TextBox TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding BrickName, ElementName=BrickWin}" VerticalAlignment="Center" MinWidth="200" Margin="0,16"/>
+			<TextBox x:Name="brickNameField" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding BrickName, ElementName=BrickWin}" VerticalAlignment="Center" MinWidth="200" Margin="0,16"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1">
 			<Label Content="Durability (1-30):" VerticalAlignment="Center" MinWidth="104"/>
@@ -112,8 +113,8 @@
 			<ComboBox ItemsSource="{Binding Source={StaticResource DirectionTypes}}" SelectedItem="{Binding Direction}" VerticalAlignment="Center"/>
 		</StackPanel>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Column="2" Grid.Row="6">
-			<Button Content="OK" VerticalAlignment="Center" IsDefault="True" Click="Ok_Clicked"/>
-			<Button Content="Cancel" VerticalAlignment="Center" Click="Cancel_Clicked"/>
+			<Button Content="OK" IsDefault="True" Click="Ok_Clicked"/>
+			<Button Content="Cancel" Click="Cancel_Clicked"/>
 		</StackPanel>
 	</Grid>
 </Window>

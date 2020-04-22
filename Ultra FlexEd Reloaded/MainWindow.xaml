@@ -4,12 +4,36 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Ultra_FlexEd_Reloaded.UserControls"
+		xmlns:main="clr-namespace:Ultra_FlexEd_Reloaded"
         mc:Ignorable="d"
-        Title="Ultra FlexEd Reloaded"
 		SizeToContent="WidthAndHeight"
 		Loaded="Window_Loaded"
 		SizeChanged="Window_SizeChanged"
 		x:Name="Main">
+	<Window.CommandBindings>
+		<CommandBinding Command="ApplicationCommands.New" Executed="New_Clicked"/>
+		<CommandBinding Command="ApplicationCommands.Open" Executed="Open_Clicked"/>
+		<CommandBinding Command="ApplicationCommands.Save" Executed="Save_Clicked" CanExecute="CanSave"/>
+		<CommandBinding Command="ApplicationCommands.SaveAs" Executed="SaveAs_Clicked"/>
+		<CommandBinding Command="{x:Static main:MainWindow.RemoveLevelCommand}" Executed="RemoveLevel_Clicked" CanExecute="CanRemoveLevel"/>
+		<CommandBinding Command="{x:Static main:MainWindow.MoveLevelUpCommand}" Executed="MoveLevelUp" CanExecute="CanMoveLevelUp"/>
+		<CommandBinding Command="{x:Static main:MainWindow.MoveLevelDownCommand}" Executed="MoveLevelDown" CanExecute="CanMoveLevelDown"/>
+	</Window.CommandBindings>
+	<Window.Resources>
+		<ContextMenu x:Key="BrickContextMenu">
+			<MenuItem Header="_Edit" Click="EditBrick_Clicked" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+			<MenuItem Header="_Remove" Click="RemoveBrick_Clicked" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+		</ContextMenu>
+		<ContextMenu x:Key="LevelContextMenu">
+			<MenuItem Header="_Edit" Click="EditLevel_Clicked" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+			<MenuItem Header="Insert _Before..." Click="InsertBeforeLevel_Clicked" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+			<MenuItem Header="Insert _After..." Click="InsertAfterLevel_Clicked" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+			<MenuItem Header="Move _Up" Command="{x:Static main:MainWindow.MoveLevelUpCommand}"/>
+			<MenuItem Header="Move _Down" Command="{x:Static main:MainWindow.MoveLevelDownCommand}"/>
+			<!--<MenuItem Header="E_xport..." />-->
+			<MenuItem Header="_Remove" Command="{x:Static main:MainWindow.RemoveLevelCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+		</ContextMenu>
+	</Window.Resources>
 	<DockPanel>
 		<Menu DockPanel.Dock="Top">
 			<MenuItem Header="_File">
@@ -37,7 +61,7 @@
 				<MenuItem Header="Start FlexBall"/>
 				<MenuItem Header="Test"/>
 				<Separator/>
-				<MenuItem Header="Level Set Name"/>
+				<MenuItem Header="Level Set Properties" Click="LevelSetProperties_Clicked" />
 				<Separator/>
 				<MenuItem Header="_Exit" Click="Exit"/>
 			</MenuItem>
@@ -69,10 +93,11 @@
 		</Menu>
 		<Grid DockPanel.Dock="Bottom">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="19*"/>
+				<ColumnDefinition Width="581*"/>
 				<ColumnDefinition Width="210"/>
 			</Grid.ColumnDefinitions>
-			<Grid x:Name="Bricks" MinWidth="600" MinHeight="375" Background="Black" Grid.Column="0">
+			<Grid x:Name="Bricks" MinWidth="600" MinHeight="375" Background="Black" Grid.Column="0" Grid.ColumnSpan="2">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="*"/>
@@ -123,28 +148,17 @@
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 			</Grid>
-			<Grid Grid.Column="1">
+			<Grid Grid.Column="2">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="47*"/>
 					<RowDefinition Height="39*"/>
 					<RowDefinition Height="auto"/>
 				</Grid.RowDefinitions>
 				<Border Grid.Row="0" x:Name="BrickListBorder" HorizontalAlignment="Left" Height="auto">
-					<ListBox x:Name="BrickListBox" Width="210" Height="{Binding ActualHeight, ElementName=BrickListBorder}" ItemsSource="{Binding Path=BrickListBoxItems, ElementName=Main, Mode=TwoWay}" SelectionMode="Single">
-						<!--<controls:ImageListBoxItem/>
-						<controls:ImageListBoxItem/>
-						<controls:ImageListBoxItem/>
-						<controls:ImageListBoxItem/>
-						<controls:ImageListBoxItem/>
-						<controls:ImageListBoxItem/>
-						<controls:ImageListBoxItem/>
-						<controls:ImageListBoxItem/>-->
-					</ListBox>
+					<ListBox x:Name="BrickListBox" Width="210" Height="{Binding ActualHeight, ElementName=BrickListBorder}" ItemsSource="{Binding Path=BrickListBoxItems, ElementName=Main, Mode=TwoWay}" SelectionMode="Single"/>
 				</Border>
 				<Border Grid.Row="1" x:Name="LevelListBorder" HorizontalAlignment="Left" Height="auto">
-					<ListBox Width="210" Height="{Binding ActualHeight, ElementName=LevelListBorder}">
-						<ListBoxItem Content="Blue, Blue Everywhere..." FontWeight="Bold"/>
-					</ListBox>
+					<ListBox x:Name="LevelListBox" Width="210" Height="{Binding ActualHeight, ElementName=LevelListBorder}" ItemsSource="{Binding ElementName=Main, Path=LevelListBoxItems, Mode=TwoWay}" SelectionMode="Single"/>
 				</Border>
 				<Grid Grid.Row="2">
 					<Grid.ColumnDefinitions>
@@ -163,11 +177,11 @@
 					<controls:LockableToggleButton x:Name="FillButton" Content="F" Checked="FillButton_Checked" Grid.Column="1"/>
 					<controls:LockableToggleButton x:Name="LineButton" Content="L" Checked="LineButton_Checked" Grid.Column="2"/>
 					<controls:LockableToggleButton x:Name="RectangleButton" Content="R" Checked="RectangleButton_Checked" Grid.Column="3"/>
-					<Button Content="UP" IsEnabled="False" Grid.Column="4"/>
+					<Button Content="UP" Command="{x:Static main:MainWindow.MoveLevelUpCommand}" Grid.Column="4"/>
 					<Button Content="+B" Click="AddBrick_Clicked" Grid.Row="1" Grid.Column="0"/>
-					<Button Content="+L" IsEnabled="False" Grid.Row="1" Grid.Column="1"/>
+					<Button Content="+L" Click="AddLevel_Clicked" Grid.Row="1" Grid.Column="1"/>
 					<ToggleButton Content="Hidden" Click="HiddenMode_Click" Grid.Row="1" Grid.Column="3"/>
-					<Button Content="DOWN" IsEnabled="False" Grid.Row="1" Grid.Column="4"/>
+					<Button Content="DOWN" Command="{x:Static main:MainWindow.MoveLevelDownCommand}" Grid.Row="1" Grid.Column="4"/>
 					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="5">
 						<StackPanel.Resources>
 							<Style TargetType="Label">

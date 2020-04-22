@@ -11,7 +11,7 @@ namespace LevelSetData
 		public const int ROWS = 25;
 		public const int COLUMNS = 20;
 		public string Name { get; set; } = "Level Set";
-		public List<Level> Levels { get; } = new List<Level> { new Level() };
+		public List<Level> Levels { get; } = new List<Level>();
 
 		public override string ToString() => $"{Name} {Levels}";
 	}

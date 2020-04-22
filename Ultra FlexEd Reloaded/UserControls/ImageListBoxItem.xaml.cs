@@ -13,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using Ultra_FlexEd_Reloaded.LevelManagement;
 
 namespace Ultra_FlexEd_Reloaded.UserControls
 {
@@ -28,11 +27,19 @@ namespace Ultra_FlexEd_Reloaded.UserControls
 		{
 			InitializeComponent();
 			Label.Content = brickName;
-			brickDirectory = $"{brickDirectory}/{brickName}";
-			string extension = Path.GetExtension(Directory.GetFiles(brickDirectory, "brick0.*")[0]);
-			BitmapImage bitmapImage = new BitmapImage(new Uri($"{brickDirectory}/brick0{extension}", UriKind.Relative));
-			Image.Source = new CroppedBitmap(bitmapImage, new Int32Rect(0, 0, BrickProperties.PIXEL_WIDTH, BrickProperties.PIXEL_HEIGHT));
+			Update(brickDirectory, brickName);
 			BrickId = id;
 		}
+
+		public void Update(string brickDirectory, string brickName)
+		{
+			string singleBrickDirectory = $"{brickDirectory}/{brickName}";
+			string extension = Path.GetExtension(Directory.GetFiles(singleBrickDirectory, "brick0.*")[0]);
+			BitmapImage bitmapImage = BitmapMethods.GetImageWithCacheOnLoad(new Uri($"{singleBrickDirectory}/brick0{extension}", UriKind.Relative));
+			Image.Source = new CroppedBitmap(bitmapImage, new Int32Rect(0, 0, BrickProperties.PIXEL_WIDTH, BrickProperties.PIXEL_HEIGHT));
+			Label.Content = brickName;
+		}
+
+		public void ClearImage() => Image.Source = null;
 	}
 }

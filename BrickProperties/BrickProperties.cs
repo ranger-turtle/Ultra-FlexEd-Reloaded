@@ -19,6 +19,18 @@ namespace LevelSetData
 	{
 		Up, Right, Down, Left
 	}
+	
+	[Serializable]
+	public enum TeleportType
+	{
+		Single, Double
+	}
+
+	[Serializable]
+	public enum ChimneyType
+	{
+		None, Regular, Confetti
+	}
 
 	/**
 	 * <summary><para>Properties of the brick saved in the *.brick file.</para>
@@ -65,21 +77,26 @@ namespace LevelSetData
 		public bool OokimResistant { get; set; }
 		public float BonusProbability { get; set; } = 0.2f;
 		public BreakAnimationType BreakAnimationType { get; set; } = BreakAnimationType.Fade;
-		public bool ChimneyLike { get; set; }
+		public ChimneyType ChimneyType { get; set; } = ChimneyType.None;
 		public byte ParticleX { get; set; }
 		public byte ParticleY { get; set; }
 		public Color Color1 { get; set; }
 		public Color Color2 { get; set; }
 		public int DetonateId { get; set; }
 		public int TeleportId { get; set; }
+		public TeleportType TeleportType { get; set; }
 		public int FallingTurnId { get; set; }
 		public int OldBlockTypeId { get; set; }
 		public int NewBlockTypeId { get; set; }
-		public DirectionalBrickType DirectionalBrickType { get; set; }
+		public DirectionalBrickType DirectionalBrickType { get; set; } = DirectionalBrickType.None;
 		public Direction Direction { get; set; }
 
 		public bool IsExplosive => ExplosionRadius > 0;
 
 		public bool IsTeleporter => TeleportId > 0;
+
+		public bool IsDetonator => DetonateId > 0;
+
+		public bool IsChimneyLike => ChimneyType != ChimneyType.None;
 	}
 }

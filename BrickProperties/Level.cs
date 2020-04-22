@@ -6,18 +6,30 @@ using System.Threading.Tasks;
 
 namespace LevelSetData
 {
-	public class BrickInLevel
+	public class BrickInLevel : ICloneable
 	{
 		public int BrickId { get; set; }
 		public bool Hidden { get; set; }
+
+		public void Reset()
+		{
+			BrickId = 0;
+			Hidden = false;
+		}
+
+		public object Clone()
+		{
+			return new BrickInLevel
+			{
+				BrickId = BrickId,
+				Hidden = Hidden
+			};
+		}
 	}
 
-	//TODO Add sound types
-	public class Level
+	public class Level : ICloneable
 	{
-		public string Name { get; set; } = "New Level";
-		public string BackgroundName { get; set; }
-		public string Music { get; set; }
+		public LevelProperties LevelProperties { get; set; } = new LevelProperties();
 		public BrickInLevel[,] Bricks { get; set; } = new BrickInLevel[LevelSet.ROWS, LevelSet.COLUMNS];
 
 		public Level()
@@ -31,10 +43,18 @@ namespace LevelSetData
 
 		public Level(string name, string backgroundName) : this()
 		{
-			Name = name;
-			BackgroundName = backgroundName;
+			LevelProperties.Name = name;
+			LevelProperties.BackgroundName = backgroundName;
 		}
 
-		public override string ToString() => Name;
+		public override string ToString() => LevelProperties.Name;
+
+		public object Clone()
+		{
+			return new Level
+			{
+				LevelProperties = LevelProperties.Clone() as LevelProperties
+			};
+		}
 	}
 }

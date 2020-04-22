@@ -1,0 +1,48 @@
+﻿<Window x:Class="Ultra_FlexEd_Reloaded.DialogWindows.LevelWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Add New Level" Height="205.142" Width="635">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<Grid.Resources>
+			<Style TargetType="Button">
+				<Setter Property="Margin" Value="5,0,5,0"/>
+				<Setter Property="Padding" Value="5"/>
+				<Setter Property="MinWidth" Value="80"/>
+				<Setter Property="VerticalAlignment" Value="Center"/>
+			</Style>
+			<Style TargetType="TextBox">
+				<Setter Property="MinWidth" Value="236"/>
+				<Setter Property="MinHeight" Value="22"/>
+			</Style>
+		</Grid.Resources>
+		<StackPanel Orientation="Horizontal" Grid.Row="0">
+			<Label Content="Level Name" VerticalAlignment="Center" />
+			<TextBox x:Name="levelNameField" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding Name}" VerticalAlignment="Center"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" Grid.Row="1">
+			<Label Content="Background Name" VerticalAlignment="Center" />
+			<TextBox x:Name="BackgroundNameField" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding BackgroundName}" VerticalAlignment="Center" MinWidth="200" Margin="0,16"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+			<Label Content="Music" VerticalAlignment="Center" />
+			<TextBox x:Name="MusicField" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding BackgroundName}" VerticalAlignment="Center" MinWidth="200" Margin="0,16"/>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Column="1" Grid.Row="6">
+			<Button Content="OK" IsDefault="True" Click="Ok_Clicked"/>
+			<Button Content="Cancel" Click="Cancel_Clicked"/>
+		</StackPanel>
+
+	</Grid>
+</Window>

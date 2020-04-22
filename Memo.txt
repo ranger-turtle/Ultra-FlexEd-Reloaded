@@ -1,0 +1,2 @@
+Make two objects for loading and saving files in old and new UFB level set format implementing same interface.
+In WPF part, use factory for creating file handling object.

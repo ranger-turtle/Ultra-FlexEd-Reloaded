@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace Ultra_FlexEd_Reloaded.LevelManagement
+namespace Ultra_FlexEd_Reloaded
 {
 	public class BrickType
 	{

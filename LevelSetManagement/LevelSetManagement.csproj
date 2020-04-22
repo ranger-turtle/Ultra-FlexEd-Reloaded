@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1B7D0C81-015D-4BF6-9EAD-F1F09992B0A5}</ProjectGuid>
+    <ProjectGuid>{6E61B6ED-98D0-40C4-8B6E-4E3C9FC17F25}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LevelSetData</RootNamespace>
-    <AssemblyName>LevelSetData</AssemblyName>
+    <RootNamespace>LevelSetManagement</RootNamespace>
+    <AssemblyName>LevelSetManagement</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,7 +29,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,12 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BrickProperties.cs" />
-    <Compile Include="Level.cs" />
-    <Compile Include="LevelProperties.cs" />
-    <Compile Include="LevelSet.cs" />
+    <Compile Include="ILevelSetFormatter.cs" />
+    <Compile Include="LevelSetFormatterFactory.cs" />
+    <Compile Include="LevelSetManager.cs" />
+    <Compile Include="NewLevelSetFormatter.cs" />
+    <Compile Include="OldLevelSetFormatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerializableCopier.cs" />
+    <Compile Include="SmallUtilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BrickProperties\LevelSetData.csproj">
+      <Project>{1b7d0c81-015d-4bf6-9ead-f1f09992b0a5}</Project>
+      <Name>LevelSetData</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
