@@ -1,0 +1,1 @@
+Hidden blocks are resetting when using line

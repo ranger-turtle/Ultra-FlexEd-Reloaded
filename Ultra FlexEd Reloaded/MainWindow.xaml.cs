@@ -46,9 +46,9 @@ namespace Ultra_FlexEd_Reloaded
 
 		public MainWindow()
 		{
+			//line below works when it is executed before component initialization
 			ApplicationCommands.SaveAs.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control | ModifierKeys.Shift));
 			InitializeComponent();
-			Title = SmallUtilities.MakeTitle();
 			for (int i = 0; i < LevelSet.ROWS; i++)
 			{
 				for (int j = 0; j < LevelSet.COLUMNS; j++)
@@ -82,14 +82,14 @@ namespace Ultra_FlexEd_Reloaded
 			SingleBrickButton.IsChecked = true;
 			_currentPaintModeButton = SingleBrickButton;
 			_currentPaintModeButton.LockToggle = true;
-			SwitchHoverErase(EraseHoverEvent);
+			SwitchHoverEvent(EraseHoverEvent);
 			_ready = true;
-			_levelSetManager.UpdateTitle = Change;
+			_levelSetManager.UpdateTitle = ChangeTitle;
 		}
 
-		private void Change(object sender, EventArgs e)
+		private void ChangeTitle(string title)
 		{
-			Title = SmallUtilities.MakeTitle(_levelSetManager.FilePath, _levelSetManager.Changed);
+			Title = title;
 		}
 
 		private void UpdateCoordinates(object sender, RoutedEventArgs e)
@@ -118,7 +118,7 @@ namespace Ultra_FlexEd_Reloaded
 			return listBoxItem;
 		}
 
-		private void SwitchHoverErase(MouseButtonEventHandler @event)
+		private void SwitchHoverEvent(MouseButtonEventHandler @event)
 		{
 			if (_currentBrickMouseReleaseHandler != null)
 			{
@@ -247,7 +247,7 @@ namespace Ultra_FlexEd_Reloaded
 			_bricksInEditor[brickY, brickX].BrickId = erase ? 0 : _levelSetManager.CurrentBrickId;
 		}
 
-		private void UpdateBrickInLevel(int brickX, int brickY, bool erase)
+		private void UpdateBrickInLevel(int brickX, int brickY, bool erase = false)
 		{
 			BrickInLevel brickInLevel = new BrickInLevel
 			{
@@ -257,7 +257,7 @@ namespace Ultra_FlexEd_Reloaded
 			_levelSetManager.UpdateBrickInLevel(brickX, brickY, brickInLevel);
 		}
 
-		private void PutBrickAndUpdateItInLevel(BrickView brick, bool erase)
+		private void PutBrickAndUpdateItInLevel(BrickView brick, bool erase = false)
 		{
 			int brickX = Grid.GetColumn(brick);
 			int brickY = Grid.GetRow(brick);
@@ -285,7 +285,7 @@ namespace Ultra_FlexEd_Reloaded
 			if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
 			{
 				PutBrickAndUpdateItInLevel(brickView, false);
-				SwitchHoverEvent(PutSingleBrick);
+				SwitchHoverEvent((MouseEventHandler)this.PutSingleBrick);
 			}
 			else
 			{
@@ -296,7 +296,7 @@ namespace Ultra_FlexEd_Reloaded
 		private void RemoveSingleBrick(object sender, RoutedEventArgs e)
 		{
 			PutBrickAndUpdateItInLevel(sender as BrickView, true);
-			SwitchHoverEvent(RemoveSingleBrick);
+			SwitchHoverEvent((MouseEventHandler)this.RemoveSingleBrick);
 		}
 
 		private void FillWithBricks(BrickView brickView, bool erase)
@@ -367,7 +367,7 @@ namespace Ultra_FlexEd_Reloaded
 			_beginX = Grid.GetColumn(brickView);
 			_beginY = Grid.GetRow(brickView);
 			BrickRectangle(brickView, e);
-			SwitchHoverEvent(BrickRectangle);
+			SwitchHoverEvent((MouseEventHandler)this.BrickRectangle);
 		}
 
 		private void EraseRectangle(object sender, RoutedEventArgs e)
@@ -381,7 +381,7 @@ namespace Ultra_FlexEd_Reloaded
 			_beginX = Grid.GetColumn(brickView);
 			_beginY = Grid.GetRow(brickView);
 			EraseRectangle(brickView, e);
-			SwitchHoverEvent(EraseRectangle);
+			SwitchHoverEvent((MouseEventHandler)this.EraseRectangle);
 		}
 
 		private void DrawLine(BrickView brick, bool erase)
@@ -470,7 +470,7 @@ namespace Ultra_FlexEd_Reloaded
 			_beginX = Grid.GetColumn(brickView);
 			_beginY = Grid.GetRow(brickView);
 			BrickLine(brickView, e);
-			SwitchHoverEvent(BrickLine);
+			SwitchHoverEvent((MouseEventHandler)this.BrickLine);
 		}
 
 		private void EraseLine(object sender, RoutedEventArgs e)
@@ -484,7 +484,7 @@ namespace Ultra_FlexEd_Reloaded
 			_beginX = Grid.GetColumn(brickView);
 			_beginY = Grid.GetRow(brickView);
 			EraseLine(brickView, e);
-			SwitchHoverEvent(EraseLine);
+			SwitchHoverEvent((MouseEventHandler)this.EraseLine);
 		}
 
 
@@ -494,12 +494,12 @@ namespace Ultra_FlexEd_Reloaded
 			{
 				int brickX = Grid.GetColumn(brickView);
 				int brickY = Grid.GetRow(brickView);
-				UpdateBrickInLevel(brickX, brickY, brickView.Hidden);
+				UpdateBrickInLevel(brickX, brickY);
 			}
 			EraseHoverEvent(sender, e);
 		}
 
-		private void SwitchEvents(/*MouseEventHandler brickHoverHandler, */MouseButtonEventHandler brickMouseLeftHandler, MouseButtonEventHandler brickMouseRightHandler)
+		private void SwitchMouseEvents(/*MouseEventHandler brickHoverHandler, */MouseButtonEventHandler brickMouseLeftHandler, MouseButtonEventHandler brickMouseRightHandler)
 		{
 			//MouseEventHandler oldMouseHoverHandler = _currentBrickMouseHoverHandler;
 			//_currentBrickMouseHoverHandler = brickHoverHandler;
@@ -544,8 +544,8 @@ namespace Ultra_FlexEd_Reloaded
 				FillButton.IsChecked = false;
 				LineButton.IsChecked = false;
 				RectangleButton.IsChecked = false;
-				SwitchEvents(PutSingleBrick, RemoveSingleBrick);
-				SwitchHoverErase(EraseHoverEvent);
+				SwitchMouseEvents(PutSingleBrick, RemoveSingleBrick);
+				SwitchHoverEvent(EraseHoverEvent);
 			}
 		}
 
@@ -555,8 +555,8 @@ namespace Ultra_FlexEd_Reloaded
 			SingleBrickButton.IsChecked = false;
 			LineButton.IsChecked = false;
 			RectangleButton.IsChecked = false;
-			SwitchEvents(BrushFill, EraseFill);
-			SwitchHoverErase(null);
+			SwitchMouseEvents(BrushFill, EraseFill);
+			SwitchHoverEvent((MouseButtonEventHandler)null);
 		}
 
 		private void LineButton_Checked(object sender, RoutedEventArgs e)
@@ -565,8 +565,8 @@ namespace Ultra_FlexEd_Reloaded
 			FillButton.IsChecked = false;
 			SingleBrickButton.IsChecked = false;
 			RectangleButton.IsChecked = false;
-			SwitchEvents(BeginBrickLine, BeginEraseLine);
-			SwitchHoverErase(UpdateLevelSet);
+			SwitchMouseEvents(BeginBrickLine, BeginEraseLine);
+			SwitchHoverEvent(UpdateLevelSet);
 		}
 
 		private void RectangleButton_Checked(object sender, RoutedEventArgs e)
@@ -575,8 +575,8 @@ namespace Ultra_FlexEd_Reloaded
 			FillButton.IsChecked = false;
 			LineButton.IsChecked = false;
 			SingleBrickButton.IsChecked = false;
-			SwitchEvents(BeginBrickRectangle, BeginEraseRectangle);
-			SwitchHoverErase(UpdateLevelSet);
+			SwitchMouseEvents(BeginBrickRectangle, BeginEraseRectangle);
+			SwitchHoverEvent(UpdateLevelSet);
 		}
 
 		private void HiddenMode_Click(object sender, RoutedEventArgs e)
@@ -603,7 +603,6 @@ namespace Ultra_FlexEd_Reloaded
 			BrickListBoxItems = new ObservableCollection<ImageListBoxItem>(BrickListBoxItems.TakeWhile(blbi => blbi.BrickId <= LevelSetManager.DEFAULT_BRICK_QUANTITY));
 			LevelListBoxItems = new ObservableCollection<ListBoxItem>() { PrepareLevelToListBox(_levelSetManager.CurrentLevelName) };
 			RefreshBoard();
-			Title = SmallUtilities.MakeTitle();
 		}
 	}
 }

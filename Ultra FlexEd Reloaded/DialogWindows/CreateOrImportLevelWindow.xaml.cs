@@ -77,7 +77,10 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 					bool? result = levelWindow.ShowDialog();
 					if (result == true)
 					{
-						Level = levelWindow.DataContext as Level;
+						Level = new Level()
+						{
+							LevelProperties = levelWindow.DataContext as LevelProperties
+						};
 						DialogResult = true;
 					}
 					break;

@@ -108,6 +108,7 @@
     <Compile Include="MainWindow.xaml.LevelHandle.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\AutoGreyableImage.cs" />
     <Compile Include="UserControls\BrickView.xaml.cs">
       <DependentUpon>BrickView.xaml</DependentUpon>
     </Compile>

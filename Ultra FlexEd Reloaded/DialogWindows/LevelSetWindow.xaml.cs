@@ -20,7 +20,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 	/// </summary>
 	public partial class LevelSetWindow : Window
 	{
-		public DependencyProperty LevelSetNameProperty =
+		public static readonly DependencyProperty LevelSetNameProperty =
 			DependencyProperty.Register("LevelSetName", typeof(string), typeof(LevelSetWindow));
 
 		public string LevelSetName
@@ -29,10 +29,9 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			set => SetValue(LevelSetNameProperty, value);
 		}
 
-		public LevelSetWindow()
-		{
-			InitializeComponent();
-		}
+		public LevelSetWindow() => InitializeComponent();
+
+		public LevelSetWindow(string levelSetName) : this() => LevelSetName = levelSetName;
 
 		public void OK_Clicked(object sender, RoutedEventArgs e) => DialogResult = true;
 

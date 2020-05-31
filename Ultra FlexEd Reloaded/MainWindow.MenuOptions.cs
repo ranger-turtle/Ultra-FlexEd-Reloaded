@@ -63,7 +63,6 @@ namespace Ultra_FlexEd_Reloaded
 			if (_levelSetManager.LevelLoaded)
 			{
 				_levelSetManager.SaveFile();
-				Title = SmallUtilities.MakeTitle(_levelSetManager.FilePath, false);
 			}
 			else
 				SaveAs_Clicked(sender, e);
@@ -81,7 +80,6 @@ namespace Ultra_FlexEd_Reloaded
 				if (Path.GetExtension(saveFileDialog.FileName) == ".lev")
 					MessageBox.Show($"This old format does not support custom brick types, music and sounds.{Environment.NewLine}More info in Readme.txt", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 				_levelSetManager.SaveFile(saveFileDialog.FileName);
-				Title = SmallUtilities.MakeTitle(saveFileDialog.FileName, false);
 			}
 		}
 
@@ -89,7 +87,10 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void LevelSetProperties_Clicked(object sender, RoutedEventArgs e)
 		{
-			LevelSetWindow levelSetWindow = new LevelSetWindow();
+			LevelSetWindow levelSetWindow = new LevelSetWindow
+			{
+				LevelSetName = _levelSetManager.CurrentLevelSetName
+			};
 			bool? confirmed = levelSetWindow.ShowDialog();
 			if (confirmed == true)
 			{

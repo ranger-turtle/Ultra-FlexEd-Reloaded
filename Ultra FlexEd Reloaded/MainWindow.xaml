@@ -39,22 +39,22 @@
 			<MenuItem Header="_File">
 				<MenuItem Header="_New" Command="ApplicationCommands.New">
 					<MenuItem.Icon>
-						<Image Source="icons/new.png"></Image>
+						<Image Source="icons/new.png"/>
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="_Open" Command="ApplicationCommands.Open">
 					<MenuItem.Icon>
-						<Image Source="icons/open.png"></Image>
+						<Image Source="icons/open.png"/>
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="_Save" Command="ApplicationCommands.Save">
 					<MenuItem.Icon>
-						<Image Source="icons/save.png"></Image>
+						<controls:AutoGreyableImage Source="icons/save.png"/>
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="Save _As..." Command="ApplicationCommands.SaveAs">
 					<MenuItem.Icon>
-						<Image Source="icons/save as.png"></Image>
+						<Image Source="icons/save as.png"/>
 					</MenuItem.Icon>
 				</MenuItem>
 				<Separator/>

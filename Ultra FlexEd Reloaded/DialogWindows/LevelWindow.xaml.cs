@@ -23,7 +23,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 		public LevelWindow()
 		{
 			InitializeComponent();
-			DataContext = new Level();
+			DataContext = new LevelProperties();
 		}
 
 		public LevelWindow(LevelProperties levelProperties) : this()

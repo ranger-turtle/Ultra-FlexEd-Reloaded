@@ -26,7 +26,16 @@ namespace LevelSetManagement
 
 		private readonly Comparison<BrickProperties> brickPropertyComparison = (bp1, bp2) => bp1.Id.CompareTo(bp2.Id);
 
-		public EventHandler UpdateTitle { get; set; }
+		private Action<string> _updateTitle;
+
+		public Action<string> UpdateTitle {
+			get => _updateTitle;
+			set
+			{
+				_updateTitle = value;
+				_updateTitle(CurrentTitle);
+			}
+		}
 
 		private readonly Dictionary<string, FormatType> _formatTypes = new Dictionary<string, FormatType>
 		{
@@ -53,6 +62,8 @@ namespace LevelSetManagement
 		public FormatType CurrentFormatType => FilePath != "" && FilePath != null ? _formatTypes[Path.GetExtension(FilePath)] : FormatType.New;
 		public bool LevelLoaded => FilePath != null;
 		public int LevelCount => _levelSet.Levels.Count;
+		private string CurrentTitle =>
+			$"{MAIN_TITLE} - [{(FilePath != null && FilePath != "" ? FilePath : "Untitled")}{(Changed ? "*" : "")}]";
 
 		private static LevelSetManager instance;
 
@@ -98,7 +109,7 @@ namespace LevelSetManagement
 			CurrentBrickId = 1;
 			CurrentLevelIndex = 0;
 			Changed = false;
-			UpdateTitle(null, null);
+			UpdateTitle(CurrentTitle);
 		}
 
 		public Level[] GetLevelsFromFile(string filepath)
@@ -112,17 +123,19 @@ namespace LevelSetManagement
 
 		public void SaveFile(string filepath)
 		{
+			FilePath = filepath;
 			string extension = Path.GetExtension(filepath);
 			ILevelSetFormatter formatter = LevelSetFormatterFactory.GenerateLevelSetFormatter(_formatTypes[extension]);
 			formatter.Save(filepath, _levelSet);
 			Changed = false;
+			UpdateTitle(CurrentTitle);
 			//TODO implement history index assignment
 		}
 
 		public void Change()
 		{
 			Changed = true;
-			UpdateTitle(null, null);
+			UpdateTitle(CurrentTitle);
 			//TODO implement change history
 		}
 
@@ -249,12 +262,15 @@ namespace LevelSetManagement
 
 		public void Reset()
 		{
+			FilePath = null;
 			_levelSet.Name = null;
 			_levelSet.Levels.Clear();
 			_levelSet.Levels.Add(new Level());
 			CurrentBrickId = 1;
 			CurrentLevelIndex = 0;
 			Hidden = false;
+			Changed = false;
+			UpdateTitle(CurrentTitle);
 		}
 
 		/**

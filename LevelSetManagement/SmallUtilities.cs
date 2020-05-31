@@ -5,8 +5,6 @@ namespace LevelSetManagement
 	public class SmallUtilities
 	{
 		public static string GetLevelNameForGUI(string levelName, int index) => levelName ?? $"Level {index}";
-		public static string MakeTitle(string filepath = "", bool changed = false) =>
-			$"{LevelSetManager.MAIN_TITLE} - [{(filepath != null && filepath != "" ? filepath : "Untitled")}{(changed ? "*" : "")}]";
 	}
 
 	public static class ExtensionMethods
