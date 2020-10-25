@@ -9,7 +9,8 @@
 			 Cursor="Hand"
              d:DesignHeight="15" d:DesignWidth="30" Width="30" Height="15" Background="Transparent">
 	<Grid>
+		<Rectangle Fill="#8800FFFF" HorizontalAlignment="Left" Height="15" VerticalAlignment="Top" Panel.ZIndex="3" Visibility="{Binding SelectionBorder, Converter={local:BoolToVisibilityConverter}, ElementName=BrickControl}" Width="30"/>
 		<Label Content="H" FontFamily="Arial" FontSize="10" Foreground="Red" Background="Maroon" Padding="0" Panel.ZIndex="2" Visibility="{Binding Hidden, Converter={local:BoolToVisibilityConverter}, ElementName=BrickControl}" Height="11" Width="8" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-		<Image x:Name="Image" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill"/>
+		<Image x:Name="Image" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Fill"/>
 	</Grid>
 </UserControl>

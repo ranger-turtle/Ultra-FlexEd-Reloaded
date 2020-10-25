@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LevelSetData;
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Markup;
 
@@ -60,15 +57,12 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			}
 		}
 
-		private BrickEditMetadata CurrentBrickEditMetadata
+		private void InitializeFrameDurations(bool force = false)
 		{
-			get
+			if ((DataContext as BrickProperties).FrameDurations == null || force)
 			{
-				return _brickMetadata[FrameSheetNum - 1];
-			}
-			set
-			{
-				_brickMetadata[FrameSheetNum - 1] = value;
+				float[] frameDurations = (DataContext as BrickProperties).FrameDurations = new float[_brickMetadata.Frames];
+				for (int i = 0; i < frameDurations.Length; i++) frameDurations[i] = 0.4f;
 			}
 		}
 	}

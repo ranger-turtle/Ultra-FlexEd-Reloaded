@@ -1,17 +1,6 @@
 ﻿using LevelSetData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LevelSetManagement;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Ultra_FlexEd_Reloaded.DialogWindows
 {
@@ -20,18 +9,60 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 	/// </summary>
 	public partial class LevelSetWindow : Window
 	{
-		public static readonly DependencyProperty LevelSetNameProperty =
-			DependencyProperty.Register("LevelSetName", typeof(string), typeof(LevelSetWindow));
-
-		public string LevelSetName
+		public LevelSetWindow()
 		{
-			get => GetValue(LevelSetNameProperty) as string;
-			set => SetValue(LevelSetNameProperty, value);
+			InitializeComponent();
+			DataContext = new LevelSetProperties();
 		}
 
-		public LevelSetWindow() => InitializeComponent();
+		public LevelSetWindow(LevelSetProperties levelSetProperties) : this()
+		{
+			DataContext = levelSetProperties;
+		}
 
-		public LevelSetWindow(string levelSetName) : this() => LevelSetName = levelSetName;
+		private void SetDefaultBackground()
+		{
+			FileChooseAndImportWindow backgroundChooseWindow = new FileChooseAndImportWindow(
+				fileFolder: "Backgrounds",
+				fileTypeToChooseExtension: ".png",
+				fileTypeToChooseName: "default background file",
+				includeGameDefault: true)
+			{
+				Owner = this
+			};
+			if (backgroundChooseWindow.ShowDialog() == true)
+			{
+				(DataContext as LevelSetProperties).DefaultBackgroundName = backgroundChooseWindow.ChosenFileName;
+				DefaultBackgroundTextBox.Text = backgroundChooseWindow.ChosenFileName;
+			}
+		}
+
+		private void SetDefaultMusic()
+		{
+			FileChooseAndImportWindow musicChooseWindow = new FileChooseAndImportWindow(
+				fileFolder: "Music",
+				fileTypeToChooseExtension: ".mp3",
+				fileTypeToChooseName: "default music file",
+				includeGameDefault: true)
+			{
+				Owner = this
+			};
+			if (musicChooseWindow.ShowDialog() == true)
+			{
+				(DataContext as LevelSetProperties).DefaultMusic = musicChooseWindow.ChosenFileName;
+				DefaultMusicTextBox.Text = musicChooseWindow.ChosenFileName;
+			}
+		}
+
+		private void DefaultBackgroundButton_Click(object sender, RoutedEventArgs e)
+		{
+			SetDefaultBackground();
+		}
+
+		private void DefaultMusicButton_Click(object sender, RoutedEventArgs e)
+		{
+			SetDefaultMusic();
+		}
 
 		public void OK_Clicked(object sender, RoutedEventArgs e) => DialogResult = true;
 

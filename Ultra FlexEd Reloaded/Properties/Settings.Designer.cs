@@ -22,5 +22,23 @@ namespace Ultra_FlexEd_Reloaded.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("../uflex2000-16.exe")]
+        public string OldTester {
+            get {
+                return ((string)(this["OldTester"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("../Ultra FlexBall Reloaded.exe")]
+        public string NewTester {
+            get {
+                return ((string)(this["NewTester"]));
+            }
+        }
     }
 }

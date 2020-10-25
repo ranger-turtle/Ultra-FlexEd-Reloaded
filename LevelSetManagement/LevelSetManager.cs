@@ -2,21 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using LevelSetData;
 
 namespace LevelSetManagement
 {
-	public class FramesheetMetadata
-	{
-		public string FrameSheetPath { get; set; }
-		public int FrameSheetIndex { get; set; }
-	}
-
 	//TODO add automatic update events (e.g. onBrickUpdate, onLevelUpdate)
+	//TODO add brick import (cannot add bricks with mere copying brick file due to possible id conflicts)
 	public class LevelSetManager
 	{
 		public const string MAIN_TITLE = "Ultra FlexEd Reloaded";
@@ -24,8 +16,11 @@ namespace LevelSetManagement
 		public const int DEFAULT_BRICK_QUANTITY = 125;
 		public const string DEFAULT_BRICK_DIRECTORY = "Default Bricks";
 
+		public const string EMPTY_ELEMENT_PLACEHOLDER = "<none>";
+
 		private readonly Comparison<BrickProperties> brickPropertyComparison = (bp1, bp2) => bp1.Id.CompareTo(bp2.Id);
 
+		#region eventHandlers
 		private Action<string> _updateTitle;
 
 		public Action<string> UpdateTitle {
@@ -33,15 +28,18 @@ namespace LevelSetManagement
 			set
 			{
 				_updateTitle = value;
-				_updateTitle(CurrentTitle);
+				_updateTitle(CurrentAppTitle);
 			}
 		}
+		#endregion
 
-		private readonly Dictionary<string, FormatType> _formatTypes = new Dictionary<string, FormatType>
+		private readonly Dictionary<string, FormatType> formatTypes = new Dictionary<string, FormatType>
 		{
 			[".nlev"] = FormatType.New,
 			[".lev"] = FormatType.Old
 		};
+
+		private readonly Dictionary<FormatType, ILevelTester> testers = new Dictionary<FormatType, ILevelTester>();
 
 		public bool Changed { get; private set; }
 
@@ -49,21 +47,22 @@ namespace LevelSetManagement
 		public List<BrickProperties> Bricks { get; } = new List<BrickProperties>();
 		public SortedDictionary<int, string> BrickNames { get; } = new SortedDictionary<int, string>();
 		public string FilePath { get; private set; }
+		public string FilePathWithoutExtension => Path.Combine(Path.GetDirectoryName(FilePath), Path.GetFileNameWithoutExtension(FilePath));
 
 		public int CurrentBrickId { get; set; } = 1;
 		public int CurrentLevelIndex { get; set; }
-		public bool Hidden { get; set; }
 
 		public BrickProperties CurrentBrick => Bricks[CurrentBrickId];
 		private Level CurrentLevel => _levelSet.Levels[CurrentLevelIndex];
 		public string CurrentBrickName => BrickNames[CurrentBrickId];
 		public string CurrentLevelName => _levelSet.Levels[CurrentLevelIndex].LevelProperties.Name;
-		public string CurrentLevelSetName => _levelSet.Name;
-		public FormatType CurrentFormatType => FilePath != "" && FilePath != null ? _formatTypes[Path.GetExtension(FilePath)] : FormatType.New;
+		public FormatType CurrentFormatType => string.IsNullOrEmpty(FilePath) ? formatTypes[Path.GetExtension(FilePath)] : FormatType.New;
 		public bool LevelLoaded => FilePath != null;
 		public int LevelCount => _levelSet.Levels.Count;
-		private string CurrentTitle =>
-			$"{MAIN_TITLE} - [{(FilePath != null && FilePath != "" ? FilePath : "Untitled")}{(Changed ? "*" : "")}]";
+		private string CurrentAppTitle =>
+			$"{MAIN_TITLE} - [{(FilePath != null && FilePath != string.Empty ? FilePath : "Untitled")}{(Changed ? "*" : string.Empty)}]";
+
+		public ILevelTester CurrentTester { get; private set; }
 
 		private static LevelSetManager instance;
 
@@ -73,9 +72,31 @@ namespace LevelSetManagement
 			_levelSet.Levels.Add(new Level());
 		}
 
+		public void SetTesters(ILevelTester oldGameTester, ILevelTester newGameTester)
+		{
+			testers[FormatType.Old] = oldGameTester;
+			CurrentTester = testers[FormatType.New] = newGameTester;
+		}
+
+		public void SetTesterPaths(string oldGamePath, string newGamePath)
+		{
+			testers[FormatType.Old].SetPath(oldGamePath);
+			testers[FormatType.New].SetPath(newGamePath);
+		}
+
+		private void CheckBrickFileSystem(string defaultBrickDirectory, string brickName)
+		{
+			if (!Directory.Exists($"{defaultBrickDirectory}/{brickName}"))
+				throw new DirectoryNotFoundException($"Could not find directory {defaultBrickDirectory}/{brickName}.");
+			if (!File.Exists($"{defaultBrickDirectory}/{brickName}/frames.png"))
+				throw new FileNotFoundException($"Could not find file {defaultBrickDirectory}/{brickName}/frames.png.");
+		}
+
 		private void LoadBricks(string directory)
 		{
 			var brickFilePaths = Directory.EnumerateFiles(directory, "*.brick");
+			if (brickFilePaths.Count() != DEFAULT_BRICK_QUANTITY)
+				throw new FileNotFoundException($"{DEFAULT_BRICK_QUANTITY - brickFilePaths.Count()} of {DEFAULT_BRICK_QUANTITY} brick files are missing. {Environment.NewLine} Please redownload game to restore bricks or find missing brick(s).");
 			BinaryFormatter binaryFormatter = new BinaryFormatter();
 			foreach (string brickName in brickFilePaths)
 				using (FileStream brickFile = File.OpenRead(brickName))
@@ -83,6 +104,7 @@ namespace LevelSetManagement
 					BrickProperties brickProperties = binaryFormatter.Deserialize(brickFile) as BrickProperties;
 					Bricks.Add(brickProperties);
 					BrickNames[brickProperties.Id] = Path.GetFileNameWithoutExtension(brickName);
+					CheckBrickFileSystem(directory, BrickNames[brickProperties.Id]);
 				}
 			Bricks.Sort(brickPropertyComparison);
 		}
@@ -90,12 +112,13 @@ namespace LevelSetManagement
 		public static LevelSetManager GetInstance(bool reset = false) =>
 			instance == null || reset ? (instance = new LevelSetManager()) : instance;
 
-		public string GetBrickFolder(int brickId) => brickId <= DEFAULT_BRICK_QUANTITY ? DEFAULT_BRICK_DIRECTORY : $"Custom/{_levelSet.Name}/Bricks";
+		public string GetBrickFolder(int brickId) => brickId <= DEFAULT_BRICK_QUANTITY ? DEFAULT_BRICK_DIRECTORY : $"Custom/{_levelSet.LevelSetProperties.Name}/Bricks";
 
-		public void LoadFile(string filepath)
+		public void LoadLevelSetFile(string filepath)
 		{
 			string extension = Path.GetExtension(filepath);
-			ILevelSetFormatter formatter = LevelSetFormatterFactory.GenerateLevelSetFormatter(_formatTypes[extension]);
+			string levelSetName = Path.GetFileNameWithoutExtension(filepath);
+			ILevelSetFormatter formatter = LevelSetFormatterFactory.GenerateLevelSetFormatter(formatTypes[extension]);
 			_levelSet = formatter.Load(filepath);
 			FilePath = filepath;
 			if (Bricks.Count > DEFAULT_BRICK_QUANTITY)
@@ -104,18 +127,19 @@ namespace LevelSetManagement
 					BrickNames.Remove(Bricks[i].Id);
 				Bricks.RemoveRange(DEFAULT_BRICK_QUANTITY, Bricks.Count - DEFAULT_BRICK_QUANTITY);
 			}
-			if (_formatTypes[extension] == FormatType.New)
-				LoadBricks($"{filepath}/Bricks");
+			if (formatTypes[extension] == FormatType.New && Directory.Exists(levelSetName))
+				LoadBricks(levelSetName);
+			CurrentTester = testers[formatTypes[extension]];
 			CurrentBrickId = 1;
 			CurrentLevelIndex = 0;
 			Changed = false;
-			UpdateTitle(CurrentTitle);
+			UpdateTitle(CurrentAppTitle);
 		}
 
 		public Level[] GetLevelsFromFile(string filepath)
 		{
 			string extension = Path.GetExtension(filepath);
-			ILevelSetFormatter formatter = LevelSetFormatterFactory.GenerateLevelSetFormatter(_formatTypes[extension]);
+			ILevelSetFormatter formatter = LevelSetFormatterFactory.GenerateLevelSetFormatter(formatTypes[extension]);
 			return formatter.Load(filepath).Levels.ToArray();
 		}
 
@@ -125,24 +149,25 @@ namespace LevelSetManagement
 		{
 			FilePath = filepath;
 			string extension = Path.GetExtension(filepath);
-			ILevelSetFormatter formatter = LevelSetFormatterFactory.GenerateLevelSetFormatter(_formatTypes[extension]);
+			ILevelSetFormatter formatter = LevelSetFormatterFactory.GenerateLevelSetFormatter(formatTypes[extension]);
 			formatter.Save(filepath, _levelSet);
 			Changed = false;
-			UpdateTitle(CurrentTitle);
+			UpdateTitle(CurrentAppTitle);
+			CurrentTester = testers[formatTypes[extension]];
 			//TODO implement history index assignment
 		}
 
-		public void Change()
+		public void SetChangedState()
 		{
 			Changed = true;
-			UpdateTitle(CurrentTitle);
+			UpdateTitle(CurrentAppTitle);
 			//TODO implement change history
 		}
 
-		public void UpdateLevelSet(string name)
+		public void UpdateLevelSet(LevelSetProperties levelSetProperties)
 		{
-			_levelSet.Name = name;
-			Change();
+			_levelSet.LevelSetProperties = levelSetProperties;
+			SetChangedState();
 		}
 
 		private int EvaluateSmallestAbsentBrickTypeId(int[] ids)
@@ -154,9 +179,9 @@ namespace LevelSetManagement
 			return ids[i - 1] + 1;
 		}
 
-		public void AddBrickToLevelSet(string brickName, BrickProperties brick, FramesheetMetadata[] frameSheetMetadata, string hitBrickImagePath)
+		public void AddBrickToLevelSet(string brickName, BrickProperties brick, string frameSheetPath, string hitBrickImagePath)
 		{
-			if (frameSheetMetadata == null) throw new NullReferenceException("Frame sheet paths cannot be null.");
+			if (frameSheetPath == null) throw new NullReferenceException("Frame sheet paths cannot be null.");
 			int[] ids = Bricks.Select(b => b.Id).ToArray();
 			int firstAbsentId = 1;
 			if (ids.Length == 1 && ids[0] == 1)
@@ -167,10 +192,10 @@ namespace LevelSetManagement
 			Bricks.Add(brick);
 			Bricks.Sort(brickPropertyComparison);
 			BrickNames[firstAbsentId] = brickName;
-			SaveBrick(brickName, brick, frameSheetMetadata, hitBrickImagePath);
+			SaveBrick(brickName, brick, frameSheetPath, hitBrickImagePath);
 		}
 
-		public void UpdateBrick(string brickName, BrickProperties brick, FramesheetMetadata[] frameSheetMetadata, string hitBrickImagePath)
+		public void UpdateBrick(string brickName, BrickProperties brick, string frameSheetPath, string hitBrickImagePath)
 		{
 			string oldBrickName = BrickNames[brick.Id];
 			BrickNames[brick.Id] = brickName;
@@ -180,19 +205,20 @@ namespace LevelSetManagement
 				Directory.Move($"{GetBrickFolder(brick.Id)}/{oldBrickName}/", $"{GetBrickFolder(brick.Id)}/{brickName}/");
 				File.Move($"{GetBrickFolder(brick.Id)}/{oldBrickName}.brick", $"{GetBrickFolder(brick.Id)}/{brickName}.brick");
 			}
-			SaveBrick(brickName, brick, frameSheetMetadata, hitBrickImagePath);
+			SaveBrick(brickName, brick, frameSheetPath, hitBrickImagePath);
 		}
 
-		private void SaveBrick(string brickName, BrickProperties brick, FramesheetMetadata[] frameSheetMetadata, string hitBrickImagePath)
+		//BONUS try implementing brick file compression
+		private void SaveBrick(string brickName, BrickProperties brick, string frameSheetPath, string hitBrickImagePath)
 		{
 			string brickSheetFolder = $"{GetBrickFolder(brick.Id)}/{brickName}";
 			Directory.CreateDirectory(brickSheetFolder);
 			using (FileStream file = File.Create($"{brickSheetFolder}.brick"))
 				new BinaryFormatter().Serialize(file, brick);
-			for (int i = 0; i < frameSheetMetadata.Length; i++)
+			if (frameSheetPath != null)
 			{
-				string frameSheetExtension = Path.GetExtension(frameSheetMetadata[i].FrameSheetPath);
-				File.Copy(frameSheetMetadata[i].FrameSheetPath, $"{brickSheetFolder}/brick{frameSheetMetadata[i].FrameSheetIndex}{frameSheetExtension}", true);
+				string frameSheetExtension = Path.GetExtension(frameSheetPath);
+				File.Copy(frameSheetPath, $"{brickSheetFolder}/frames{frameSheetExtension}", true);
 			}
 			if (hitBrickImagePath != null)
 			{
@@ -219,7 +245,6 @@ namespace LevelSetManagement
 		public void UpdateBrickInLevel(int brickX, int brickY, BrickInLevel brickInLevel)
 		{
 			_levelSet.Levels[CurrentLevelIndex].Bricks[brickY, brickX] = brickInLevel;
-			Change();
 		}
 
 		public void ClearBlocksOfType(int brickId)
@@ -233,44 +258,49 @@ namespace LevelSetManagement
 		public void AddLevel(Level level)
 		{
 			_levelSet.Levels.Add(level);
-			Change();
+			SetChangedState();
 		}
 
 		public void InsertLevel(int index, Level level)
 		{
 			_levelSet.Levels.Insert(index, level);
-			Change();
+			SetChangedState();
 		}
 
 		public void UpdateLevelProperties(int index, LevelProperties levelProperties)
 		{
 			_levelSet.Levels[index].LevelProperties = levelProperties;
-			Change();
+			SetChangedState();
+		}
+
+		public void ClearCurrentLevel()
+		{
+			CurrentLevel.Clear();
+			SetChangedState();
 		}
 
 		public void RemoveLevel(int index)
 		{
 			_levelSet.Levels.RemoveAt(index);
-			Change();
+			SetChangedState();
 		}
 
 		public void MoveLevel(int i1, int i2)
 		{
 			_levelSet.Levels.Move(i1, i2);
-			Change();
+			SetChangedState();
 		}
 
 		public void Reset()
 		{
 			FilePath = null;
-			_levelSet.Name = null;
+			_levelSet.LevelSetProperties = new LevelSetProperties();
 			_levelSet.Levels.Clear();
 			_levelSet.Levels.Add(new Level());
 			CurrentBrickId = 1;
 			CurrentLevelIndex = 0;
-			Hidden = false;
 			Changed = false;
-			UpdateTitle(CurrentTitle);
+			UpdateTitle(CurrentAppTitle);
 		}
 
 		/**
@@ -281,6 +311,8 @@ namespace LevelSetManagement
 
 		public Level GetLevel(int index) => _levelSet.Levels[index];
 
-		public LevelProperties CopyCurrentLevelProperties() => _levelSet.Levels[CurrentLevelIndex].LevelProperties.Clone() as LevelProperties;
+		public LevelProperties CopyCurrentLevelProperties() => SerializableCopier.Clone(_levelSet.Levels[CurrentLevelIndex].LevelProperties);
+
+		public LevelSetProperties CopyCurrentLevelSetProperties() => SerializableCopier.Clone(_levelSet.LevelSetProperties);
 	}
 }

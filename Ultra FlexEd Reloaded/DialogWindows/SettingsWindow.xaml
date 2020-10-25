@@ -1,0 +1,49 @@
+﻿<Window x:Class="Ultra_FlexEd_Reloaded.DialogWindows.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+		x:Name="SettingsWin"
+        Title="Editor Settings" Height="222.017" Width="751.042">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30*" />
+			<RowDefinition Height="30*" />
+			<RowDefinition Height="30*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="116*" />
+			<ColumnDefinition Width="361*" />
+			<ColumnDefinition Width="100*"/>
+			<ColumnDefinition Width="100*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.Resources>
+			<Style TargetType="{x:Type StackPanel}">
+				<Setter Property="Margin" Value="10"/>
+			</Style>
+			<Style TargetType="{x:Type Button}">
+				<Setter Property="Margin" Value="5,0,5,0"/>
+				<Setter Property="Padding" Value="5"/>
+				<Setter Property="MinWidth" Value="80"/>
+				<Setter Property="VerticalAlignment" Value="Center"/>
+			</Style>
+		</Grid.Resources>
+		<Label Content="UFB Reloaded path:" Height="26" VerticalAlignment="Center" Margin="0,18,0,15"/>
+		<TextBox x:Name="UFBReloadedPathTextBox" Text="{Binding UltraFlexBallReloadedPath}" TextChanged="UFBReloadedPathChanged" Grid.Column="1" Margin="5,5" TextWrapping="NoWrap" Height="26" VerticalAlignment="Center"/>
+		<Button Grid.Column="2" Content="Browse..." Click="BrowseForNewFlexBallPath_Clicked" Height="28" />
+		<Button Grid.Column="3" Content="Set Default" Click="NewFlexBallSetDefaultPath_Clicked" Height="28" />
+		<Label Grid.Row="1" Content="UFB2000 path:" Height="26" VerticalAlignment="Center"/>
+		<TextBox x:Name="UFB2000PathTextBox" Grid.Row="1" Grid.Column="1" Text="{Binding Path=UltraFlexBall2000Path}" TextChanged="UFB2000PathChanged" Height="26" Margin="5,5" TextWrapping="NoWrap" VerticalAlignment="Center"/>
+		<Button Grid.Row="1" Grid.Column="2" Content="Browse..." Click="BrowseForOldFlexBallPath_Clicked" Height="28"/>
+		<Button Grid.Row="1" Grid.Column="3" Content="Set Default" Click="OldFlexBallSetDefaultPath_Clicked" Height="28"/>
+		<StackPanel Orientation="Vertical" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="52">
+			<Label x:Name="Path1ErrorText" Foreground="Red" VerticalAlignment="Center"/>
+			<Label x:Name="Path2ErrorText" Foreground="Red" VerticalAlignment="Center"/>
+		</StackPanel>
+		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+			<Button Content="OK" IsDefault="True" Click="Ok_Clicked" />
+			<Button Content="Cancel" Click="Cancel_Clicked" />
+		</StackPanel>
+	</Grid>
+</Window>

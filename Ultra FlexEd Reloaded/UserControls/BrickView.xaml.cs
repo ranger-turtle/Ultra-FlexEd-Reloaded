@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Ultra_FlexEd_Reloaded.UserControls
 {
@@ -31,10 +21,10 @@ namespace Ultra_FlexEd_Reloaded.UserControls
 		public override object ProvideValue(IServiceProvider serviceProvider) => this;
 	}
 
-	public partial class BrickView : UserControl
+	public partial class BrickView : UserControl, IEquatable<BrickView>
     {
 		public static readonly DependencyProperty HiddenProperty =
-			DependencyProperty.Register("Hidden", typeof(bool), typeof(BrickView), new PropertyMetadata(false));
+			DependencyProperty.Register("Hidden", typeof(bool), typeof(BrickView));
 
 		public bool Hidden
 		{
@@ -42,8 +32,29 @@ namespace Ultra_FlexEd_Reloaded.UserControls
 			set => SetValue(HiddenProperty, value);
 		}
 
+		public static readonly DependencyProperty SelectionBorderProperty =
+			DependencyProperty.Register("SelectionBorder", typeof(bool), typeof(BrickView));
+
+		public bool SelectionBorder
+		{
+			get => (bool)GetValue(SelectionBorderProperty);
+			set => SetValue(SelectionBorderProperty, value);
+		}
+
 		public int BrickId { get; set; }
 
 		public BrickView() => InitializeComponent();
+
+		public void Clear()
+		{
+			Image.Source = null;
+			BrickId = 0;
+			Hidden = false;
+		}
+
+		public bool Equals(BrickView other)
+		{
+			return BrickId == other.BrickId && Hidden == other.Hidden;
+		}
 	}
 }

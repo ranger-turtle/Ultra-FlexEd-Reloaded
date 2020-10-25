@@ -18,6 +18,8 @@
 		<CommandBinding Command="{x:Static main:MainWindow.RemoveLevelCommand}" Executed="RemoveLevel_Clicked" CanExecute="CanRemoveLevel"/>
 		<CommandBinding Command="{x:Static main:MainWindow.MoveLevelUpCommand}" Executed="MoveLevelUp" CanExecute="CanMoveLevelUp"/>
 		<CommandBinding Command="{x:Static main:MainWindow.MoveLevelDownCommand}" Executed="MoveLevelDown" CanExecute="CanMoveLevelDown"/>
+		<CommandBinding Command="{x:Static main:MainWindow.StartFlexBallCommand}" Executed="StartGame_Clicked"/>
+		<CommandBinding Command="{x:Static main:MainWindow.TestLevelCommand}" Executed="TestLevel_Clicked"/>
 	</Window.CommandBindings>
 	<Window.Resources>
 		<ContextMenu x:Key="BrickContextMenu">
@@ -58,8 +60,10 @@
 					</MenuItem.Icon>
 				</MenuItem>
 				<Separator/>
-				<MenuItem Header="Start FlexBall"/>
-				<MenuItem Header="Test"/>
+				<MenuItem Header="Test level set" Command="{x:Static main:MainWindow.StartFlexBallCommand}"/>
+				<MenuItem Header="Test level" Command="{x:Static main:MainWindow.TestLevelCommand}"/>
+				<Separator/>
+				<MenuItem Header="Settings" Click="Settings_Clicked" />
 				<Separator/>
 				<MenuItem Header="Level Set Properties" Click="LevelSetProperties_Clicked" />
 				<Separator/>
@@ -68,22 +72,22 @@
 			<MenuItem Header="_Level">
 				<MenuItem Header="_Add">
 					<MenuItem.Icon>
-						<Image Source="icons/add.png"></Image>
+						<Image Source="icons/add.png"/>
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="_Insert">
 					<MenuItem.Icon>
-						<Image Source="icons/add.png"></Image>
+						<Image Source="icons/add.png"/>
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="_Clear">
 					<MenuItem.Icon>
-						<Image Source="icons/clear.png"></Image>
+						<Image Source="icons/clear.png"/>
 					</MenuItem.Icon>
 				</MenuItem>
 				<MenuItem Header="_Delete">
 					<MenuItem.Icon>
-						<Image Source="icons/delete.png"></Image>
+						<Image Source="icons/delete.png"/>
 					</MenuItem.Icon>
 				</MenuItem>
 				<Separator/>
@@ -167,22 +171,23 @@
 						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
-						<RowDefinition Height="*"/>
-						<RowDefinition Height="*"/>
+						<RowDefinition Height="20"/>
+						<RowDefinition Height="20"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
-					<controls:LockableToggleButton x:Name="SingleBrickButton" Content="P" Checked="SingleBrickButton_Checked" Grid.Column="0"/>
-					<controls:LockableToggleButton x:Name="FillButton" Content="F" Checked="FillButton_Checked" Grid.Column="1"/>
-					<controls:LockableToggleButton x:Name="LineButton" Content="L" Checked="LineButton_Checked" Grid.Column="2"/>
-					<controls:LockableToggleButton x:Name="RectangleButton" Content="R" Checked="RectangleButton_Checked" Grid.Column="3"/>
-					<Button Content="UP" Command="{x:Static main:MainWindow.MoveLevelUpCommand}" Grid.Column="4"/>
-					<Button Content="+B" Click="AddBrick_Clicked" Grid.Row="1" Grid.Column="0"/>
+					<controls:LockableToggleButton x:Name="SingleBrickButton" Content="P" Checked="SingleBrickButton_Checked" Grid.Column="0" ToolTip="Single Brick"/>
+					<controls:LockableToggleButton x:Name="FillButton" Content="F" Checked="FillButton_Checked" Grid.Column="1" ToolTip="Fill"/>
+					<controls:LockableToggleButton x:Name="LineButton" Content="L" Checked="LineButton_Checked" Grid.Column="2" ToolTip="Line"/>
+					<controls:LockableToggleButton x:Name="RectangleButton" Content="R" Checked="RectangleButton_Checked" Grid.Column="3" ToolTip="Rectangle"/>
+					<controls:LockableToggleButton x:Name="SelectButton" Content="S" Checked="SelectButton_Checked" Grid.Column="4" ToolTip="Select Rectangle"/>
+					<Button Content="UP" Command="{x:Static main:MainWindow.MoveLevelUpCommand}" Grid.Column="5" ToolTip="Move Current Level Up"/>
+					<Button Content="+B" Click="AddBrick_Clicked" Grid.Row="1" Grid.Column="0" ToolTip="Add New Brick"/>
 					<Button Content="+L" Click="AddLevel_Clicked" Grid.Row="1" Grid.Column="1"/>
-					<ToggleButton Content="Hidden" Click="HiddenMode_Click" Grid.Row="1" Grid.Column="3"/>
-					<Button Content="DOWN" Command="{x:Static main:MainWindow.MoveLevelDownCommand}" Grid.Row="1" Grid.Column="4"/>
-					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="5">
+					<Button Content="DOWN" Command="{x:Static main:MainWindow.MoveLevelDownCommand}" Grid.Row="1" Grid.Column="5" ToolTip="Move Current Level Down"/>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="6">
 						<StackPanel.Resources>
 							<Style TargetType="Label">
 								<Setter Property="FontSize" Value="15"/>

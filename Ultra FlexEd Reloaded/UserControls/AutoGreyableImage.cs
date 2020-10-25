@@ -26,9 +26,8 @@ namespace Ultra_FlexEd_Reloaded.UserControls
 		/// <param name="args">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
 		private static void OnAutoGreyScaleImageIsEnabledPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs args)
 		{
-			var autoGreyScaleImg = source as AutoGreyableImage;
 			var isEnable = Convert.ToBoolean(args.NewValue);
-			if (autoGreyScaleImg != null)
+			if (source is AutoGreyableImage autoGreyScaleImg)
 			{
 				if (!isEnable)
 				{

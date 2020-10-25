@@ -1,17 +1,7 @@
 ﻿using LevelSetData;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Ultra_FlexEd_Reloaded.DialogWindows
 {
@@ -38,7 +28,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			ChooseLevelListBoxItems = new List<ListBoxItem>();
 			for (int i = 0; i < levels.Length; i++)
 			{
-				ChooseLevelListBoxItems.Add(new ListBoxItem() { Content = levels[i].LevelProperties.Name != "" ? levels[i].LevelProperties.Name : $"Level {i + 1}" });
+				ChooseLevelListBoxItems.Add(new ListBoxItem() { Content = levels[i].LevelProperties.Name != string.Empty ? levels[i].LevelProperties.Name : $"Level {i + 1}" });
 			}
 			_levels = levels;
 			LevelListBox.SelectedIndex = 0;

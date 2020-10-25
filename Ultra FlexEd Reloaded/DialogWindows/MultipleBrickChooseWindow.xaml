@@ -1,0 +1,30 @@
+﻿<Window x:Class="Ultra_FlexEd_Reloaded.DialogWindows.MultipleBrickChooseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+		x:Name="CheckableBrickChooseWin"
+        Height="368.413" Width="413.738">
+	<Grid>
+		<Grid.Resources>
+			<Style TargetType="Button">
+				<Setter Property="Margin" Value="5,0,5,0"/>
+				<Setter Property="Padding" Value="5"/>
+				<Setter Property="MinWidth" Value="80"/>
+				<Setter Property="VerticalAlignment" Value="Center"/>
+			</Style>
+		</Grid.Resources>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition Height="53"/>
+		</Grid.RowDefinitions>
+		<GroupBox Grid.Row="0" Header="Choose Bricks" DockPanel.Dock="Top" MinHeight="200">
+			<ListBox x:Name="BrickListBox" SelectionMode="Single" ItemsSource="{Binding Path=BrickListBoxItems, ElementName=CheckableBrickChooseWin, Mode=TwoWay}"/>
+		</GroupBox>
+		<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+			<Button Content="OK" IsDefault="True" Click="Ok_Clicked"/>
+			<Button Content="Cancel" Click="Cancel_Clicked"/>
+		</StackPanel>
+	</Grid>
+</Window>

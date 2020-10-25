@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using LevelSetData;
 
 namespace LevelSetManagement
@@ -14,38 +13,36 @@ namespace LevelSetManagement
 		private readonly int LEVEL_NAME_LENGTH = 80;
 		private readonly int BG_NAME_LENGTH = 96;
 
-		private readonly List<int> _teleportIds = new List<int>();
 		private readonly List<int> _detonateIds = new List<int>();
 
-		public int ConvertId(BrickProperties brickProperties, bool hidden)
+		public int ConvertId(BrickProperties brickProperties)
 		{
-			if (hidden)
-			{
-				if (brickProperties.Id == 2 || brickProperties.Id == 34)
-					return 34;
-				else if (brickProperties.Id == 3 || brickProperties.Id == 33)
-					return 33;
-			}
 			if (brickProperties.Id > LevelSetManager.DEFAULT_BRICK_QUANTITY)
 			{
+				if (brickProperties.Hidden)
+				{
+					if (brickProperties.Id == 2 || brickProperties.Id == 34)
+						return 34;
+					else if (brickProperties.Id == 3 || brickProperties.Id == 33)
+						return 33;
+				}
 				if (brickProperties.IsTeleporter)
 				{
-					_teleportIds.Add(brickProperties.TeleportId);
 					switch (brickProperties.TeleportType)
 					{
 						case TeleportType.Single when brickProperties.ExplosionResistant:
 							return 25;
 						case TeleportType.Single when !brickProperties.ExplosionResistant:
 							return 22;
-						case TeleportType.Double when brickProperties.ExplosionResistant:
+						case TeleportType.All when brickProperties.ExplosionResistant:
 							return 27;
-						case TeleportType.Double when !brickProperties.ExplosionResistant:
+						case TeleportType.All when !brickProperties.ExplosionResistant:
 							return 24;
 						default:
 							return 0;
 					}
 				}
-				else if (_teleportIds.Exists(id => id == brickProperties.Id))
+				else if (brickProperties.TeleportOutputs.Contains(brickProperties.Id))
 				{
 					return brickProperties.ExplosionResistant ? 26 : 23;
 				}
@@ -58,9 +55,9 @@ namespace LevelSetManagement
 				{
 					return 123;
 				}
-				else if (brickProperties.DirectionalBrickType == DirectionalBrickType.Fuse)
+				else if (brickProperties.IsFuse)
 				{
-					switch (brickProperties.Direction)
+					switch (brickProperties.FuseDirection)
 					{
 						case Direction.Up:
 							return 35;
@@ -74,9 +71,9 @@ namespace LevelSetManagement
 							return 0;
 					}
 				}
-				else if (brickProperties.DirectionalBrickType == DirectionalBrickType.Push)
+				else if (brickProperties.IsBallThrusting)
 				{
-					switch (brickProperties.Direction)
+					switch (brickProperties.BallThrustDirection)
 					{
 						case Direction.Right when !brickProperties.NormalResistant:
 							return 39;
@@ -102,7 +99,7 @@ namespace LevelSetManagement
 				{
 					if (brickProperties.ExplosionResistant)
 					{
-						if (brickProperties.OokimResistant)
+						if (brickProperties.PenetrationResistant)
 							return 30;
 						else
 							return 21;
@@ -112,18 +109,8 @@ namespace LevelSetManagement
 					else
 						return 20;
 				}
-				else if (brickProperties.Durability > 1)
-				{
-					switch (brickProperties.Durability)
-					{
-						case 2:
-							return 49;
-						case 3:
-							return 48;
-						default:
-							return 47;
-					}
-				}
+				else if (brickProperties.NextBrickId > 1)
+					return 49;
 				else if (brickProperties.IsExplosive)
 				{
 					int explosionRadius = brickProperties.ExplosionRadius;
@@ -148,7 +135,7 @@ namespace LevelSetManagement
 							return 0;
 					}
 				}
-				else if (brickProperties.BonusProbability == 1.0f)
+				else if (brickProperties.AlwaysPowerUpYielding)
 					return 90;
 				else
 					return (brickProperties.Id - 126) % 15 + 1;
@@ -161,20 +148,25 @@ namespace LevelSetManagement
 		{
 			using (FileStream fileStream = File.Open(filename, FileMode.Open, FileAccess.Read))
 			{
+				byte[] fileSignatureBytes = new byte[4];
+				fileStream.Read(fileSignatureBytes, 0, 4);//Read file signature
+				if (Encoding.Default.GetString(fileSignatureBytes) != "uLev")
+					throw new FileFormatException("Invalid Ultra FlexBall 2000 level set file loaded.");
 				byte[] bytes = new byte[LEVEL_SET_NAME_LENGTH];
-				fileStream.Seek(4, SeekOrigin.Begin);
-				fileStream.Read(bytes, 0, 4);
+				fileStream.Read(bytes, 0, 4);//Read level count saved after file signature
 				int levelCount = BitConverter.ToInt32(bytes, 0);
 				LevelSet levelSet = new LevelSet();
 				fileStream.Read(bytes, 0, LEVEL_SET_NAME_LENGTH);
-				levelSet.Name = Encoding.Default.GetString(bytes, 0, Math.Min(Array.FindIndex(bytes, b => b == 0), LEVEL_SET_NAME_LENGTH - 1));
+				levelSet.LevelSetProperties.Name = Encoding.Default.GetString(bytes, 0, Math.Min(Array.FindIndex(bytes, b => b == 0), LEVEL_SET_NAME_LENGTH - 1));
 				for (int i = 0; i < levelCount; i++)
 				{
 					Level level = new Level();
 					fileStream.Read(bytes, 0, LEVEL_NAME_LENGTH);
 					level.LevelProperties.Name = Encoding.Default.GetString(bytes, 0, Math.Min(Array.FindIndex(bytes, b => b == 0), LEVEL_NAME_LENGTH - 1));
 					fileStream.Read(bytes, 0, BG_NAME_LENGTH);
-					level.LevelProperties.BackgroundName = Encoding.Default.GetString(bytes, 0, Math.Min(Array.FindIndex(bytes, b => b == 0), BG_NAME_LENGTH - 1));
+					string backgroundName = Encoding.Default.GetString(bytes, 0, Math.Min(Array.FindIndex(bytes, b => b == 0), BG_NAME_LENGTH - 1));
+					if (backgroundName != string.Empty)
+						level.LevelProperties.BackgroundName = backgroundName;
 					for (int j = 0; j < 25; j++)
 					{
 						for (int k = 0; k < 20; k++)
@@ -183,7 +175,6 @@ namespace LevelSetManagement
 							if (readBrickId == 33 || readBrickId == 34)
 							{
 								level.Bricks[j, k].BrickId = readBrickId == 33 ? 3 : 2;
-								level.Bricks[j, k].Hidden = true;
 							}
 							else
 								level.Bricks[j, k].BrickId = readBrickId;
@@ -201,7 +192,7 @@ namespace LevelSetManagement
 			{
 				fileStream.Write(Encoding.Default.GetBytes("uLev"), 0, 4);
 				fileStream.Write(BitConverter.GetBytes(levelSet.Levels.Count), 0, 4);
-				byte[] bytes = Encoding.Default.GetBytes(!string.IsNullOrEmpty(levelSet.Name) ? levelSet.Name : "(No name)");
+				byte[] bytes = Encoding.Default.GetBytes(!string.IsNullOrEmpty(levelSet.LevelSetProperties.Name) && levelSet.LevelSetProperties.Name != "<none>" ? levelSet.LevelSetProperties.Name : "(No name)");
 				byte[] levelSetNameToSave = new byte[LEVEL_SET_NAME_LENGTH];
 				byte[] levelNameToSave = new byte[LEVEL_NAME_LENGTH];
 				byte[] backgroundNameToSave = new byte[BG_NAME_LENGTH];
@@ -210,20 +201,20 @@ namespace LevelSetManagement
 				fileStream.Write(levelSetNameToSave, 0, levelSetNameToSave.Length);
 				foreach (Level level in levelSet.Levels)
 				{
-					SaveString(fileStream, level, Encoding.Default.GetBytes(level.LevelProperties.Name ?? ""), levelNameToSave);
-					SaveString(fileStream, level, Encoding.Default.GetBytes(level.LevelProperties.BackgroundName ?? ""), backgroundNameToSave);
+					SaveString(fileStream, Encoding.Default.GetBytes(level.LevelProperties.Name ?? string.Empty), levelNameToSave);
+					SaveString(fileStream, Encoding.Default.GetBytes(level.LevelProperties.BackgroundName ?? string.Empty), backgroundNameToSave);
 					foreach (BrickInLevel brickInLevel in level.Bricks)
 					{
 						int idToSave = brickInLevel.BrickId;
 						if (idToSave != 0)
-							idToSave = ConvertId(LevelSetManager.GetInstance().GetBrickById(brickInLevel.BrickId), brickInLevel.Hidden);
+							idToSave = ConvertId(LevelSetManager.GetInstance().GetBrickById(brickInLevel.BrickId));
 						fileStream.Write(BitConverter.GetBytes(idToSave), 0, 1);
 					}
 				}
 			}
 		}
 
-		private static void SaveString(FileStream fileStream, Level level, byte[] bytes, byte[] bytesToSave)
+		private static void SaveString(FileStream fileStream, byte[] bytes, byte[] bytesToSave)
 		{
 			int byteCount = bytes.Length < bytesToSave.Length ? bytes.Length : bytesToSave.Length - 1;
 			Array.Copy(bytes, bytesToSave, byteCount);

@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
 		xmlns:lsdata="clr-namespace:LevelSetData;assembly=LevelSetData"
+		xmlns:uCtrls="clr-namespace:Ultra_FlexEd_Reloaded.UserControls"
+		xmlns:dw="clr-namespace:Ultra_FlexEd_Reloaded.DialogWindows"
         x:Class="Ultra_FlexEd_Reloaded.DialogWindows.BrickWindow"
         mc:Ignorable="d"
 		x:Name="BrickWin"
 		Title="Add New Brick Type"
-        Height="380" Width="944">
+        Height="513.5" Width="990">
 	<!--<Window.DataContext>
 		<lsdata:BrickProperties x:Name="BrickProperties" />
 	</Window.DataContext>-->
@@ -19,102 +21,322 @@
 				<x:Type TypeName="lsdata:BreakAnimationType"/>
 			</ObjectDataProvider.MethodParameters>
 		</ObjectDataProvider>
-		<ObjectDataProvider x:Key="DirectionalBrickTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
-			<ObjectDataProvider.MethodParameters>
-				<x:Type TypeName="lsdata:DirectionalBrickType"/>
-			</ObjectDataProvider.MethodParameters>
-		</ObjectDataProvider>
 		<ObjectDataProvider x:Key="DirectionTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
 			<ObjectDataProvider.MethodParameters>
 				<x:Type TypeName="lsdata:Direction"/>
 			</ObjectDataProvider.MethodParameters>
 		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="TeleportTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="lsdata:TeleportType"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="ChimneyTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="lsdata:ChimneyType"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="DetonatorTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="lsdata:DetonatorType"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="DetonationRangeTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="lsdata:DetonationRange"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="YieldedPowerUpTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="lsdata:YieldedPowerUp"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="EffectTriggerTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="lsdata:EffectTrigger"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="MovingBrickTypes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="lsdata:MovingBrickType"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
 	</Window.Resources>
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition/>
-			<ColumnDefinition/>
-			<ColumnDefinition/>
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-		</Grid.RowDefinitions>
-		<Grid.Resources>
-			<Style TargetType="CheckBox">
+	<DockPanel>
+		<DockPanel.Resources>
+			<Style TargetType="{x:Type CheckBox}">
 				<Setter Property="Margin" Value="4,0,0,0"/>
 			</Style>
-			<Style TargetType="Button">
+			<Style TargetType="{x:Type Button}">
 				<Setter Property="Margin" Value="5,0,5,0"/>
 				<Setter Property="Padding" Value="5"/>
 				<Setter Property="MinWidth" Value="80"/>
 				<Setter Property="VerticalAlignment" Value="Center"/>
 			</Style>
-			<Style TargetType="Slider">
+			<Style TargetType="{x:Type Slider}">
 				<Setter Property="MinWidth" Value="170"/>
 			</Style>
-		</Grid.Resources>
-		<StackPanel Orientation="Horizontal" Grid.Row="0">
-			<Label Content="Brick Name" VerticalAlignment="Center" />
-			<TextBox x:Name="brickNameField" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding BrickName, ElementName=BrickWin}" VerticalAlignment="Center" MinWidth="200" Margin="0,16"/>
-		</StackPanel>
-		<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="1">
-			<Label Content="Durability (1-30):" VerticalAlignment="Center" MinWidth="104"/>
-			<Slider x:Name="DurabilitySlider" TickFrequency="1" Minimum="1" Maximum="30" SmallChange="1" Value="{Binding Durability}" VerticalAlignment="Center" />
-			<Label Content="{Binding Durability}" VerticalAlignment="Center"/>
-		</StackPanel>
-		<StackPanel Orientation="Horizontal" Grid.Row="2">
-			<Label Content="Frame Sheet" VerticalAlignment="Center" MinWidth="104"/>
-			<Slider x:Name="FrameSheetSlider" TickFrequency="1" Minimum="1" Maximum="{Binding Durability}" SmallChange="1" Value="{Binding FrameSheetNum, ElementName=BrickWin}" VerticalAlignment="Center" />
-			<Label x:Name="FrameSheetNumLabel" Content="{Binding FrameSheetNum, ElementName=BrickWin}" VerticalAlignment="Center"/>
-		</StackPanel>
-		<StackPanel x:Name="FrameSection" Orientation="Horizontal" Grid.Row="3" IsEnabled="False">
-			<Label Content="Frame" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="104"/>
-			<Slider x:Name="FrameSlider" HorizontalAlignment="Right" TickFrequency="1" Minimum="1" Maximum="1" SmallChange="1" Value="{Binding FrameNum, ElementName=BrickWin}" VerticalAlignment="Center" />
-			<Label x:Name="FrameNumLabel" Content="{Binding FrameNum, ElementName=BrickWin}" VerticalAlignment="Center"/>
-		</StackPanel>
+			<Style TargetType="{x:Type StackPanel}">
+				<Setter Property="MinWidth" Value="150"/>
+				<Setter Property="Margin" Value="0,20,0,20"/>
+			</Style>
+		</DockPanel.Resources>
+		<TabControl DockPanel.Dock="Top">
+			<TabItem Header="Page 1">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<StackPanel Orientation="Horizontal" Grid.Row="0">
+						<Label Content="Brick Name" VerticalAlignment="Center" />
+						<TextBox x:Name="brickNameField" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding BrickName, ElementName=BrickWin}" VerticalAlignment="Center" MinWidth="200" Height="auto"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Row="1">
+						<Label Content="Points" VerticalAlignment="Center" Width="68" />
+						<TextBox x:Name="PointsField" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding Points}" VerticalAlignment="Center" MinWidth="50" Height="auto"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Row="2">
+						<Border Margin="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="30" Width="60">
+							<Image x:Name="MainFrameBrickImage" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Fill"/>
+						</Border>
+						<Button x:Name="FrameImportButton" Content="Import Framesheet..." VerticalAlignment="Center" MinWidth="94" Click="ImportMainBrickFramesheet"/>
+					</StackPanel>
+					<StackPanel x:Name="FrameSection" Orientation="Horizontal" Grid.Row="3">
+						<Label Content="Frame" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="65"/>
+						<Slider x:Name="FrameSlider" HorizontalAlignment="Right" TickFrequency="1" Minimum="1" Maximum="1" SmallChange="1" Value="{Binding FrameNum, ElementName=BrickWin}" VerticalAlignment="Center" />
+						<Label x:Name="FrameNumLabel" Content="{Binding FrameNum, ElementName=BrickWin}" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel x:Name="FrameDurationSection" Orientation="Horizontal" Grid.Row="4">
+						<Label Content="Frame Duration (s)" VerticalAlignment="Center" />
+						<TextBox x:Name="DurationField" TextWrapping="Wrap" VerticalContentAlignment="Center" LostFocus="DurationField_LostFocus" VerticalAlignment="Center" MinWidth="50" Height="auto"/>
+					</StackPanel>
 
-		<StackPanel Orientation="Horizontal" Grid.Row="4">
-			<Border Margin="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="30" Width="60">
-				<Image x:Name="BrickImage" RenderOptions.BitmapScalingMode="Fant" Stretch="Fill"/>
-			</Border>
-			<Button x:Name="ImportButton" Content="Import Image..." VerticalAlignment="Center" MinWidth="94" Click="ImportImage"/>
-		</StackPanel>
-		<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4">
-			<Label Content="Explosion Radius" VerticalAlignment="Center" />
-			<Slider x:Name="ExplosionSlider" TickFrequency="1" Minimum="0" Maximum="25" SmallChange="1" Value="{Binding ExplosionRadius}" VerticalAlignment="Center"/>
-			<Label Content="{Binding ExplosionRadius}" VerticalAlignment="Center"/>
-		</StackPanel>
-		<StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="4">
-			<Label Content="Bonus Probability" VerticalAlignment="Center" />
-			<Slider x:Name="BonusProbabilitySlider" TickFrequency="0.01" Minimum="0" Maximum="1" SmallChange="0.01" Value="{Binding BonusProbability}" VerticalAlignment="Center"/>
-			<Label Content="{Binding BonusProbability}" ContentStringFormat="{}{0:0.##}" VerticalAlignment="Center"/>
-		</StackPanel>
-		<CheckBox x:Name="RequiredToCompleteCheckBox" IsChecked="{Binding Path=RequiredToComplete}" VerticalAlignment="Center" Content="Required To Complete" Grid.Column="1" Grid.Row="0"/>
-		<CheckBox x:Name="NormalResistantCheckBox" IsChecked="{Binding Path=NormalResistant}" VerticalAlignment="Center" Content="Normal Resistant" Grid.Column="1" Grid.Row="1"/>
-		<CheckBox IsChecked="{Binding ExplosionResistant}" VerticalAlignment="Center" Content="Explosion Resistant" Grid.Column="1" Grid.Row="2"/>
-		<CheckBox IsChecked="{Binding OokimResistant}" VerticalAlignment="Center" Content="Ookim Resistant" Grid.Column="1" Grid.Row="3"/>
-		<CheckBox IsChecked="{Binding ChimneyLike}" VerticalAlignment="Center" Content="Chimney Like" Grid.Column="2" Grid.Row="0"/>
-		<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="5">
-			<Label Content="Break Animation Type" VerticalAlignment="Center" />
-			<ComboBox ItemsSource="{Binding Source={StaticResource BreakAnimationTypes}}" SelectedItem="{Binding BreakAnimationType}" VerticalAlignment="Center"/>
-		</StackPanel>
-		<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="5">
-			<Label Content="Directional Brick Type" VerticalAlignment="Center" />
-			<ComboBox ItemsSource="{Binding Source={StaticResource DirectionalBrickTypes}}" SelectedItem="{Binding DirectionalBrickType}" VerticalAlignment="Center"/>
-		</StackPanel>
-		<StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="5">
-			<Label Content="Direction Type" VerticalAlignment="Center" />
-			<ComboBox ItemsSource="{Binding Source={StaticResource DirectionTypes}}" SelectedItem="{Binding Direction}" VerticalAlignment="Center"/>
-		</StackPanel>
-		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Column="2" Grid.Row="6">
+					<StackPanel Orientation="Horizontal" Grid.Row="5">
+						<Border Margin="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="30" Width="60">
+							<Image x:Name="HitSpriteImage" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Fill"/>
+						</Border>
+						<Button x:Name="HitSpriteImportButton" Content="Import Hit Sprite Image..." VerticalAlignment="Center" MinWidth="94" Click="ImportHitBrickImage"/>
+					</StackPanel>
+					<CheckBox x:Name="RequiredToCompleteCheckBox" IsChecked="{Binding RequiredToComplete}" Checked="RequiredToCompleteCheckBox_Checked" VerticalAlignment="Center" Content="Required To Complete" Grid.Column="1" Grid.Row="0"/>
+					<CheckBox x:Name="NormalResistantCheckBox" IsChecked="{Binding NormalResistant}" Checked="NormalResistantCheckBox_Checked" VerticalAlignment="Center" Content="Normal Resistant" Grid.Column="1" Grid.Row="1"/>
+					<CheckBox IsChecked="{Binding ExplosionResistant}" VerticalAlignment="Center" Content="Explosion Resistant" Grid.Column="1" Grid.Row="2"/>
+					<CheckBox IsChecked="{Binding PenetrationResistant}" VerticalAlignment="Center" Content="Penetration Resistant" Grid.Column="1" Grid.Row="3"/>
+					<StackPanel x:Name="StartFromRandomFrameSection" Orientation="Horizontal" Grid.Column="1" Grid.Row="4">
+						<CheckBox IsChecked="{Binding StartAnimationFromRandomFrame}" VerticalAlignment="Center" Content="Start animation from random frame"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="3">
+						<Label Content="Explosion Radius" VerticalAlignment="Center" />
+						<Slider x:Name="ExplosionSlider" TickFrequency="1" Minimum="0" Maximum="25" SmallChange="1" Value="{Binding ExplosionRadius}" VerticalAlignment="Center" ValueChanged="ExplosionSlider_ValueChanged"/>
+						<Label Content="{Binding ExplosionRadius}" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel x:Name="ExplosionTriggerSection" Orientation="Horizontal" Grid.Column="2" Grid.Row="4">
+						<Label Content="Explosion Trigger" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource EffectTriggerTypes}}" SelectedItem="{Binding ExplosionTrigger}" VerticalAlignment="Center"/>
+					</StackPanel>
+					<GroupBox Header="Next Brick after hit" Grid.Row="5" Grid.Column="1">
+						<StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+							<Border Margin="5,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="16" Width="31">
+								<Image x:Name="NextBrickImage" Stretch="Fill"/>
+							</Border>
+							<Label x:Name="NextBrickLabel" ClipToBounds="True" Content="&lt;none&gt;" VerticalContentAlignment="Center" ToolTip="{Binding Content, ElementName=Label}" Height="auto" FontWeight="Bold" Padding="5,0,0,0" Width="185"/>
+							<Button Content="Choose..." Click="NextBrickButton_Clicked" />
+						</StackPanel>
+					</GroupBox>
+					<CheckBox IsChecked="{Binding AlwaysPowerUpYielding}" Content="Always yield power-up" Checked="AlwaysYieldPowerUpCheckBox_Checked" Unchecked="AlwaysYieldPowerUpCheckBox_Checked" VerticalAlignment="Center" Grid.Column="2" Grid.Row="0"/>
+					<StackPanel x:Name="PowerUpYieldSection" Orientation="Horizontal" Grid.Column="2" Grid.Row="1">
+						<Label Content="Power Up To Yield" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource YieldedPowerUpTypes}}" SelectedItem="{Binding YieldedPowerUp}" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel x:Name="PowerUpMeterSection" Orientation="Horizontal" Grid.Column="2" Grid.Row="2">
+						<Label Content="Power-Up Meter Units" VerticalAlignment="Center" />
+						<Slider x:Name="BonusProbabilitySlider" Minimum="0" Maximum="100" IsSnapToTickEnabled="True" Value="{Binding PowerUpMeterUnits}" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding PowerUpMeterUnits}" VerticalAlignment="Center" MinWidth="25" Height="auto"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="5">
+						<Label Content="Hit Sound" VerticalAlignment="Center" />
+						<TextBox x:Name="HitSound" IsEnabled="False" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding Path=HitSoundName, Mode=TwoWay}" VerticalAlignment="Center" Margin="0,4" MinWidth="150"/>
+						<Button Content="Choose..." Click="HitSoundButton_Click" />
+					</StackPanel>
+				</Grid>
+			</TabItem>
+			<TabItem Header="Page 2">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<GroupBox Header="Teleport Exit list" Height="auto" Grid.Column="0" Grid.RowSpan="2">
+						<ListBox ItemsSource="{Binding ElementName=BrickWin, Path=TeleportListItems, Mode=TwoWay}">
+						</ListBox>
+					</GroupBox>
+					<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Margin="0,0,0,20">
+						<Button Content="Edit Teleport Exits..." Click="EditTeleportExitsButton_Click"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
+						<Label Content="Teleport Type" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource TeleportTypes}}" SelectedItem="{Binding TeleportType}" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+						<CheckBox IsChecked="{Binding Hidden}" Checked="HiddenCheckBox_Checked" Unchecked="HiddenCheckBox_Checked" VerticalAlignment="Center" Content="Hidden"/>
+					</StackPanel>
+					<StackPanel x:Name="RequiredHiddenSection" Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+						<CheckBox IsChecked="{Binding RequiredToCompleteWhenHidden}" VerticalAlignment="Center" Content="Required to complete when Hidden"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
+						<Label Content="Break Animation Type" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource BreakAnimationTypes}}" SelectedItem="{Binding BreakAnimationType}" SelectionChanged="BreakAnimationTypeComboBox_SelectionChanged" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel x:Name="BreakAnimationSection" Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+						<Border Margin="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="30" Width="60">
+							<Image x:Name="BreakAnimationSpritesheet" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Fill"/>
+						</Border>
+						<Button x:Name="BreakAnimationSpritesheetImportButton" Content="Import Break Animation Spritesheet..." Click="ImportBreakAnimationFramesheet" VerticalAlignment="Center" MinWidth="94"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="2">
+						<Label Content="Chimney Type" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource ChimneyTypes}}" SelectedItem="{Binding ChimneyType}" SelectionChanged="ChimneyLikeComboBox_SelectionChanged" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel x:Name="ParticleXSection" Orientation="Horizontal" Grid.Column="2" Grid.Row="1">
+						<Label Content="Particle X" VerticalAlignment="Center" />
+						<Slider x:Name="ParticleXSlider" Minimum="0" Maximum="100" IsSnapToTickEnabled="True" Value="{Binding ParticleX}" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding ParticleX}" VerticalAlignment="Center" MinWidth="25" Height="auto"/>
+					</StackPanel>
+					<StackPanel x:Name="ParticleYSection" Orientation="Horizontal" Grid.Column="2" Grid.Row="2">
+						<Label Content="Particle Y" VerticalAlignment="Center" />
+						<Slider x:Name="ParticleYSlider" Minimum="0" Maximum="100" IsSnapToTickEnabled="True" Value="{Binding ParticleY}" VerticalAlignment="Center"/>
+						<TextBox Text="{Binding ParticleY}" VerticalAlignment="Center" MinWidth="25" Height="auto"/>
+					</StackPanel>
+					<StackPanel x:Name="ParticleColorSection" Orientation="Horizontal" Grid.Column="2" Grid.Row="3">
+						<Border x:Name="Color1View" Width="20" Height="20" Background="{Binding Path=Color1, Converter={dw:ParticleColorToWPFColorConverter}, Mode=TwoWay}" BorderBrush="Black" BorderThickness="1" Margin="5,0,10,0" />
+						<Button Content="Pick Color 1..." Click="PickColor1Button_Click" Margin="0,0,13,0" />
+						<Border x:Name="Color2View" Width="20" Height="20" Background="{Binding Path=Color2, Converter={dw:ParticleColorToWPFColorConverter}, Mode=TwoWay}" BorderBrush="Black" BorderThickness="1" Margin="0,0,10,0" />
+						<Button Content="Pick Color 2..." Click="PickColor2Button_Click" Margin="0,0,20,0" />
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4">
+						<CheckBox IsChecked="{Binding CanBeOverridenByStandardMultiplier}" VerticalAlignment="Center" Content="Can be overriden by standard multiplier"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4">
+						<CheckBox IsChecked="{Binding CanBeOverridenByExplosiveMultiplier}" VerticalAlignment="Center" Content="Can be overriden by explosive multiplier"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="4">
+						<CheckBox IsChecked="{Binding CanBeMultipliedByExplosiveMultiplier}" VerticalAlignment="Center" Content="Can be multiplied by explosive multiplier"/>
+					</StackPanel>
+					<GroupBox Header="Brick appearing after Being Pressed" Grid.Row="5" Grid.Column="0">
+						<StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+							<Border Margin="5,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="16" Width="31">
+								<Image x:Name="DescendingPressImage" Stretch="Fill"/>
+							</Border>
+							<Label x:Name="DescendingPressLabel" ClipToBounds="True" Content="&lt;none&gt;" VerticalContentAlignment="Center" ToolTip="{Binding Content, ElementName=Label}" Height="auto" FontWeight="Bold" Padding="5,0,0,0" Width="185"/>
+							<Button Content="Choose..." Click="DescendingPressButton_Clicked" />
+						</StackPanel>
+					</GroupBox>
+					<CheckBox IsChecked="{Binding IsDescending}" Checked="DescendingCheckBox_Checked" Unchecked="DescendingCheckBox_Checked" VerticalAlignment="Center" Content="Descending" Grid.Row="5" Grid.Column="1"/>
+					<GroupBox x:Name="HittingBottomSection" Header="Brick appearing after Hitting Bottom" Grid.Row="5" Grid.Column="2">
+						<StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+							<Border Margin="5,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="16" Width="31">
+								<Image x:Name="DescendingBottomImage" Stretch="Fill"/>
+							</Border>
+							<Label x:Name="DescendingBottomLabel" ClipToBounds="True" Content="&lt;none&gt;" VerticalContentAlignment="Center" ToolTip="{Binding Content, ElementName=Label}" Height="auto" FontWeight="Bold" Padding="5,0,0,0" Width="185"/>
+							<Button Content="Choose..." Click="DescendingBottomButton_Clicked" />
+						</StackPanel>
+					</GroupBox>
+				</Grid>
+			</TabItem>
+			<TabItem Header="Page 3">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<GroupBox Header="Brick for detonation" Grid.Row="0" Grid.Column="0">
+						<StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+							<Border Margin="5,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="16" Width="31">
+								<Image x:Name="DetonateBrickImage" Stretch="Fill"/>
+							</Border>
+							<Label x:Name="DetonateBrickLabel" ClipToBounds="True" Content="&lt;none&gt;" VerticalContentAlignment="Center" ToolTip="{Binding Content, ElementName=Label}" Height="auto" FontWeight="Bold" Padding="5,0,0,0" Width="185"/>
+							<Button Content="Choose..." Click="DetonateBrickButton_Clicked" />
+						</StackPanel>
+					</GroupBox>
+					<StackPanel x:Name="DetonatorTypeSection" Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+						<Label Content="Detonator Type" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource DetonatorTypes}}" SelectedItem="{Binding DetonatorType}" SelectionChanged="DetonatorTypeComboBox_SelectionChanged" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel x:Name="DetonatorRangeSection" Orientation="Horizontal" Grid.Column="2" Grid.Row="0">
+						<Label Content="Detonation Range" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource DetonationRangeTypes}}" SelectedItem="{Binding DetonationRange}" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel x:Name="DetonatorTriggerSection" Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
+						<Label Content="Detonation Trigger" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource EffectTriggerTypes}}" SelectedItem="{Binding DetonationTrigger}" VerticalAlignment="Center"/>
+					</StackPanel>
+					<GroupBox x:Name="OldBrickTypeSection" Header="Old Brick Type" Grid.Row="1" Grid.Column="1">
+						<StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+							<Border Margin="5,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="16" Width="31">
+								<Image x:Name="OldBrickImage" Stretch="Fill"/>
+							</Border>
+							<Label x:Name="OldBrickLabel" ClipToBounds="True" Content="&lt;none&gt;" VerticalContentAlignment="Center" ToolTip="{Binding Content, ElementName=Label}" Height="auto" FontWeight="Bold" Padding="5,0,0,0" Width="185"/>
+							<Button Content="Choose..." Click="OldBrickButton_Clicked" />
+						</StackPanel>
+					</GroupBox>
+					<GroupBox x:Name="NewBrickTypeSection" Header="New Brick Type" Grid.Row="1" Grid.Column="2">
+						<StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+							<Border Margin="5,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="16" Width="31">
+								<Image x:Name="NewBrickImage" Stretch="Fill"/>
+							</Border>
+							<Label x:Name="NewBrickLabel" ClipToBounds="True" Content="&lt;none&gt;" VerticalContentAlignment="Center" ToolTip="{Binding Content, ElementName=Label}" Height="auto" FontWeight="Bold" Padding="5,0,0,0" Width="185"/>
+							<Button Content="Choose..." Click="NewBrickButton_Clicked" />
+						</StackPanel>
+					</GroupBox>
+					<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
+						<Label Content="Fuse Direction" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource DirectionTypes}}" SelectedItem="{Binding FuseDirection}" SelectionChanged="FuseDirectionComboBox_SelectionChanged" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+						<Label Content="Ball Thrust Direction" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource DirectionTypes}}" SelectedItem="{Binding BallThrustDirection}" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="3">
+						<Label Content="Sequence Direction" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource DirectionTypes}}" SelectedItem="{Binding SequenceDirection}" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel x:Name="FuseTriggerSection" Orientation="Horizontal" Grid.Column="0" Grid.Row="4">
+						<Label Content="Fuse Trigger" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource EffectTriggerTypes}}" SelectedItem="{Binding FuseTrigger}" VerticalAlignment="Center"/>
+					</StackPanel>
+				</Grid>
+			</TabItem>
+		</TabControl>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="0,0,10,10">
 			<Button Content="OK" IsDefault="True" Click="Ok_Clicked"/>
 			<Button Content="Cancel" Click="Cancel_Clicked"/>
 		</StackPanel>
-	</Grid>
+	</DockPanel>
 </Window>

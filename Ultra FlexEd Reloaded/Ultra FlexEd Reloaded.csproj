@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Ultra_FlexEd_Reloaded</RootNamespace>
     <AssemblyName>Ultra FlexEd Reloaded</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -62,8 +62,13 @@
     <StartupObject>Ultra_FlexEd_Reloaded.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ColorPickerWPF, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ColorPickerWPF.1.0.9\lib\net461\ColorPickerWPF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -76,14 +81,31 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WriteableBitmapEx.Wpf, Version=1.6.7.0, Culture=neutral, PublicKeyToken=50375ca6144f1c69, processorArchitecture=MSIL">
+      <HintPath>..\packages\WriteableBitmapEx.1.6.7\lib\net40\WriteableBitmapEx.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppSettings.cs" />
     <Compile Include="BitmapMethods.cs" />
-    <Compile Include="BrickType.cs" />
+    <Compile Include="BrickInEditorPrimaryData.cs" />
+    <Compile Include="DialogWindows\BrickChooseWindow.xaml.cs">
+      <DependentUpon>BrickChooseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\BrickWindow.Page1.xaml.cs">
+      <DependentUpon>BrickWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\BrickWindow.Page2.xaml.cs">
+      <DependentUpon>BrickWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\BrickWindow.Page3.xaml.cs">
+      <DependentUpon>BrickWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DialogWindows\BrickWindow.xaml.cs">
       <DependentUpon>BrickWindow.xaml</DependentUpon>
     </Compile>
@@ -92,6 +114,9 @@
     </Compile>
     <Compile Include="DialogWindows\CreateOrImportLevelWindow.xaml.cs">
       <DependentUpon>CreateOrImportLevelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\FileChooseAndImportWindow.xaml.cs">
+      <DependentUpon>FileChooseAndImportWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DialogWindows\LevelChooseWindow.xaml.cs">
       <DependentUpon>LevelChooseWindow.xaml</DependentUpon>
@@ -102,15 +127,32 @@
     <Compile Include="DialogWindows\LevelWindow.xaml.cs">
       <DependentUpon>LevelWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DialogWindows\MultipleBrickChooseWindow.cs">
+      <DependentUpon>MultipleBrickChooseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.MenuOptions.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.BrickGroupSelection.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.LevelHandle.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UltraFlexBall2000LevelTester.cs" />
+    <Compile Include="UltraFlexBallReloadedLevelTester.cs" />
     <Compile Include="UserControls\AutoGreyableImage.cs" />
     <Compile Include="UserControls\BrickView.xaml.cs">
       <DependentUpon>BrickView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CheckableBrickListBoxItem.xaml.cs">
+      <DependentUpon>CheckableBrickListBoxItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ImageListBoxItem.xaml.cs">
       <DependentUpon>ImageListBoxItem.xaml</DependentUpon>
@@ -118,6 +160,17 @@
     <Compile Include="UserControls\LockableToggleButton.xaml.cs">
       <DependentUpon>LockableToggleButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\SoundList.xaml.cs">
+      <DependentUpon>SoundList.xaml</DependentUpon>
+    </Compile>
+    <Page Include="DialogWindows\MultipleBrickChooseWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DialogWindows\BrickChooseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DialogWindows\BrickWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -125,6 +178,10 @@
     <Page Include="DialogWindows\CreateOrImportLevelWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\FileChooseAndImportWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="DialogWindows\LevelChooseWindow.xaml">
       <SubType>Designer</SubType>
@@ -138,19 +195,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="DialogWindows\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\BrickView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CheckableBrickListBoxItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -159,6 +220,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\LockableToggleButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SoundList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -181,15 +246,267 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Default Bricks\African Fabric.brick" />
+    <None Include="Default Bricks\Apple Mark.brick" />
+    <None Include="Default Bricks\Atomic Bomb.brick" />
+    <None Include="Default Bricks\Aztec Relief.brick" />
+    <None Include="Default Bricks\Azure Clay.brick" />
+    <None Include="Default Bricks\Bag with Colored Stripes.brick" />
+    <None Include="Default Bricks\Black Brick.brick" />
+    <None Include="Default Bricks\Blue Brick with Black Stripes.brick" />
+    <None Include="Default Bricks\Blue Brick with White Point.brick" />
+    <None Include="Default Bricks\Blue Brick.brick" />
+    <None Include="Default Bricks\Blue FlexBall Cream.brick" />
+    <None Include="Default Bricks\Blue Plate.brick" />
+    <None Include="Default Bricks\Bronze Girder.brick" />
+    <None Include="Default Bricks\Brown Cut Stone.brick" />
+    <None Include="Default Bricks\Candy Stripes.brick" />
+    <None Include="Default Bricks\Confetti Chimney.brick" />
+    <None Include="Default Bricks\Cracked Pink Rock.brick" />
+    <None Include="Default Bricks\Creamy Cheese.brick" />
+    <None Include="Default Bricks\Cyan Brick.brick" />
+    <None Include="Default Bricks\Cyan Bumps.brick" />
+    <None Include="Default Bricks\Dark Blue Brick.brick" />
+    <None Include="Default Bricks\Dark Blue FlexBall Cream.brick" />
+    <None Include="Default Bricks\Dark Cyan Brick.brick" />
+    <None Include="Default Bricks\Dark Cyan Bumps.brick" />
+    <None Include="Default Bricks\Dark Green Brick.brick" />
+    <None Include="Default Bricks\Dark Green FlexBall Cream.brick" />
+    <None Include="Default Bricks\Dark Green Scales.brick" />
+    <None Include="Default Bricks\Dark Lila Stripes.brick" />
+    <None Include="Default Bricks\Dark Lime Brick.brick" />
+    <None Include="Default Bricks\Dark Magenta Scales.brick" />
+    <None Include="Default Bricks\Dark Orange-Beige Bumps.brick" />
+    <None Include="Default Bricks\Dark Orange-Beige Stripes.brick" />
+    <None Include="Default Bricks\Dark Pink Bars.brick" />
+    <None Include="Default Bricks\Dark Red Brick.brick" />
+    <None Include="Default Bricks\Dark Red FlexBall Cream.brick" />
+    <None Include="Default Bricks\Dark Rubber.brick" />
+    <None Include="Default Bricks\Dark Sky Blue Brick.brick" />
+    <None Include="Default Bricks\Dark Teal Brick.brick" />
+    <None Include="Default Bricks\Dark Turquoise FlexBall Cream.brick" />
+    <None Include="Default Bricks\Dark Violet Brick.brick" />
+    <None Include="Default Bricks\Dark Yellow Bumps.brick" />
+    <None Include="Default Bricks\Darker Sky Blue Scales.brick" />
+    <None Include="Default Bricks\Darker Sky Blue Stripes.brick" />
+    <None Include="Default Bricks\Detonable Dynamite.brick" />
+    <None Include="Default Bricks\Detonator.brick" />
+    <None Include="Default Bricks\Doubling Teleporter.brick" />
+    <None Include="Default Bricks\Down-Directed Fuse Brick.brick" />
+    <None Include="Default Bricks\Down-Directed Push Brick.brick" />
+    <None Include="Default Bricks\Ecru Heart.brick" />
+    <None Include="Default Bricks\Elegant Pillow Down.brick" />
+    <None Include="Default Bricks\Elegant Pillow Up.brick" />
+    <None Include="Default Bricks\Explosion Proof Doubling Teleporter.brick" />
+    <None Include="Default Bricks\Explosion Proof Teleporter Output.brick" />
+    <None Include="Default Bricks\Explosion Proof Teleporter.brick" />
+    <None Include="Default Bricks\Explosive Balls.brick" />
+    <None Include="Default Bricks\Explosive Golden Plate.brick" />
+    <None Include="Default Bricks\Explosive Proof Brick.brick" />
+    <None Include="Default Bricks\Fire Chimney.brick" />
+    <None Include="Default Bricks\Framed Bamboo Brick.brick" />
+    <None Include="Default Bricks\Framed Orange Brick.brick" />
+    <None Include="Default Bricks\Gold Bar.brick" />
+    <None Include="Default Bricks\Golden MegaJocke Face.brick" />
+    <None Include="Default Bricks\Golden Plate.brick" />
+    <None Include="Default Bricks\Green Brick with Black Stripes.brick" />
+    <None Include="Default Bricks\Green Brick.brick" />
+    <None Include="Default Bricks\Green FlexBall Cream.brick" />
+    <None Include="Default Bricks\Green Scales.brick" />
+    <None Include="Default Bricks\Grey Brick.brick" />
+    <None Include="Default Bricks\Hippie Mosaic.brick" />
+    <None Include="Default Bricks\Honeycomb.brick" />
+    <None Include="Default Bricks\Ice.brick" />
+    <None Include="Default Bricks\Jocke.brick" />
+    <None Include="Default Bricks\Jungle Square Spiral.brick" />
+    <None Include="Default Bricks\Kyanite.brick" />
+    <None Include="Default Bricks\Left-Directed Fuse Brick.brick" />
+    <None Include="Default Bricks\Left-Directed Push Brick.brick" />
+    <None Include="Default Bricks\Light Orange Brick.brick" />
+    <None Include="Default Bricks\Lila Stripes.brick" />
+    <None Include="Default Bricks\Lime Brick.brick" />
+    <None Include="Default Bricks\Magenta Scales.brick" />
+    <None Include="Default Bricks\Mega Explosive.brick" />
+    <None Include="Default Bricks\Normal Resistant Down-Directed Push Brick.brick" />
+    <None Include="Default Bricks\Normal Resistant Left-Directed Push Brick.brick" />
+    <None Include="Default Bricks\Normal Resistant Right-Directed Push Brick.brick" />
+    <None Include="Default Bricks\Normal Resistant Up-Directed Push Brick.brick" />
+    <None Include="Default Bricks\Orange Brick.brick" />
+    <None Include="Default Bricks\Orange-Beige Bumps.brick" />
+    <None Include="Default Bricks\Orange-Beige Stripes.brick" />
+    <None Include="Default Bricks\Painted MegaJocke Face.brick" />
+    <None Include="Default Bricks\Pale Blue Cloud.brick" />
+    <None Include="Default Bricks\Pale Green Cloud.brick" />
+    <None Include="Default Bricks\Pale Red Cloud.brick" />
+    <None Include="Default Bricks\Red Brick.brick" />
+    <None Include="Default Bricks\Red FlexBall Cream.brick" />
+    <None Include="Default Bricks\Red Heart.brick" />
+    <None Include="Default Bricks\Red Leather.brick" />
+    <None Include="Default Bricks\Regular Explosive.brick" />
+    <None Include="Default Bricks\Regular Teleporter.brick" />
+    <None Include="Default Bricks\Right-Directed Fuse Brick.brick" />
+    <None Include="Default Bricks\Right-Directed Push Brick.brick" />
+    <None Include="Default Bricks\Sapphire.brick" />
+    <None Include="Default Bricks\Sky Blue Brick.brick" />
+    <None Include="Default Bricks\Sky Blue Scales.brick" />
+    <None Include="Default Bricks\Sky Blue Stripes.brick" />
+    <None Include="Default Bricks\Star And Round.brick" />
+    <None Include="Default Bricks\Strong Dynamite.brick" />
+    <None Include="Default Bricks\Strong Stone.brick" />
+    <None Include="Default Bricks\Super Durable Brick.brick" />
+    <None Include="Default Bricks\Super Mario Surprise Box.brick" />
+    <None Include="Default Bricks\Super Tough Brick.brick" />
+    <None Include="Default Bricks\Teal Brick.brick" />
+    <None Include="Default Bricks\Teleporter Exit.brick" />
+    <None Include="Default Bricks\Totally Obliterated Stone.brick" />
+    <None Include="Default Bricks\Tough Brick.brick" />
+    <None Include="Default Bricks\Traditional Brick.brick" />
+    <None Include="Default Bricks\Turquoise FlexBall Cream.brick" />
+    <None Include="Default Bricks\Up-Directed Fuse Brick.brick" />
+    <None Include="Default Bricks\Up-Directed Push Brick.brick" />
+    <None Include="Default Bricks\Very Tough Brick.brick" />
+    <None Include="Default Bricks\Violet Brick.brick" />
+    <None Include="Default Bricks\Weak Stone.brick" />
+    <None Include="Default Bricks\Weakened Stone.brick" />
+    <None Include="Default Bricks\Weird Hazard Stripes.brick" />
+    <None Include="Default Bricks\Yellow Brick.brick" />
+    <None Include="Default Bricks\Yellow Bumps.brick" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Default Bricks\Apple Mark\brick0.png" />
+    <Resource Include="Default Bricks\Atomic Bomb\brick0.png" />
+    <Resource Include="Default Bricks\Aztec Relief\brick0.png" />
+    <Resource Include="Default Bricks\Azure Clay\brick0.png" />
+    <Resource Include="Default Bricks\Bag with Colored Stripes\brick0.png" />
+    <Resource Include="Default Bricks\Black Brick\brick0.png" />
+    <Resource Include="Default Bricks\Blue Brick with Black Stripes\brick0.png" />
+    <Resource Include="Default Bricks\Blue Brick with White Point\brick0.png" />
+    <Resource Include="Default Bricks\Blue Brick\brick0.png" />
+    <Resource Include="Default Bricks\Blue FlexBall Cream\brick0.png" />
+    <Resource Include="Default Bricks\Blue Plate\brick0.png" />
+    <Resource Include="Default Bricks\Bronze Girder\brick0.png" />
+    <Resource Include="Default Bricks\Brown Cut Stone\brick0.png" />
+    <Resource Include="Default Bricks\Candy Stripes\brick0.png" />
+    <Resource Include="Default Bricks\Confetti Chimney\brick0.png" />
+    <Resource Include="Default Bricks\Cracked Pink Rock\brick0.png" />
+    <Resource Include="Default Bricks\Creamy Cheese\brick0.png" />
+    <Resource Include="Default Bricks\Cyan Brick\brick0.png" />
+    <Resource Include="Default Bricks\Cyan Bumps\brick0.png" />
+    <Resource Include="Default Bricks\Dark Blue Brick\brick0.png" />
+    <Resource Include="Default Bricks\Dark Blue FlexBall Cream\brick0.png" />
+    <Resource Include="Default Bricks\Dark Cyan Brick\brick0.png" />
+    <Resource Include="Default Bricks\Dark Cyan Bumps\brick0.png" />
+    <Resource Include="Default Bricks\Dark Green Brick\brick0.png" />
+    <Resource Include="Default Bricks\Dark Green FlexBall Cream\brick0.png" />
+    <Resource Include="Default Bricks\Dark Green Scales\brick0.png" />
+    <Resource Include="Default Bricks\Dark Lila Stripes\brick0.png" />
+    <Resource Include="Default Bricks\Dark Lime Brick\brick0.png" />
+    <Resource Include="Default Bricks\Dark Magenta Scales\brick0.png" />
+    <Resource Include="Default Bricks\Dark Orange-Beige Bumps\brick0.png" />
+    <Resource Include="Default Bricks\Dark Orange-Beige Stripes\brick0.png" />
+    <Resource Include="Default Bricks\Dark Pink Bars\brick0.png" />
+    <Resource Include="Default Bricks\Dark Red Brick\brick0.png" />
+    <Resource Include="Default Bricks\Dark Red FlexBall Cream\brick0.png" />
+    <Resource Include="Default Bricks\Dark Rubber\brick0.png" />
+    <Resource Include="Default Bricks\Dark Sky Blue Brick\brick0.png" />
+    <Resource Include="Default Bricks\Dark Teal Brick\brick0.png" />
+    <Resource Include="Default Bricks\Dark Turquoise FlexBall Cream\brick0.png" />
+    <Resource Include="Default Bricks\Dark Violet Brick\brick0.png" />
+    <Resource Include="Default Bricks\Dark Yellow Bumps\brick0.png" />
+    <Resource Include="Default Bricks\Darker Sky Blue Scales\brick0.png" />
+    <Resource Include="Default Bricks\Darker Sky Blue Stripes\brick0.png" />
+    <Resource Include="Default Bricks\Detonable Dynamite\brick0.png" />
+    <Resource Include="Default Bricks\Detonator\brick0.png" />
+    <Resource Include="Default Bricks\Doubling Teleporter\brick0.png" />
+    <Resource Include="Default Bricks\Down-Directed Fuse Brick\brick0.png" />
+    <Resource Include="Default Bricks\Down-Directed Push Brick\brick0.png" />
+    <Resource Include="Default Bricks\Ecru Heart\brick0.png" />
+    <Resource Include="Default Bricks\Elegant Pillow Down\brick0.png" />
+    <Resource Include="Default Bricks\Elegant Pillow Up\brick0.png" />
+    <Resource Include="Default Bricks\Explosion Proof Doubling Teleporter\brick0.png" />
+    <Resource Include="Default Bricks\Explosion Proof Teleporter Output\brick0.png" />
+    <Resource Include="Default Bricks\Explosion Proof Teleporter\brick0.png" />
+    <Resource Include="Default Bricks\Explosive Balls\brick0.png" />
+    <Resource Include="Default Bricks\Explosive Golden Plate\brick0.png" />
+    <Resource Include="Default Bricks\Explosive Proof Brick\brick0.png" />
+    <Resource Include="Default Bricks\Fire Chimney\brick0.png" />
+    <Resource Include="Default Bricks\Framed Bamboo Brick\brick0.png" />
+    <Resource Include="Default Bricks\Framed Orange Brick\brick0.png" />
+    <Resource Include="Default Bricks\Gold Bar\brick0.png" />
+    <Resource Include="Default Bricks\Golden MegaJocke Face\brick0.png" />
+    <Resource Include="Default Bricks\Golden Plate\brick0.png" />
+    <Resource Include="Default Bricks\Green Brick with Black Stripes\brick0.png" />
+    <Resource Include="Default Bricks\Green Brick\brick0.png" />
+    <Resource Include="Default Bricks\Green FlexBall Cream\brick0.png" />
+    <Resource Include="Default Bricks\Green Scales\brick0.png" />
+    <Resource Include="Default Bricks\Grey Brick\brick0.png" />
+    <Resource Include="Default Bricks\Hippie Mosaic\brick0.png" />
+    <Resource Include="Default Bricks\Honeycomb\brick0.png" />
+    <Resource Include="Default Bricks\Ice\brick0.png" />
+    <Resource Include="Default Bricks\Jocke\brick0.png" />
+    <Resource Include="Default Bricks\Jungle Square Spiral\brick0.png" />
+    <Resource Include="Default Bricks\Kyanite\brick0.png" />
+    <Resource Include="Default Bricks\Left-Directed Fuse Brick\brick0.png" />
+    <Resource Include="Default Bricks\Left-Directed Push Brick\brick0.png" />
+    <Resource Include="Default Bricks\Light Orange Brick\brick0.png" />
+    <Resource Include="Default Bricks\Lila Stripes\brick0.png" />
+    <Resource Include="Default Bricks\Lime Brick\brick0.png" />
+    <Resource Include="Default Bricks\Magenta Scales\brick0.png" />
+    <Resource Include="Default Bricks\Mega Explosive\brick0.png" />
+    <Resource Include="Default Bricks\Normal Resistant Down-Directed Push Brick\brick0.png" />
+    <Resource Include="Default Bricks\Normal Resistant Left-Directed Push Brick\brick0.png" />
+    <Resource Include="Default Bricks\Normal Resistant Right-Directed Push Brick\brick0.png" />
+    <Resource Include="Default Bricks\Normal Resistant Up-Directed Push Brick\brick0.png" />
+    <Resource Include="Default Bricks\Orange Brick\brick0.png" />
+    <Resource Include="Default Bricks\Orange-Beige Bumps\brick0.png" />
+    <Resource Include="Default Bricks\Orange-Beige Stripes\brick0.png" />
+    <Resource Include="Default Bricks\Painted MegaJocke Face\brick0.png" />
+    <Resource Include="Default Bricks\Pale Blue Cloud\brick0.png" />
+    <Resource Include="Default Bricks\Pale Green Cloud\brick0.png" />
+    <Resource Include="Default Bricks\Pale Red Cloud\brick0.png" />
+    <Resource Include="Default Bricks\Red Brick\brick0.png" />
+    <Resource Include="Default Bricks\Red FlexBall Cream\brick0.png" />
+    <Resource Include="Default Bricks\Red Heart\brick0.png" />
+    <Resource Include="Default Bricks\Red Leather\brick0.png" />
+    <Resource Include="Default Bricks\Regular Explosive\brick0.jpg" />
+    <Resource Include="Default Bricks\Regular Teleporter\brick0.png" />
+    <Resource Include="Default Bricks\Right-Directed Fuse Brick\brick0.png" />
+    <Resource Include="Default Bricks\Right-Directed Push Brick\brick0.png" />
+    <Resource Include="Default Bricks\Sapphire\brick0.png" />
+    <Resource Include="Default Bricks\Sky Blue Brick\brick0.png" />
+    <Resource Include="Default Bricks\Sky Blue Scales\brick0.png" />
+    <Resource Include="Default Bricks\Sky Blue Stripes\brick0.png" />
+    <Resource Include="Default Bricks\Star And Round\brick0.png" />
+    <Resource Include="Default Bricks\Strong Dynamite\brick0.png" />
+    <Resource Include="Default Bricks\Strong Stone\brick0.png" />
+    <Resource Include="Default Bricks\Super Durable Brick\brick0.png" />
+    <Resource Include="Default Bricks\Super Mario Surprise Box\brick0.png" />
+    <Resource Include="Default Bricks\Super Tough Brick\brick0.png" />
+    <Resource Include="Default Bricks\Teal Brick\brick0.png" />
+    <Resource Include="Default Bricks\Teleporter Exit\brick0.png" />
+    <Resource Include="Default Bricks\Totally Obliterated Stone\brick0.png" />
+    <Resource Include="Default Bricks\Tough Brick\brick0.png" />
+    <Resource Include="Default Bricks\Traditional Brick\brick0.png" />
+    <Resource Include="Default Bricks\Turquoise FlexBall Cream\brick0.png" />
+    <Resource Include="Default Bricks\Up-Directed Fuse Brick\brick0.png" />
+    <Resource Include="Default Bricks\Up-Directed Push Brick\brick0.png" />
+    <Resource Include="Default Bricks\Very Tough Brick\brick0.png" />
+    <Resource Include="Default Bricks\Violet Brick\brick0.png" />
+    <Resource Include="Default Bricks\Weak Stone\brick0.png" />
+    <Resource Include="Default Bricks\Weakened Stone\brick0.png" />
+    <Resource Include="Default Bricks\Weird Hazard Stripes\brick0.png" />
+    <Resource Include="Default Bricks\Yellow Brick\brick0.png" />
+    <Resource Include="Default Bricks\Yellow Bumps\brick0.png" />
     <Resource Include="icons\add.png" />
     <Resource Include="icons\delete.png" />
     <Resource Include="icons\new.png" />
@@ -201,23 +518,7 @@
     <Resource Include="icons\clear.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Default Bricks\Bricks\brick1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="ufer.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Default Bricks\Bricks\brick10.png" />
-    <Resource Include="Default Bricks\Bricks\brick11.png" />
-    <Resource Include="Default Bricks\Bricks\brick12.png" />
-    <Resource Include="Default Bricks\Bricks\brick2.png" />
-    <Resource Include="Default Bricks\Bricks\brick3.png" />
-    <Resource Include="Default Bricks\Bricks\brick4.png" />
-    <Resource Include="Default Bricks\Bricks\brick5.png" />
-    <Resource Include="Default Bricks\Bricks\brick6.png" />
-    <Resource Include="Default Bricks\Bricks\brick7.png" />
-    <Resource Include="Default Bricks\Bricks\brick8.png" />
-    <Resource Include="Default Bricks\Bricks\brick9.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -240,6 +541,9 @@
       <Project>{6e61b6ed-98d0-40c4-8b6e-4e3c9fc17f25}</Project>
       <Name>LevelSetManagement</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Default Bricks\African Fabric\frames.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

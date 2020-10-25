@@ -48,8 +48,10 @@
     <Compile Include="Level.cs" />
     <Compile Include="LevelProperties.cs" />
     <Compile Include="LevelSet.cs" />
+    <Compile Include="LevelSetProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializableCopier.cs" />
+    <Compile Include="SoundLibrary.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
