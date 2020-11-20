@@ -1,6 +1,8 @@
 ﻿using System;
 
 //BONUS Do distinct hit sounds for each hit type (other for ball hit, other for bullet hit)
+//BONUS Do distinct brick animation after breaking with Space Djoel
+//BONUS Make advanced fuse bricks which can destroy more than one brick and more than one way and
 //TODO Do distinct break animation for each hit type (for example, blue pushing block flames when it is broken with explosion but it fades when it is destroyed with bullet)
 //TODO Do always special hit flag (on special hit, the special hit sound is made and white particles are sprinkled (such when hitting an explosive or power-up yielding))
 //TODO Do custom brick break animation
@@ -9,7 +11,7 @@ namespace LevelSetData
 	[Serializable]
 	public enum BreakAnimationType
 	{
-		Fade, Custom
+		Fade, Burn, Custom
 	}
 
 	[Serializable]
@@ -27,7 +29,7 @@ namespace LevelSetData
 	[Serializable]
 	public enum ChimneyType
 	{
-		None, Regular, Confetti
+		None, Vertical, Sprinkling
 	}
 
 	//Detonator breaks bricks surpassing all detonation types
@@ -46,7 +48,7 @@ namespace LevelSetData
 	[Serializable]
 	public enum YieldedPowerUp
 	{
-		Any, BallGrow, BallShrink, ExplodingBall, SplitBall, PenetratingBall, BrickDescend, SpaceDjoel, ExtraPaddle, Shooter, ProtectiveBarrier, ExplosiveMultiplier, MagnetPaddle, MegaSplit, PaddleShrink, PaddleGrow, StandardMultiplier, MegaMissile
+		BallGrow, BallShrink, ExplodingBall, SplitBall, PenetratingBall, BrickDescend, SpaceDjoel, ExtraPaddle, Shooter, ProtectiveBarrier, ExplosiveMultiplier, MagnetPaddle, MegaSplit, PaddleShrink, PaddleGrow, RegularMultiplier, MegaMissile, Any
 	}
 
 	[Serializable]
@@ -63,7 +65,7 @@ namespace LevelSetData
 	//	None, Fuse, ThrustBall, Sequential
 	//}*/
 
-	//Moving bricks move automatically*/
+	//Moving bricks move automatically
 	[Serializable]
 	public enum MovingBrickType
 	{
@@ -73,7 +75,7 @@ namespace LevelSetData
 	//BONUS implement serialization skipping unnecessary data
 	/**
 	 * <summary><para>Properties of the brick saved in the *.brick file.</para>
-	 * <para>Id of the brick is counted from 1.</para></summary>
+	 * <para>Id of the brick is count from 1.</para></summary>
 	 */
 	[Serializable]
 	public class BrickProperties
@@ -114,7 +116,7 @@ namespace LevelSetData
 		#region Power-up yield properties
 		public int PowerUpMeterUnits { get; set; } = 5;
 		public bool AlwaysPowerUpYielding { get; set; }
-		public YieldedPowerUp YieldedPowerUp { get; set; }
+		public YieldedPowerUp YieldedPowerUp { get; set; } = YieldedPowerUp.Any;
 		#endregion
 
 		#region Resistance types
@@ -133,12 +135,15 @@ namespace LevelSetData
 		#endregion
 
 		#region Animation properties
-		public BreakAnimationType BreakAnimationType { get; set; }
+		public BreakAnimationType BallBreakAnimationType { get; set; }
+		public BreakAnimationType ExplosionBreakAnimationType { get; set; }
+		public BreakAnimationType BulletBreakAnimationType { get; set; }
 		#endregion
 
 		#region Teleport properties
-		public int[] TeleportOutputs { get; set; }
+		public int[] TeleportExits { get; set; }
 		public TeleportType TeleportType { get; set; }
+		public bool TeleportExit { get; set; }
 		#endregion
 
 		#region Hidden brick properties
@@ -191,13 +196,13 @@ namespace LevelSetData
 		#region Moving brick properties
 		public int BoundOne { get; set; }
 		public int BoundTwo { get; set; }
-		public float BrickMoveSpeed { get; set; }
+		public float BrickMoveInterval { get; set; }
 		public MovingBrickType MovingBrickType { get; set; }
 		#endregion
 
 		public bool IsExplosive => ExplosionRadius > 0;
 
-		public bool IsTeleporter => TeleportOutputs != null;
+		public bool IsTeleporter => TeleportExits != null && TeleportExits.Length > 0;
 
 		public bool IsFuse => FuseDirection != Direction.None;
 
@@ -208,5 +213,9 @@ namespace LevelSetData
 		public bool IsDetonator => DetonateId > 0;
 
 		public bool IsChimneyLike => ChimneyType != ChimneyType.None;
+
+		public bool IsMoving => MovingBrickType != MovingBrickType.None;
+
+		public bool IsRegular => !IsExplosive && !IsTeleporter && !TeleportExit && !IsFuse && !IsBallThrusting && !IsSequential && !IsDetonator && !IsChimneyLike && !AlwaysPowerUpYielding && !NormalResistant && !IsMoving;
 	}
 }

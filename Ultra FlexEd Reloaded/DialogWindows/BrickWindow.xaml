@@ -202,14 +202,7 @@
 						<CheckBox IsChecked="{Binding RequiredToCompleteWhenHidden}" VerticalAlignment="Center" Content="Required to complete when Hidden"/>
 					</StackPanel>
 					<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
-						<Label Content="Break Animation Type" VerticalAlignment="Center" />
-						<ComboBox ItemsSource="{Binding Source={StaticResource BreakAnimationTypes}}" SelectedItem="{Binding BreakAnimationType}" SelectionChanged="BreakAnimationTypeComboBox_SelectionChanged" VerticalAlignment="Center"/>
-					</StackPanel>
-					<StackPanel x:Name="BreakAnimationSection" Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
-						<Border Margin="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="30" Width="60">
-							<Image x:Name="BreakAnimationSpritesheet" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Fill"/>
-						</Border>
-						<Button x:Name="BreakAnimationSpritesheetImportButton" Content="Import Break Animation Spritesheet..." Click="ImportBreakAnimationFramesheet" VerticalAlignment="Center" MinWidth="94"/>
+						<CheckBox IsChecked="{Binding AlwaysSpecialHit}" VerticalAlignment="Center" Content="Always perform special hit"/>
 					</StackPanel>
 					<StackPanel Orientation="Horizontal" Grid.Column="2">
 						<Label Content="Chimney Type" VerticalAlignment="Center" />
@@ -315,21 +308,51 @@
 							<Button Content="Choose..." Click="NewBrickButton_Clicked" />
 						</StackPanel>
 					</GroupBox>
-					<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
+					<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2">
 						<Label Content="Fuse Direction" VerticalAlignment="Center" />
 						<ComboBox ItemsSource="{Binding Source={StaticResource DirectionTypes}}" SelectedItem="{Binding FuseDirection}" SelectionChanged="FuseDirectionComboBox_SelectionChanged" VerticalAlignment="Center"/>
 					</StackPanel>
-					<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+					<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
 						<Label Content="Ball Thrust Direction" VerticalAlignment="Center" />
 						<ComboBox ItemsSource="{Binding Source={StaticResource DirectionTypes}}" SelectedItem="{Binding BallThrustDirection}" VerticalAlignment="Center"/>
 					</StackPanel>
-					<StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="3">
+					<StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="2">
 						<Label Content="Sequence Direction" VerticalAlignment="Center" />
 						<ComboBox ItemsSource="{Binding Source={StaticResource DirectionTypes}}" SelectedItem="{Binding SequenceDirection}" VerticalAlignment="Center"/>
 					</StackPanel>
-					<StackPanel x:Name="FuseTriggerSection" Orientation="Horizontal" Grid.Column="0" Grid.Row="4">
+					<StackPanel x:Name="FuseTriggerSection" Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
 						<Label Content="Fuse Trigger" VerticalAlignment="Center" />
 						<ComboBox ItemsSource="{Binding Source={StaticResource EffectTriggerTypes}}" SelectedItem="{Binding FuseTrigger}" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4">
+						<Label Content="Ball Break Animation Type" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource BreakAnimationTypes}}" SelectedItem="{Binding BallBreakAnimationType}" SelectionChanged="BallBreakAnimationTypeComboBox_SelectionChanged" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel x:Name="BallBreakAnimationSection" Orientation="Horizontal" Grid.Column="0" Grid.Row="5">
+						<Border Margin="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="30" Width="60">
+							<Image x:Name="BallBreakAnimationSpritesheet" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Fill"/>
+						</Border>
+						<Button Content="Import Ball Break Animation Sheet..." Click="ImportBallBreakAnimationFramesheet" VerticalAlignment="Center" MinWidth="94"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4">
+						<Label Content="Explosion Break Animation Type" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource BreakAnimationTypes}}" SelectedItem="{Binding ExplosionBreakAnimationType}" SelectionChanged="ExplosionBreakAnimationTypeComboBox_SelectionChanged" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel x:Name="ExplosionBreakAnimationSection" Orientation="Horizontal" Grid.Column="1" Grid.Row="5">
+						<Border Margin="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="30" Width="60">
+							<Image x:Name="ExplosionBreakAnimationSpritesheet" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Fill"/>
+						</Border>
+						<Button Content="Import Explosion Break Animation Sheet..." Click="ImportExplosionBreakAnimationFramesheet" VerticalAlignment="Center" MinWidth="94"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="4">
+						<Label Content="Bullet Break Animation Type" VerticalAlignment="Center" />
+						<ComboBox ItemsSource="{Binding Source={StaticResource BreakAnimationTypes}}" SelectedItem="{Binding BulletBreakAnimationType}" SelectionChanged="BulletBreakAnimationTypeComboBox_SelectionChanged" VerticalAlignment="Center"/>
+					</StackPanel>
+					<StackPanel x:Name="BulletBreakAnimationSection" Orientation="Horizontal" Grid.Column="2" Grid.Row="5">
+						<Border Margin="5,0,5,0" BorderThickness="1,1,1,1" BorderBrush="Black" VerticalAlignment="Center" Height="30" Width="60">
+							<Image x:Name="BulletBreakAnimationSpritesheet" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Fill"/>
+						</Border>
+						<Button Content="Import Bullet Break Animation Sheet..." Click="ImportBulletBreakAnimationFramesheet" VerticalAlignment="Center" MinWidth="94"/>
 					</StackPanel>
 				</Grid>
 			</TabItem>

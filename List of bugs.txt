@@ -1,3 +1,0 @@
-Hidden blocks are resetting when using line
-
-Editor crashes when nlev level is opened or saved when Untitled

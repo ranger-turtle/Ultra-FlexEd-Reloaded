@@ -1,5 +1,4 @@
 ﻿using LevelSetData;
-using LevelSetManagement;
 using System.Windows;
 
 namespace Ultra_FlexEd_Reloaded.DialogWindows

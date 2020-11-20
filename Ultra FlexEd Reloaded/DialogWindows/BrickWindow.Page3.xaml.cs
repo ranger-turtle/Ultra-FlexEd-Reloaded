@@ -71,5 +71,35 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 
 		private void FuseDirectionComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) =>
 			SetFuseTriggerSectionVisibility((Direction)e.AddedItems[0] != Direction.None);
+
+
+		private void SetBallBreakAnimationTypeSectionVisibility(bool visible)
+			=> BallBreakAnimationSection.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+
+		private void BallBreakAnimationTypeComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+			=> SetBallBreakAnimationTypeSectionVisibility((BreakAnimationType)e.AddedItems[0] == BreakAnimationType.Custom);
+
+		private void ImportBallBreakAnimationFramesheet(object sender, RoutedEventArgs e)
+			=> ImportImage((bitmapImage, fileName) => AddOptionalImageMetadata("ballbreak", BallBreakAnimationSpritesheet, bitmapImage, fileName, CheckImageDimensions));
+
+
+		private void SetExplosionBreakAnimationTypeSectionVisibility(bool visible)
+			=> ExplosionBreakAnimationSection.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+
+		private void ExplosionBreakAnimationTypeComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+			=> SetExplosionBreakAnimationTypeSectionVisibility((BreakAnimationType)e.AddedItems[0] == BreakAnimationType.Custom);
+
+		private void ImportExplosionBreakAnimationFramesheet(object sender, RoutedEventArgs e)
+			=> ImportImage((bitmapImage, fileName) => AddOptionalImageMetadata("explosionbreak", ExplosionBreakAnimationSpritesheet, bitmapImage, fileName, CheckImageDimensions));
+
+
+		private void SetBulletBreakAnimationTypeSectionVisibility(bool visible)
+			=> BulletBreakAnimationSection.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+
+		private void BulletBreakAnimationTypeComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+			=> SetBulletBreakAnimationTypeSectionVisibility((BreakAnimationType)e.AddedItems[0] == BreakAnimationType.Custom);
+
+		private void ImportBulletBreakAnimationFramesheet(object sender, RoutedEventArgs e)
+			=> ImportImage((bitmapImage, fileName) => AddOptionalImageMetadata("bulletbreak", BulletBreakAnimationSpritesheet, bitmapImage, fileName, CheckImageDimensions));
 	}
 }

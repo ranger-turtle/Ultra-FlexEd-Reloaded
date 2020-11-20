@@ -24,14 +24,14 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 		private void EditTeleportExitsButton_Click(object sender, RoutedEventArgs e)
 		{
 			BrickProperties brickProperties = (DataContext as BrickProperties);
-			MultipleBrickChooseWindow multipleBrickChooseWindow = new MultipleBrickChooseWindow(brickData, brickProperties.TeleportOutputs)
+			MultipleBrickChooseWindow multipleBrickChooseWindow = new MultipleBrickChooseWindow(brickData, brickProperties.TeleportExits)
 			{
 				Title = "Choose Teleport Exits",
 				Owner = this
 			};
 			if (multipleBrickChooseWindow.ShowDialog() == true)
 			{
-				brickProperties.TeleportOutputs = multipleBrickChooseWindow.ChosenIds;
+				brickProperties.TeleportExits = multipleBrickChooseWindow.ChosenIds;
 				UpdateTeleportList();
 			}
 		}
@@ -58,13 +58,6 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 
 		private void HiddenCheckBox_Checked(object sender, RoutedEventArgs e) =>
 			SetRequiredHiddenSectionVisibility((DataContext as BrickProperties).Hidden);
-
-
-		private void SetBreakAnimationTypeSectionVisibility(bool visible)
-			=> BreakAnimationSection.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
-
-		private void BreakAnimationTypeComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-			=> SetBreakAnimationTypeSectionVisibility((BreakAnimationType)e.AddedItems[0] == BreakAnimationType.Custom);
 
 
 		private void SetChimneyLikeBrickSectionsVisibility(bool visible)

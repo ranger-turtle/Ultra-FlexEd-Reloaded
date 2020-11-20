@@ -33,7 +33,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 		public MultipleBrickChooseWindow(List<BrickMetadata> brickInfo, int[] ids)
         {
 			InitializeComponent();//BONUS delete null check when you make improved BrickProperties serialization
-			BrickListBoxItems = new List<CheckableBrickListBoxItem>(brickInfo.Select(bi => new CheckableBrickListBoxItem(bi.BrickId, bi.ImageSource, bi.ImageContent, ids?.Contains(bi.BrickId) == true)));
+			BrickListBoxItems = new List<CheckableBrickListBoxItem>(brickInfo.Select(bi => new CheckableBrickListBoxItem(bi.BrickId, bi.ImageSource, bi.BrickName, ids?.Contains(bi.BrickId) == true)));
 			BrickListBox.SelectedIndex = 0;
         }
 

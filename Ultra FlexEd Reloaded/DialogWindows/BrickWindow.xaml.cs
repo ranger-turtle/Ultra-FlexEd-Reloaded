@@ -11,7 +11,6 @@ using System.Windows.Controls;
 using Ultra_FlexEd_Reloaded.UserControls;
 using System.Linq;
 using System.Collections.ObjectModel;
-using ColorPickerWPF;
 using System.Windows.Markup;
 using System.Windows.Data;
 
@@ -31,8 +30,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			return new BrickProperties.Color { Red = brushColor.R, Green = brushColor.G, Blue = brushColor.B};
 		}
 
-		public override object ProvideValue(IServiceProvider serviceProvider)
-			=> this;
+		public override object ProvideValue(IServiceProvider serviceProvider) => this;
 	}
 
 	/// <summary>
@@ -44,10 +42,8 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 	{
 		private class BrickImageEditMetadata
 		{
-			public BitmapImage MainImage { get; set; }
-			public int Frames { get; set; }
-			public BitmapImage HitImage { get; set; }
-			public BitmapImage BreakAnimationSpritesheet { get; set; }
+			public BitmapImage Image { get; internal set; }
+			public int Frames { get; internal set; }
 			public bool Changed { get; internal set; } = true;
 		}
 
@@ -57,14 +53,15 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 		}
 
 		private const string DefaultBrickLabelPlaceholder = "<none>";
-		private BrickImageEditMetadata _brickMetadata = null;
+		private BrickImageEditMetadata mainBrickImageMetadata = null;
+		//key is file name
+		private Dictionary<string, BrickImageEditMetadata> optionalBrickImageMetadata = null;
 		private Mode mode = Mode.ADD;
 
 		private List<BrickMetadata> brickData;
 
-		internal string FrameSheetPath { get; private set; }
-		internal string HitImagePath { get; private set; }
-		internal string BreakAnimationFrameSheetPath { get; private set; }
+		internal string MainFrameSheetPath { get; private set; }
+		internal Dictionary<string, string> OptionalImagePaths { get; private set; }
 
 		internal static readonly DependencyProperty FrameNumProperty =
 		  DependencyProperty.Register("FrameNum", typeof(int), typeof(BrickWindow));
@@ -96,7 +93,9 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			this.brickData = brickData;
 			BrickName = "New Brick";
 			brickNameField.Focus();
-			_brickMetadata = new BrickImageEditMetadata();
+			mainBrickImageMetadata = new BrickImageEditMetadata();
+			optionalBrickImageMetadata = new Dictionary<string, BrickImageEditMetadata>();
+			OptionalImagePaths = new Dictionary<string, string>();
 		}
 
 		internal BrickWindow(List<BrickMetadata> brickData, BrickProperties brickProperties, string brickName, string levelName) : this(brickData)
@@ -105,19 +104,41 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			DataContext = SerializableCopier.Clone(brickProperties);
 			Title = $"Edit Brick {brickName}";
 			//TODO Uncomment when you create all fixed brick types var brickFilePaths = Directory.EnumerateFiles($"Custom/{levelName}/{brickName}", "brick*.*");
+			#region Main Brick Metadata load
 			var brickFilePath = Path.GetFullPath($"Default Bricks/{brickName}/frames.png");
 			BitmapImage bitmapImage = BitmapMethods.GetImageWithCacheOnLoad(new Uri(brickFilePath, UriKind.Relative));
-			_brickMetadata.MainImage = bitmapImage;
-			_brickMetadata.Frames = EvaluateFrameNumberFromImage(bitmapImage);
-			_brickMetadata.Changed = false;
-			ReplaceBrickImage(MainFrameBrickImage, _brickMetadata.MainImage, 0, 0);
+			mainBrickImageMetadata.Image = bitmapImage;
+			mainBrickImageMetadata.Changed = false;
+			mainBrickImageMetadata.Frames = EvaluateFrameNumberFromImage(bitmapImage);
+			ReplaceBrickImage(MainFrameBrickImage, mainBrickImageMetadata.Image, 0, 0);
 			InitializeFrameDurations();
+			#endregion
+			InitFramesheetEditMetadata(HitSpriteImage, Path.GetFullPath($"Default Bricks/{brickName}/hit.png"));
+			InitFramesheetEditMetadata(BallBreakAnimationSpritesheet, Path.GetFullPath($"Default Bricks/{brickName}/ballbreak.png"));
+			InitFramesheetEditMetadata(ExplosionBreakAnimationSpritesheet, Path.GetFullPath($"Default Bricks/{brickName}/explosionbreak.png"));
+			InitFramesheetEditMetadata(BulletBreakAnimationSpritesheet, Path.GetFullPath($"Default Bricks/{brickName}/bulletbreak.png"));
 			DurationField.Text = FrameDurations[0].ToString("0.##", CultureInfo.InvariantCulture);
 			UpdateFrameSliderAfterUncover();
 			InitConditionalSections();
 			InitReferenceBrickIds();
 			UpdateTeleportList();
 			mode = Mode.EDIT;
+		}
+
+		private void InitFramesheetEditMetadata(Image framesheetImage, string brickFilePath)
+		{
+			if (File.Exists(brickFilePath))
+			{
+				BitmapImage bitmapImage = BitmapMethods.GetImageWithCacheOnLoad(new Uri(brickFilePath, UriKind.Relative));
+				BrickImageEditMetadata brickImageEditMetadata = new BrickImageEditMetadata()
+				{
+					Image = bitmapImage,
+					Frames = EvaluateFrameNumberFromImage(bitmapImage),
+					Changed = false
+				};
+				optionalBrickImageMetadata.Add(Path.GetFileNameWithoutExtension(brickFilePath), brickImageEditMetadata);
+				ReplaceBrickImage(framesheetImage, brickImageEditMetadata.Image, 0, 0);
+			}
 		}
 
 		private void InitConditionalSections()
@@ -127,7 +148,9 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			SetExplosionTriggerSectionVisibility(brickProperties.IsExplosive);
 			SetPowerUpMeterSectionVisibility(!brickProperties.AlwaysPowerUpYielding);
 			SetRequiredHiddenSectionVisibility(brickProperties.Hidden);
-			SetBreakAnimationTypeSectionVisibility(brickProperties.BreakAnimationType == BreakAnimationType.Custom);
+			SetBallBreakAnimationTypeSectionVisibility(brickProperties.BallBreakAnimationType == BreakAnimationType.Custom);
+			SetExplosionBreakAnimationTypeSectionVisibility(brickProperties.ExplosionBreakAnimationType == BreakAnimationType.Custom);
+			SetBulletBreakAnimationTypeSectionVisibility(brickProperties.BulletBreakAnimationType == BreakAnimationType.Custom);
 			SetChimneyLikeBrickSectionsVisibility(brickProperties.IsChimneyLike);
 			SetHittingBottomSectionVisibility(brickProperties.IsDescending);
 			SetDetonatorSectionsVisibility(brickProperties.IsDetonator);
@@ -137,13 +160,13 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 
 		public void UpdateTeleportList()
 		{
-			int[] teleportExitIds = (DataContext as BrickProperties).TeleportOutputs;
+			int[] teleportExitIds = (DataContext as BrickProperties).TeleportExits;
 			if (teleportExitIds != null)
 			{
 				TeleportListItems = new ObservableCollection<ImageListBoxItem>(teleportExitIds?.Select(id =>
 				{
 					BrickMetadata teleportExitMetadata = brickData.Find(bd => bd.BrickId == id);
-					return new ImageListBoxItem(teleportExitMetadata.BrickId, teleportExitMetadata.ImageSource, teleportExitMetadata.ImageContent);
+					return new ImageListBoxItem(teleportExitMetadata.BrickId, teleportExitMetadata.ImageSource, teleportExitMetadata.BrickName);
 				}));
 			}
 			//foreach (int teleportExitId in teleportExitIds)
@@ -175,8 +198,8 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 
 		private void FrameSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
-			TwoIndices spriteIndices = TwoIndices.EvaluateIndices(FrameNum - 1, _brickMetadata.MainImage.PixelWidth / BrickProperties.PIXEL_WIDTH);
-			ReplaceBrickImage(MainFrameBrickImage, _brickMetadata.MainImage, spriteIndices.X, spriteIndices.Y);
+			TwoIndices spriteIndices = TwoIndices.EvaluateIndices(FrameNum - 1, mainBrickImageMetadata.Image.PixelWidth / BrickProperties.PIXEL_WIDTH);
+			ReplaceBrickImage(MainFrameBrickImage, mainBrickImageMetadata.Image, spriteIndices.X, spriteIndices.Y);
 			DurationField.Text = FrameDurations[FrameNum - 1].ToString("0.##", CultureInfo.InvariantCulture);
 		}
 
@@ -188,10 +211,10 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 
 		private void UpdateFrameSliderAfterUncover()
 		{
-			SetStartFromRandomFrameSectionSectionVisibility(_brickMetadata.Frames > 1);
+			SetStartFromRandomFrameSectionSectionVisibility(mainBrickImageMetadata.Frames > 1);
 			if (FrameSection.Visibility == Visibility.Visible)
 			{
-				FrameSlider.Maximum = _brickMetadata.Frames;
+				FrameSlider.Maximum = mainBrickImageMetadata.Frames;
 				FrameSlider.Value = 1;
 			}
 		}
@@ -217,35 +240,39 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 		}
 
 		private void ImportMainBrickFramesheet(object sender, RoutedEventArgs e)
-			=> ImportImage((bitmapImage, fileName) =>
+			=> ImportImage((bitmapImage, externalFileName) =>
 			{
-				CheckImageDimensions(bitmapImage, fileName);
-				_brickMetadata.MainImage = bitmapImage;
-				_brickMetadata.Frames = EvaluateFrameNumberFromImage(bitmapImage);
-				_brickMetadata.Changed = true;
-				InitializeFrameDurations(true);
+				CheckImageDimensions(bitmapImage, externalFileName);
+				mainBrickImageMetadata.Image = bitmapImage;
+				mainBrickImageMetadata.Frames = EvaluateFrameNumberFromImage(bitmapImage);
+				mainBrickImageMetadata.Changed = true;
+				InitializeFrameDurations();
 				ReplaceBrickImage(MainFrameBrickImage, bitmapImage, 0, 0);
 				UpdateFrameSliderAfterUncover();
 			});
 
-		private void ImportHitBrickImage(object sender, RoutedEventArgs e)
-			=> ImportImage((bitmapImage, fileName) =>
+		private void AddOptionalImageMetadata(string outFileName, Image imageToChange, BitmapImage bitmapImage, string externalFileName, Action<BitmapImage, string> checkMethod)
+		{
+			checkMethod(bitmapImage, externalFileName);
+			if (optionalBrickImageMetadata.ContainsKey(outFileName))
 			{
-				CheckIfImageIsSingle(bitmapImage, fileName);
-				_brickMetadata.HitImage = bitmapImage;
-				_brickMetadata.Frames = EvaluateFrameNumberFromImage(bitmapImage);
-				_brickMetadata.Changed = true;
-				ReplaceBrickImage(HitSpriteImage, bitmapImage, 0, 0);
-			});
+				optionalBrickImageMetadata[outFileName].Image = bitmapImage;
+				optionalBrickImageMetadata[outFileName].Changed = true;
+			}
+			else
+			{
+				BrickImageEditMetadata brickImageEditMetadata = new BrickImageEditMetadata()
+				{
+					Image = bitmapImage,
+					Changed = true
+				};
+				optionalBrickImageMetadata.Add(outFileName, brickImageEditMetadata);
+			}
+			ReplaceBrickImage(imageToChange, bitmapImage, 0, 0);
+		}
 
-		private void ImportBreakAnimationFramesheet(object sender, RoutedEventArgs e)
-			=> ImportImage((bitmapImage, fileName) =>
-			{
-				CheckImageDimensions(bitmapImage, fileName);
-				_brickMetadata.BreakAnimationSpritesheet = bitmapImage;
-				_brickMetadata.Changed = true;
-				ReplaceBrickImage(BreakAnimationSpritesheet, bitmapImage, 0, 0);
-			});
+		private void ImportHitBrickImage(object sender, RoutedEventArgs e)
+			=> ImportImage((bitmapImage, fileName) => AddOptionalImageMetadata("hit", HitSpriteImage, bitmapImage, fileName, checkMethod: CheckIfImageIsSingle));
 
 		private void ImportImage(Action<BitmapImage, string> actionAfterFileOpen)
 		{
@@ -279,37 +306,37 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			{
 				BrickMetadata NextBrickItem = brickData.Find(nbi => nbi.BrickId == brickProperties.NextBrickId);
 				NextBrickImage.Source = NextBrickItem.ImageSource;
-				NextBrickLabel.Content = NextBrickItem.ImageContent;
+				NextBrickLabel.Content = NextBrickItem.BrickName;
 			}
 			if (brickProperties.DescendingBottomTurnId > 0)
 			{
 				BrickMetadata DescendingBottomTurnBrickItem = brickData.Find(nbi => nbi.BrickId == brickProperties.DescendingBottomTurnId);
 				DescendingBottomImage.Source = DescendingBottomTurnBrickItem.ImageSource;
-				DescendingBottomLabel.Content = DescendingBottomTurnBrickItem.ImageContent;
+				DescendingBottomLabel.Content = DescendingBottomTurnBrickItem.BrickName;
 			}
 			if (brickProperties.DescendingPressTurnId > 0)
 			{
 				BrickMetadata DescendingPressTurnBrickItem = brickData.Find(nbi => nbi.BrickId == brickProperties.DescendingPressTurnId);
 				DescendingPressImage.Source = DescendingPressTurnBrickItem.ImageSource;
-				DescendingPressLabel.Content = DescendingPressTurnBrickItem.ImageContent;
+				DescendingPressLabel.Content = DescendingPressTurnBrickItem.BrickName;
 			}
 			if (brickProperties.DetonateId > 0)
 			{
 				BrickMetadata DetonateBrickItem = brickData.Find(nbi => nbi.BrickId == brickProperties.DetonateId);
 				DetonateBrickImage.Source = DetonateBrickItem.ImageSource;
-				DetonateBrickLabel.Content = DetonateBrickItem.ImageContent;
+				DetonateBrickLabel.Content = DetonateBrickItem.BrickName;
 			}
 			if (brickProperties.OldBrickTypeId > 0)
 			{
 				BrickMetadata OldBrickTypeItem = brickData.Find(nbi => nbi.BrickId == brickProperties.OldBrickTypeId);
 				OldBrickImage.Source = OldBrickTypeItem.ImageSource;
-				OldBrickLabel.Content = OldBrickTypeItem.ImageContent;
+				OldBrickLabel.Content = OldBrickTypeItem.BrickName;
 			}
 			if (brickProperties.NewBrickTypeId > 0)
 			{
 				BrickMetadata DetonateBrickItem = brickData.Find(nbi => nbi.BrickId == brickProperties.NewBrickTypeId);
 				NewBrickImage.Source = DetonateBrickItem.ImageSource;
-				NewBrickLabel.Content = DetonateBrickItem.ImageContent;
+				NewBrickLabel.Content = DetonateBrickItem.BrickName;
 			}
 		}
 
@@ -320,7 +347,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			{
 				int chosenId = brickChooseWindow.ChosenId;
 				if (chosenId > 0)
-					propertyChangefunction(chosenId, brickData[chosenId - 1].ImageSource, brickData[chosenId - 1].ImageContent as string);
+					propertyChangefunction(chosenId, brickData[chosenId - 1].ImageSource, brickData[chosenId - 1].BrickName as string);
 				else
 					propertyChangefunction(chosenId, null, DefaultBrickLabelPlaceholder);
 
@@ -329,20 +356,23 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 
 		private void Ok_Clicked(object sender, RoutedEventArgs e)
 		{
-			if (_brickMetadata.MainImage != null)
+			if (mainBrickImageMetadata.Image != null)
 			{
 				switch (mode)
 				{
 					case Mode.ADD:
-						FrameSheetPath = _brickMetadata.MainImage.UriSource.OriginalString;
-						HitImagePath = _brickMetadata.HitImage.UriSource.OriginalString;
-						BreakAnimationFrameSheetPath = _brickMetadata.BreakAnimationSpritesheet.UriSource.OriginalString;
+						MainFrameSheetPath = mainBrickImageMetadata.Image.UriSource.OriginalString;
+						//HitImagePath = optionalBrickImageMetadata.HitImage.UriSource.OriginalString;
+						//BallBreakAnimationFrameSheetPath = optionalBrickImageMetadata.BallBreakAnimationSpritesheet.UriSource.OriginalString;
 						break;
 					case Mode.EDIT:
-						FrameSheetPath = _brickMetadata.Changed ? _brickMetadata.MainImage.UriSource.OriginalString : null;
-						HitImagePath = _brickMetadata.Changed ? _brickMetadata.HitImage?.UriSource.OriginalString : null;
-						BreakAnimationFrameSheetPath = _brickMetadata.Changed ? _brickMetadata.BreakAnimationSpritesheet?.UriSource.OriginalString : null;
+						MainFrameSheetPath = mainBrickImageMetadata.Changed ? mainBrickImageMetadata.Image.UriSource.OriginalString : null;
 						break;
+				}
+				foreach (var optionalImageMetadata in optionalBrickImageMetadata)
+				{
+					if (optionalImageMetadata.Value.Changed)
+						OptionalImagePaths.Add(optionalImageMetadata.Key, optionalImageMetadata.Value.Image?.UriSource.OriginalString);
 				}
 				DialogResult = true;
 			}

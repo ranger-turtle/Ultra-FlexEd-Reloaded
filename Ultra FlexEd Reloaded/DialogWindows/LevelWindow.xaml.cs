@@ -1,6 +1,5 @@
 ﻿//#define LEVELFIX
 using LevelSetData;
-using LevelSetManagement;
 using System.Windows;
 
 

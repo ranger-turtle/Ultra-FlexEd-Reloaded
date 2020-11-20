@@ -34,7 +34,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
         {
 			InitializeComponent();
 			BrickListBoxItems = new List<ImageListBoxItem> { new ImageListBoxItem() };
-			BrickListBoxItems.AddRange(brickInfo.Select(bi => new ImageListBoxItem(bi.BrickId, bi.ImageSource, bi.ImageContent)));
+			BrickListBoxItems.AddRange(brickInfo.Select(bi => new ImageListBoxItem(bi.BrickId, bi.ImageSource, bi.BrickName)));
 			BrickListBox.SelectedIndex = 0;
         }
 

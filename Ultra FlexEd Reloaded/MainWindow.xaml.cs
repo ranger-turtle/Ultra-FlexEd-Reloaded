@@ -17,7 +17,7 @@ namespace Ultra_FlexEd_Reloaded
 	public class BrickMetadata
 	{
 		public ImageSource ImageSource { get; set; }
-		public string ImageContent { get; set; }
+		public string BrickName { get; set; }
 		public int BrickId { get; set; }
 	}
 
@@ -111,7 +111,7 @@ namespace Ultra_FlexEd_Reloaded
 		private void ChangeTitle(string title) => Title = title;
 
 		private List<BrickMetadata> ConvertListBoxItemsToBrickMetadata()
-			=> BrickListBoxItems.Select(item => new BrickMetadata { BrickId = item.BrickId, ImageSource = item.Image.Source, ImageContent = item.Label.Content as string }).ToList();
+			=> BrickListBoxItems.Select(item => new BrickMetadata { BrickId = item.BrickId, ImageSource = item.Image.Source, BrickName = item.Label.Content as string }).ToList();
 
 		private void UpdateCoordinates(object sender, RoutedEventArgs e)
 		{
@@ -176,10 +176,17 @@ namespace Ultra_FlexEd_Reloaded
 			bool? confirmed = brickWindow.ShowDialog();
 			if (confirmed == true)
 			{
-				BrickProperties brickProperties = brickWindow.DataContext as BrickProperties;
-				levelSetManager.AddBrickToLevelSet(brickWindow.BrickName, brickProperties, brickWindow.FrameSheetPath, null);
-				AddNewBrickTypeToListBox(brickProperties.Id, brickWindow.BrickName);
-				MessageBox.Show($@"Brick ""{brickWindow.BrickName}"" added successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+				try
+				{
+					BrickProperties brickProperties = brickWindow.DataContext as BrickProperties;
+					levelSetManager.AddBrickToLevelSet(brickWindow.BrickName, brickProperties, brickWindow.MainFrameSheetPath, null);
+					AddNewBrickTypeToListBox(brickProperties.Id, brickWindow.BrickName);
+					MessageBox.Show($@"Brick ""{brickWindow.BrickName}"" added successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+				}
+				catch (IOException ioe)
+				{
+					MessageBox.Show(ioe.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
 			}
 		}
 
@@ -209,16 +216,23 @@ namespace Ultra_FlexEd_Reloaded
 			bool? confirmed = brickWindow.ShowDialog();
 			if (confirmed == true)
 			{
-				BrickProperties brickProperties = brickWindow.DataContext as BrickProperties;
-				imageListBoxItem.ClearImage();
-				levelSetManager.UpdateBrick(brickWindow.BrickName, brickProperties, brickWindow.FrameSheetPath, brickWindow.HitImagePath);
-				imageListBoxItem.Update(levelSetManager.GetBrickFolder(imageListBoxItem.BrickId), brickWindow.BrickName);
-				foreach (BrickView brickView in bricksInEditor)
-					if (imageListBoxItem.BrickId == brickView.BrickId)
-						brickView.Image.Source = imageListBoxItem.Image.Source;
-				if (imageListBoxItem.BrickId == levelSetManager.CurrentBrickId)
-					CurrentBitmap = imageListBoxItem.Image.Source;
-				MessageBox.Show($@"Brick ""{brickWindow.BrickName}"" changed successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+				try
+				{
+					BrickProperties brickProperties = brickWindow.DataContext as BrickProperties;
+					imageListBoxItem.ClearImage();
+					levelSetManager.UpdateBrick(brickWindow.BrickName, brickProperties, brickWindow.MainFrameSheetPath, brickWindow.OptionalImagePaths);
+					imageListBoxItem.Update(levelSetManager.GetBrickFolder(imageListBoxItem.BrickId), brickWindow.BrickName);
+					foreach (BrickView brickView in bricksInEditor)
+						if (imageListBoxItem.BrickId == brickView.BrickId)
+							brickView.Image.Source = imageListBoxItem.Image.Source;
+					if (imageListBoxItem.BrickId == levelSetManager.CurrentBrickId)
+						CurrentBitmap = imageListBoxItem.Image.Source;
+					MessageBox.Show($@"Brick ""{brickWindow.BrickName}"" changed successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+				}
+				catch (IOException ioe)
+				{
+					MessageBox.Show(ioe.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
 			}
 		}
 

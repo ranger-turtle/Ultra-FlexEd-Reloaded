@@ -20,12 +20,7 @@ namespace LevelSetManagement
 			if (brickProperties.Id > LevelSetManager.DEFAULT_BRICK_QUANTITY)
 			{
 				if (brickProperties.Hidden)
-				{
-					if (brickProperties.Id == 2 || brickProperties.Id == 34)
-						return 34;
-					else if (brickProperties.Id == 3 || brickProperties.Id == 33)
-						return 33;
-				}
+					return new Random().Next(33, 34);
 				if (brickProperties.IsTeleporter)
 				{
 					switch (brickProperties.TeleportType)
@@ -42,7 +37,7 @@ namespace LevelSetManagement
 							return 0;
 					}
 				}
-				else if (brickProperties.TeleportOutputs.Contains(brickProperties.Id))
+				else if (brickProperties.TeleportExits.Contains(brickProperties.Id))
 				{
 					return brickProperties.ExplosionResistant ? 26 : 23;
 				}
@@ -127,9 +122,9 @@ namespace LevelSetManagement
 				{
 					switch (brickProperties.ChimneyType)
 					{
-						case ChimneyType.Regular:
+						case ChimneyType.Vertical:
 							return 88;
-						case ChimneyType.Confetti:
+						case ChimneyType.Sprinkling:
 							return 89;
 						default:
 							return 0;
@@ -172,12 +167,7 @@ namespace LevelSetManagement
 						for (int k = 0; k < 20; k++)
 						{
 							int readBrickId = fileStream.ReadByte();
-							if (readBrickId == 33 || readBrickId == 34)
-							{
-								level.Bricks[j, k].BrickId = readBrickId == 33 ? 3 : 2;
-							}
-							else
-								level.Bricks[j, k].BrickId = readBrickId;
+							level.Bricks[j, k].BrickId = readBrickId;
 						}
 					}
 					levelSet.Levels.Add(level);

@@ -28,10 +28,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 				return @enum.ToString().ToLower() as string;
 			}
 
-			public override object ProvideValue(IServiceProvider serviceProvider)
-			{
-				return this;
-			}
+			public override object ProvideValue(IServiceProvider serviceProvider) => this;
 		}
 
 		private class TwoIndices
@@ -57,12 +54,13 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			}
 		}
 
-		private void InitializeFrameDurations(bool force = false)
+		private void InitializeFrameDurations()
 		{
-			if ((DataContext as BrickProperties).FrameDurations == null || force)
+			BrickProperties brickProperties = DataContext as BrickProperties;
+			if (brickProperties.FrameDurations == null || brickProperties.FrameDurations.Length != mainBrickImageMetadata.Frames)
 			{
-				float[] frameDurations = (DataContext as BrickProperties).FrameDurations = new float[_brickMetadata.Frames];
-				for (int i = 0; i < frameDurations.Length; i++) frameDurations[i] = 0.4f;
+				brickProperties.FrameDurations = new float[mainBrickImageMetadata.Frames];
+				for (int i = 0; i < brickProperties.FrameDurations.Length; i++) brickProperties.FrameDurations[i] = 0.4f;
 			}
 		}
 	}

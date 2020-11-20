@@ -112,7 +112,7 @@ namespace LevelSetManagement
 		public static LevelSetManager GetInstance(bool reset = false) =>
 			instance == null || reset ? (instance = new LevelSetManager()) : instance;
 
-		public string GetBrickFolder(int brickId) => brickId <= DEFAULT_BRICK_QUANTITY ? DEFAULT_BRICK_DIRECTORY : $"Custom/{_levelSet.LevelSetProperties.Name}/Bricks";
+		public string GetBrickFolder(int brickId) => brickId <= DEFAULT_BRICK_QUANTITY ? DEFAULT_BRICK_DIRECTORY : $"Level sets/{_levelSet.LevelSetProperties.Name}/Bricks";
 
 		public void LoadLevelSetFile(string filepath)
 		{
@@ -179,7 +179,7 @@ namespace LevelSetManagement
 			return ids[i - 1] + 1;
 		}
 
-		public void AddBrickToLevelSet(string brickName, BrickProperties brick, string frameSheetPath, string hitBrickImagePath)
+		public void AddBrickToLevelSet(string brickName, BrickProperties brick, string frameSheetPath, Dictionary<string, string> optionalImagePaths)
 		{
 			if (frameSheetPath == null) throw new NullReferenceException("Frame sheet paths cannot be null.");
 			int[] ids = Bricks.Select(b => b.Id).ToArray();
@@ -192,10 +192,10 @@ namespace LevelSetManagement
 			Bricks.Add(brick);
 			Bricks.Sort(brickPropertyComparison);
 			BrickNames[firstAbsentId] = brickName;
-			SaveBrick(brickName, brick, frameSheetPath, hitBrickImagePath);
+			SaveBrick(brickName, brick, frameSheetPath, optionalImagePaths);
 		}
 
-		public void UpdateBrick(string brickName, BrickProperties brick, string frameSheetPath, string hitBrickImagePath)
+		public void UpdateBrick(string brickName, BrickProperties brick, string frameSheetPath, Dictionary<string, string> optionalFilePaths)
 		{
 			string oldBrickName = BrickNames[brick.Id];
 			BrickNames[brick.Id] = brickName;
@@ -205,25 +205,28 @@ namespace LevelSetManagement
 				Directory.Move($"{GetBrickFolder(brick.Id)}/{oldBrickName}/", $"{GetBrickFolder(brick.Id)}/{brickName}/");
 				File.Move($"{GetBrickFolder(brick.Id)}/{oldBrickName}.brick", $"{GetBrickFolder(brick.Id)}/{brickName}.brick");
 			}
-			SaveBrick(brickName, brick, frameSheetPath, hitBrickImagePath);
+			SaveBrick(brickName, brick, frameSheetPath, optionalFilePaths);
 		}
 
 		//BONUS try implementing brick file compression
-		private void SaveBrick(string brickName, BrickProperties brick, string frameSheetPath, string hitBrickImagePath)
+		private void SaveBrick(string brickName, BrickProperties brick, string mainFrameSheetPath, Dictionary<string, string> optionalBrickImagePaths)
 		{
 			string brickSheetFolder = $"{GetBrickFolder(brick.Id)}/{brickName}";
 			Directory.CreateDirectory(brickSheetFolder);
 			using (FileStream file = File.Create($"{brickSheetFolder}.brick"))
 				new BinaryFormatter().Serialize(file, brick);
-			if (frameSheetPath != null)
+			if (mainFrameSheetPath != null)
 			{
-				string frameSheetExtension = Path.GetExtension(frameSheetPath);
-				File.Copy(frameSheetPath, $"{brickSheetFolder}/frames{frameSheetExtension}", true);
+				string frameSheetExtension = Path.GetExtension(mainFrameSheetPath);
+				File.Copy(mainFrameSheetPath, $"{brickSheetFolder}/frames{frameSheetExtension}", true);
 			}
-			if (hitBrickImagePath != null)
+			foreach (var optionalImagePath in optionalBrickImagePaths)
 			{
-				string hitBrickImageExtension = Path.GetExtension(hitBrickImagePath);
-				File.Copy(hitBrickImagePath, $"{brickSheetFolder}/hit{hitBrickImageExtension}", true);
+				string hitBrickImageExtension = Path.GetExtension(optionalImagePath.Value);
+				if (optionalImagePath.Value != null)
+					File.Copy(optionalImagePath.Value, $"{brickSheetFolder}/{optionalImagePath.Key}{hitBrickImageExtension}", true);
+				else
+					File.Delete($"{brickSheetFolder}/{optionalImagePath.Key}{hitBrickImageExtension}");
 			}
 		}
 

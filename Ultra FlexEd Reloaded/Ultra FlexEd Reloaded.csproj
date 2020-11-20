@@ -246,131 +246,381 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Default Bricks\African Fabric.brick" />
-    <None Include="Default Bricks\Apple Mark.brick" />
-    <None Include="Default Bricks\Atomic Bomb.brick" />
-    <None Include="Default Bricks\Aztec Relief.brick" />
-    <None Include="Default Bricks\Azure Clay.brick" />
-    <None Include="Default Bricks\Bag with Colored Stripes.brick" />
-    <None Include="Default Bricks\Black Brick.brick" />
-    <None Include="Default Bricks\Blue Brick with Black Stripes.brick" />
-    <None Include="Default Bricks\Blue Brick with White Point.brick" />
-    <None Include="Default Bricks\Blue Brick.brick" />
-    <None Include="Default Bricks\Blue FlexBall Cream.brick" />
-    <None Include="Default Bricks\Blue Plate.brick" />
-    <None Include="Default Bricks\Bronze Girder.brick" />
-    <None Include="Default Bricks\Brown Cut Stone.brick" />
-    <None Include="Default Bricks\Candy Stripes.brick" />
-    <None Include="Default Bricks\Confetti Chimney.brick" />
-    <None Include="Default Bricks\Cracked Pink Rock.brick" />
-    <None Include="Default Bricks\Creamy Cheese.brick" />
-    <None Include="Default Bricks\Cyan Brick.brick" />
-    <None Include="Default Bricks\Cyan Bumps.brick" />
-    <None Include="Default Bricks\Dark Blue Brick.brick" />
-    <None Include="Default Bricks\Dark Blue FlexBall Cream.brick" />
-    <None Include="Default Bricks\Dark Cyan Brick.brick" />
-    <None Include="Default Bricks\Dark Cyan Bumps.brick" />
-    <None Include="Default Bricks\Dark Green Brick.brick" />
-    <None Include="Default Bricks\Dark Green FlexBall Cream.brick" />
-    <None Include="Default Bricks\Dark Green Scales.brick" />
-    <None Include="Default Bricks\Dark Lila Stripes.brick" />
-    <None Include="Default Bricks\Dark Lime Brick.brick" />
-    <None Include="Default Bricks\Dark Magenta Scales.brick" />
-    <None Include="Default Bricks\Dark Orange-Beige Bumps.brick" />
-    <None Include="Default Bricks\Dark Orange-Beige Stripes.brick" />
-    <None Include="Default Bricks\Dark Pink Bars.brick" />
-    <None Include="Default Bricks\Dark Red Brick.brick" />
-    <None Include="Default Bricks\Dark Red FlexBall Cream.brick" />
-    <None Include="Default Bricks\Dark Rubber.brick" />
-    <None Include="Default Bricks\Dark Sky Blue Brick.brick" />
-    <None Include="Default Bricks\Dark Teal Brick.brick" />
-    <None Include="Default Bricks\Dark Turquoise FlexBall Cream.brick" />
-    <None Include="Default Bricks\Dark Violet Brick.brick" />
-    <None Include="Default Bricks\Dark Yellow Bumps.brick" />
-    <None Include="Default Bricks\Darker Sky Blue Scales.brick" />
-    <None Include="Default Bricks\Darker Sky Blue Stripes.brick" />
-    <None Include="Default Bricks\Detonable Dynamite.brick" />
-    <None Include="Default Bricks\Detonator.brick" />
-    <None Include="Default Bricks\Doubling Teleporter.brick" />
-    <None Include="Default Bricks\Down-Directed Fuse Brick.brick" />
-    <None Include="Default Bricks\Down-Directed Push Brick.brick" />
-    <None Include="Default Bricks\Ecru Heart.brick" />
-    <None Include="Default Bricks\Elegant Pillow Down.brick" />
-    <None Include="Default Bricks\Elegant Pillow Up.brick" />
-    <None Include="Default Bricks\Explosion Proof Doubling Teleporter.brick" />
-    <None Include="Default Bricks\Explosion Proof Teleporter Output.brick" />
-    <None Include="Default Bricks\Explosion Proof Teleporter.brick" />
-    <None Include="Default Bricks\Explosive Balls.brick" />
-    <None Include="Default Bricks\Explosive Golden Plate.brick" />
-    <None Include="Default Bricks\Explosive Proof Brick.brick" />
-    <None Include="Default Bricks\Fire Chimney.brick" />
-    <None Include="Default Bricks\Framed Bamboo Brick.brick" />
-    <None Include="Default Bricks\Framed Orange Brick.brick" />
-    <None Include="Default Bricks\Gold Bar.brick" />
-    <None Include="Default Bricks\Golden MegaJocke Face.brick" />
-    <None Include="Default Bricks\Golden Plate.brick" />
-    <None Include="Default Bricks\Green Brick with Black Stripes.brick" />
-    <None Include="Default Bricks\Green Brick.brick" />
-    <None Include="Default Bricks\Green FlexBall Cream.brick" />
-    <None Include="Default Bricks\Green Scales.brick" />
-    <None Include="Default Bricks\Grey Brick.brick" />
-    <None Include="Default Bricks\Hippie Mosaic.brick" />
-    <None Include="Default Bricks\Honeycomb.brick" />
-    <None Include="Default Bricks\Ice.brick" />
-    <None Include="Default Bricks\Jocke.brick" />
-    <None Include="Default Bricks\Jungle Square Spiral.brick" />
-    <None Include="Default Bricks\Kyanite.brick" />
-    <None Include="Default Bricks\Left-Directed Fuse Brick.brick" />
-    <None Include="Default Bricks\Left-Directed Push Brick.brick" />
-    <None Include="Default Bricks\Light Orange Brick.brick" />
-    <None Include="Default Bricks\Lila Stripes.brick" />
-    <None Include="Default Bricks\Lime Brick.brick" />
-    <None Include="Default Bricks\Magenta Scales.brick" />
-    <None Include="Default Bricks\Mega Explosive.brick" />
-    <None Include="Default Bricks\Normal Resistant Down-Directed Push Brick.brick" />
-    <None Include="Default Bricks\Normal Resistant Left-Directed Push Brick.brick" />
-    <None Include="Default Bricks\Normal Resistant Right-Directed Push Brick.brick" />
-    <None Include="Default Bricks\Normal Resistant Up-Directed Push Brick.brick" />
-    <None Include="Default Bricks\Orange Brick.brick" />
-    <None Include="Default Bricks\Orange-Beige Bumps.brick" />
-    <None Include="Default Bricks\Orange-Beige Stripes.brick" />
-    <None Include="Default Bricks\Painted MegaJocke Face.brick" />
-    <None Include="Default Bricks\Pale Blue Cloud.brick" />
-    <None Include="Default Bricks\Pale Green Cloud.brick" />
-    <None Include="Default Bricks\Pale Red Cloud.brick" />
-    <None Include="Default Bricks\Red Brick.brick" />
-    <None Include="Default Bricks\Red FlexBall Cream.brick" />
-    <None Include="Default Bricks\Red Heart.brick" />
-    <None Include="Default Bricks\Red Leather.brick" />
-    <None Include="Default Bricks\Regular Explosive.brick" />
-    <None Include="Default Bricks\Regular Teleporter.brick" />
-    <None Include="Default Bricks\Right-Directed Fuse Brick.brick" />
-    <None Include="Default Bricks\Right-Directed Push Brick.brick" />
-    <None Include="Default Bricks\Sapphire.brick" />
-    <None Include="Default Bricks\Sky Blue Brick.brick" />
-    <None Include="Default Bricks\Sky Blue Scales.brick" />
-    <None Include="Default Bricks\Sky Blue Stripes.brick" />
-    <None Include="Default Bricks\Star And Round.brick" />
-    <None Include="Default Bricks\Strong Dynamite.brick" />
-    <None Include="Default Bricks\Strong Stone.brick" />
-    <None Include="Default Bricks\Super Durable Brick.brick" />
-    <None Include="Default Bricks\Super Mario Surprise Box.brick" />
-    <None Include="Default Bricks\Super Tough Brick.brick" />
-    <None Include="Default Bricks\Teal Brick.brick" />
-    <None Include="Default Bricks\Teleporter Exit.brick" />
-    <None Include="Default Bricks\Totally Obliterated Stone.brick" />
-    <None Include="Default Bricks\Tough Brick.brick" />
-    <None Include="Default Bricks\Traditional Brick.brick" />
-    <None Include="Default Bricks\Turquoise FlexBall Cream.brick" />
-    <None Include="Default Bricks\Up-Directed Fuse Brick.brick" />
-    <None Include="Default Bricks\Up-Directed Push Brick.brick" />
-    <None Include="Default Bricks\Very Tough Brick.brick" />
-    <None Include="Default Bricks\Violet Brick.brick" />
-    <None Include="Default Bricks\Weak Stone.brick" />
-    <None Include="Default Bricks\Weakened Stone.brick" />
-    <None Include="Default Bricks\Weird Hazard Stripes.brick" />
-    <None Include="Default Bricks\Yellow Brick.brick" />
-    <None Include="Default Bricks\Yellow Bumps.brick" />
+    <None Include="Default Bricks\African Fabric.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Apple Mark.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Atomic Bomb.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Aztec Relief.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Azure Clay.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Bag with Colored Stripes.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Black Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Blue Brick with White Point.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Blue Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Blue FlexBall Cream.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Blue Plate.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Bronze Girder.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Brown Cut Stone.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Candy Stripes.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Cartoon MegaJocke Face.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Confetti Chimney.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Cracked Pink Rock.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Creamy Cheese.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Cyan Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Cyan Bumps.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Blue Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Blue FlexBall Cream.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Cyan Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Cyan Bumps.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Green Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Green FlexBall Cream.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Lila Stripes.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Lime Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Lime Green Scales.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Magenta Scales.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Orange-Beige Bumps.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Orange-Beige Stripes.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Pink Bars.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Red Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Red FlexBall Cream.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Rubber.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Sky Blue Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Sky Blue Stripes.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Teal Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Turquoise FlexBall Cream.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Violet Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Dark Yellow Bumps.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Darker Sky Blue Scales.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Detonable Dynamite.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Detonator.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Down-Directed Fuse Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Down-Directed Thrusting Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Ecru Heart.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Elegant Pillow Down.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Elegant Pillow Up.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Explosion Proof Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Explosion Proof Multiplying Teleporter.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Explosion Proof Teleporter Exit.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Explosion Proof Teleporter.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Explosive Golden Plate.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Explosive Mines.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Fire Chimney.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Framed Bamboo Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Framed Light Orange Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Gold Bar.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Golden MegaJocke Face.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Golden Plate.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Green Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Green FlexBall Cream.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Grey Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Hidden Blue FlexBall Cream.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Hidden Green FlexBall Cream.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Hippie Mosaic.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Honeycomb.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Ice.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Jocke.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Jungle Square Spiral.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Kyanite.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Left-Directed Fuse Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Left-Directed Thrusting Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Light Orange Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Lila Stripes.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Lime Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Lime Green Scales.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Magenta Scales.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Mega Explosive.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Multiplying Teleporter.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Normal Resistant Down-Directed Thrusting Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Normal Resistant Left-Directed Thrusting Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Normal Resistant Right-Directed Thrusting Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Normal Resistant Up-Directed Thrusting Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Orange Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Orange-Beige Bumps.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Orange-Beige Stripes.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Pale Blue Cloud.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Pale Green Cloud.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Pale Red Cloud.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Red Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Red FlexBall Cream.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Red Heart.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Red Leather.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Regular Explosive.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Regular Teleporter.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Right-Directed Fuse Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Right-Directed Thrusting Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Sapphire.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Sky Blue Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Sky Blue Scales.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Sky Blue Stripes.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Star And Round.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Strong Dynamite.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Strong Stone.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Super Durable Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Super Mario Surprise Box.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Super Tough Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Teal Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Teleporter Exit.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Totally Obliterated Stone.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Tough Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Traditional Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Turquoise FlexBall Cream.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Up-Directed Fuse Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Up-Directed Thrusting Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Very Tough Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Violet Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Weak Stone.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Weakened Stone.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Weird Hazard Stripes.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Yellow Brick.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Default Bricks\Yellow Bumps.brick">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -383,130 +633,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Default Bricks\Apple Mark\brick0.png" />
-    <Resource Include="Default Bricks\Atomic Bomb\brick0.png" />
-    <Resource Include="Default Bricks\Aztec Relief\brick0.png" />
-    <Resource Include="Default Bricks\Azure Clay\brick0.png" />
-    <Resource Include="Default Bricks\Bag with Colored Stripes\brick0.png" />
-    <Resource Include="Default Bricks\Black Brick\brick0.png" />
-    <Resource Include="Default Bricks\Blue Brick with Black Stripes\brick0.png" />
-    <Resource Include="Default Bricks\Blue Brick with White Point\brick0.png" />
-    <Resource Include="Default Bricks\Blue Brick\brick0.png" />
-    <Resource Include="Default Bricks\Blue FlexBall Cream\brick0.png" />
-    <Resource Include="Default Bricks\Blue Plate\brick0.png" />
-    <Resource Include="Default Bricks\Bronze Girder\brick0.png" />
-    <Resource Include="Default Bricks\Brown Cut Stone\brick0.png" />
-    <Resource Include="Default Bricks\Candy Stripes\brick0.png" />
-    <Resource Include="Default Bricks\Confetti Chimney\brick0.png" />
-    <Resource Include="Default Bricks\Cracked Pink Rock\brick0.png" />
-    <Resource Include="Default Bricks\Creamy Cheese\brick0.png" />
-    <Resource Include="Default Bricks\Cyan Brick\brick0.png" />
-    <Resource Include="Default Bricks\Cyan Bumps\brick0.png" />
-    <Resource Include="Default Bricks\Dark Blue Brick\brick0.png" />
-    <Resource Include="Default Bricks\Dark Blue FlexBall Cream\brick0.png" />
-    <Resource Include="Default Bricks\Dark Cyan Brick\brick0.png" />
-    <Resource Include="Default Bricks\Dark Cyan Bumps\brick0.png" />
-    <Resource Include="Default Bricks\Dark Green Brick\brick0.png" />
-    <Resource Include="Default Bricks\Dark Green FlexBall Cream\brick0.png" />
-    <Resource Include="Default Bricks\Dark Green Scales\brick0.png" />
-    <Resource Include="Default Bricks\Dark Lila Stripes\brick0.png" />
-    <Resource Include="Default Bricks\Dark Lime Brick\brick0.png" />
-    <Resource Include="Default Bricks\Dark Magenta Scales\brick0.png" />
-    <Resource Include="Default Bricks\Dark Orange-Beige Bumps\brick0.png" />
-    <Resource Include="Default Bricks\Dark Orange-Beige Stripes\brick0.png" />
-    <Resource Include="Default Bricks\Dark Pink Bars\brick0.png" />
-    <Resource Include="Default Bricks\Dark Red Brick\brick0.png" />
-    <Resource Include="Default Bricks\Dark Red FlexBall Cream\brick0.png" />
-    <Resource Include="Default Bricks\Dark Rubber\brick0.png" />
-    <Resource Include="Default Bricks\Dark Sky Blue Brick\brick0.png" />
-    <Resource Include="Default Bricks\Dark Teal Brick\brick0.png" />
-    <Resource Include="Default Bricks\Dark Turquoise FlexBall Cream\brick0.png" />
-    <Resource Include="Default Bricks\Dark Violet Brick\brick0.png" />
-    <Resource Include="Default Bricks\Dark Yellow Bumps\brick0.png" />
-    <Resource Include="Default Bricks\Darker Sky Blue Scales\brick0.png" />
-    <Resource Include="Default Bricks\Darker Sky Blue Stripes\brick0.png" />
-    <Resource Include="Default Bricks\Detonable Dynamite\brick0.png" />
-    <Resource Include="Default Bricks\Detonator\brick0.png" />
-    <Resource Include="Default Bricks\Doubling Teleporter\brick0.png" />
-    <Resource Include="Default Bricks\Down-Directed Fuse Brick\brick0.png" />
-    <Resource Include="Default Bricks\Down-Directed Push Brick\brick0.png" />
-    <Resource Include="Default Bricks\Ecru Heart\brick0.png" />
-    <Resource Include="Default Bricks\Elegant Pillow Down\brick0.png" />
-    <Resource Include="Default Bricks\Elegant Pillow Up\brick0.png" />
-    <Resource Include="Default Bricks\Explosion Proof Doubling Teleporter\brick0.png" />
-    <Resource Include="Default Bricks\Explosion Proof Teleporter Output\brick0.png" />
-    <Resource Include="Default Bricks\Explosion Proof Teleporter\brick0.png" />
-    <Resource Include="Default Bricks\Explosive Balls\brick0.png" />
-    <Resource Include="Default Bricks\Explosive Golden Plate\brick0.png" />
-    <Resource Include="Default Bricks\Explosive Proof Brick\brick0.png" />
-    <Resource Include="Default Bricks\Fire Chimney\brick0.png" />
-    <Resource Include="Default Bricks\Framed Bamboo Brick\brick0.png" />
-    <Resource Include="Default Bricks\Framed Orange Brick\brick0.png" />
-    <Resource Include="Default Bricks\Gold Bar\brick0.png" />
-    <Resource Include="Default Bricks\Golden MegaJocke Face\brick0.png" />
-    <Resource Include="Default Bricks\Golden Plate\brick0.png" />
-    <Resource Include="Default Bricks\Green Brick with Black Stripes\brick0.png" />
-    <Resource Include="Default Bricks\Green Brick\brick0.png" />
-    <Resource Include="Default Bricks\Green FlexBall Cream\brick0.png" />
-    <Resource Include="Default Bricks\Green Scales\brick0.png" />
-    <Resource Include="Default Bricks\Grey Brick\brick0.png" />
-    <Resource Include="Default Bricks\Hippie Mosaic\brick0.png" />
-    <Resource Include="Default Bricks\Honeycomb\brick0.png" />
-    <Resource Include="Default Bricks\Ice\brick0.png" />
-    <Resource Include="Default Bricks\Jocke\brick0.png" />
-    <Resource Include="Default Bricks\Jungle Square Spiral\brick0.png" />
-    <Resource Include="Default Bricks\Kyanite\brick0.png" />
-    <Resource Include="Default Bricks\Left-Directed Fuse Brick\brick0.png" />
-    <Resource Include="Default Bricks\Left-Directed Push Brick\brick0.png" />
-    <Resource Include="Default Bricks\Light Orange Brick\brick0.png" />
-    <Resource Include="Default Bricks\Lila Stripes\brick0.png" />
-    <Resource Include="Default Bricks\Lime Brick\brick0.png" />
-    <Resource Include="Default Bricks\Magenta Scales\brick0.png" />
-    <Resource Include="Default Bricks\Mega Explosive\brick0.png" />
-    <Resource Include="Default Bricks\Normal Resistant Down-Directed Push Brick\brick0.png" />
-    <Resource Include="Default Bricks\Normal Resistant Left-Directed Push Brick\brick0.png" />
-    <Resource Include="Default Bricks\Normal Resistant Right-Directed Push Brick\brick0.png" />
-    <Resource Include="Default Bricks\Normal Resistant Up-Directed Push Brick\brick0.png" />
-    <Resource Include="Default Bricks\Orange Brick\brick0.png" />
-    <Resource Include="Default Bricks\Orange-Beige Bumps\brick0.png" />
-    <Resource Include="Default Bricks\Orange-Beige Stripes\brick0.png" />
-    <Resource Include="Default Bricks\Painted MegaJocke Face\brick0.png" />
-    <Resource Include="Default Bricks\Pale Blue Cloud\brick0.png" />
-    <Resource Include="Default Bricks\Pale Green Cloud\brick0.png" />
-    <Resource Include="Default Bricks\Pale Red Cloud\brick0.png" />
-    <Resource Include="Default Bricks\Red Brick\brick0.png" />
-    <Resource Include="Default Bricks\Red FlexBall Cream\brick0.png" />
-    <Resource Include="Default Bricks\Red Heart\brick0.png" />
-    <Resource Include="Default Bricks\Red Leather\brick0.png" />
-    <Resource Include="Default Bricks\Regular Explosive\brick0.jpg" />
-    <Resource Include="Default Bricks\Regular Teleporter\brick0.png" />
-    <Resource Include="Default Bricks\Right-Directed Fuse Brick\brick0.png" />
-    <Resource Include="Default Bricks\Right-Directed Push Brick\brick0.png" />
-    <Resource Include="Default Bricks\Sapphire\brick0.png" />
-    <Resource Include="Default Bricks\Sky Blue Brick\brick0.png" />
-    <Resource Include="Default Bricks\Sky Blue Scales\brick0.png" />
-    <Resource Include="Default Bricks\Sky Blue Stripes\brick0.png" />
-    <Resource Include="Default Bricks\Star And Round\brick0.png" />
-    <Resource Include="Default Bricks\Strong Dynamite\brick0.png" />
-    <Resource Include="Default Bricks\Strong Stone\brick0.png" />
-    <Resource Include="Default Bricks\Super Durable Brick\brick0.png" />
-    <Resource Include="Default Bricks\Super Mario Surprise Box\brick0.png" />
-    <Resource Include="Default Bricks\Super Tough Brick\brick0.png" />
-    <Resource Include="Default Bricks\Teal Brick\brick0.png" />
-    <Resource Include="Default Bricks\Teleporter Exit\brick0.png" />
-    <Resource Include="Default Bricks\Totally Obliterated Stone\brick0.png" />
-    <Resource Include="Default Bricks\Tough Brick\brick0.png" />
-    <Resource Include="Default Bricks\Traditional Brick\brick0.png" />
-    <Resource Include="Default Bricks\Turquoise FlexBall Cream\brick0.png" />
-    <Resource Include="Default Bricks\Up-Directed Fuse Brick\brick0.png" />
-    <Resource Include="Default Bricks\Up-Directed Push Brick\brick0.png" />
-    <Resource Include="Default Bricks\Very Tough Brick\brick0.png" />
-    <Resource Include="Default Bricks\Violet Brick\brick0.png" />
-    <Resource Include="Default Bricks\Weak Stone\brick0.png" />
-    <Resource Include="Default Bricks\Weakened Stone\brick0.png" />
-    <Resource Include="Default Bricks\Weird Hazard Stripes\brick0.png" />
-    <Resource Include="Default Bricks\Yellow Brick\brick0.png" />
-    <Resource Include="Default Bricks\Yellow Bumps\brick0.png" />
+    <Resource Include="Default Bricks\African Fabric\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Bag with Colored Stripes\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="icons\add.png" />
     <Resource Include="icons\delete.png" />
     <Resource Include="icons\new.png" />
@@ -543,7 +675,375 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Default Bricks\African Fabric\frames.png" />
+    <Resource Include="Default Bricks\Apple Mark\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Atomic Bomb\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Aztec Relief\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Azure Clay\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Black Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Blue Brick with White Point\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Blue Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Blue FlexBall Cream\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Blue Plate\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Bronze Girder\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Brown Cut Stone\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Candy Stripes\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Cartoon MegaJocke Face\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Confetti Chimney\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Cracked Pink Rock\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Creamy Cheese\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Cyan Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Cyan Bumps\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Blue Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Blue FlexBall Cream\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Cyan Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Cyan Bumps\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Green Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Green FlexBall Cream\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Lila Stripes\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Lime Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Lime Green Scales\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Magenta Scales\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Orange-Beige Bumps\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Orange-Beige Stripes\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Pink Bars\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Red Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Red FlexBall Cream\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Rubber\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Sky Blue Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Sky Blue Stripes\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Teal Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Turquoise FlexBall Cream\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Violet Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Dark Yellow Bumps\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Darker Sky Blue Scales\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Detonable Dynamite\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Detonator\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Down-Directed Fuse Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Down-Directed Thrusting Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Ecru Heart\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Elegant Pillow Down\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Elegant Pillow Up\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Explosion Proof Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Explosion Proof Multiplying Teleporter\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Explosion Proof Teleporter Exit\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Explosion Proof Teleporter\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Explosive Golden Plate\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Explosive Mines\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Fire Chimney\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Framed Bamboo Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Framed Light Orange Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Gold Bar\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Golden MegaJocke Face\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Golden Plate\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Green Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Green FlexBall Cream\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Grey Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Hidden Blue FlexBall Cream\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Hidden Green FlexBall Cream\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Hippie Mosaic\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Honeycomb\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Ice\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Jocke\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Jungle Square Spiral\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Kyanite\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Left-Directed Fuse Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Left-Directed Thrusting Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Light Orange Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Lila Stripes\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Lime Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Lime Green Scales\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Magenta Scales\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Mega Explosive\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Multiplying Teleporter\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Normal Resistant Down-Directed Thrusting Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Normal Resistant Left-Directed Thrusting Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Normal Resistant Right-Directed Thrusting Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Normal Resistant Up-Directed Thrusting Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Orange Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Orange-Beige Bumps\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Orange-Beige Stripes\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Pale Blue Cloud\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Pale Green Cloud\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Pale Red Cloud\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Red Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Red FlexBall Cream\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Red Heart\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Red Leather\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Regular Explosive\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Regular Teleporter\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Right-Directed Fuse Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Right-Directed Thrusting Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Sapphire\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Sky Blue Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Sky Blue Scales\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Sky Blue Stripes\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Star And Round\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Strong Dynamite\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Strong Stone\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Super Durable Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Super Mario Surprise Box\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Super Tough Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Teal Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Teleporter Exit\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Totally Obliterated Stone\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Tough Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Traditional Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Turquoise FlexBall Cream\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Up-Directed Fuse Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Up-Directed Thrusting Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Very Tough Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Violet Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Weak Stone\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Weakened Stone\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Weird Hazard Stripes\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Yellow Brick\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Default Bricks\Yellow Bumps\frames.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
