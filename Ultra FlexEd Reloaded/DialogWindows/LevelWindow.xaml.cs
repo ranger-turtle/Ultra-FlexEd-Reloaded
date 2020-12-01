@@ -48,7 +48,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 		{
 			FileChooseAndImportWindow musicChooseWindow = new FileChooseAndImportWindow(
 				fileFolder: "Music",
-				fileTypeToChooseExtension: ".mp3",
+				fileTypeToChooseExtension: ".ogg",
 				fileTypeToChooseName: "music file",
 				includeGameDefault: true,
 				includeLevelSetDefault: true)

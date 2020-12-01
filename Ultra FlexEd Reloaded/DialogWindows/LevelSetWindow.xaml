@@ -6,7 +6,7 @@
 		xmlns:uCtrls="clr-namespace:Ultra_FlexEd_Reloaded.UserControls"
         mc:Ignorable="d"
 		x:Name="LevelSetWin"
-        Title="Level Set Properties" Height="268.782" Width="563.938">
+        Title="Level Set Properties" Height="291.782" Width="605.938">
 	<DockPanel>
 		<DockPanel.Resources>
 			<Style TargetType="{x:Type StackPanel}">

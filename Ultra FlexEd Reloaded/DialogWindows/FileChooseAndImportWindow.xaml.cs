@@ -31,8 +31,8 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 		public FileChooseAndImportWindow(string fileFolder, string fileTypeToChooseExtension, string fileTypeToChooseName, bool includeGameDefault = false, bool includeLevelSetDefault = false, bool includePredefinedSoundsTypes = false)
 		{
 			InitializeComponent();
-			if (LevelSetManager.GetInstance().LevelLoaded)
-				fullFileDirectoryPath = Path.Combine(LevelSetManager.GetInstance().FilePathWithoutExtension, fileFolder);
+			if (LevelSetManager.GetInstance().LevelSetLoaded)
+				fullFileDirectoryPath = Path.Combine(LevelSetManager.GetInstance().LevelSetResourceDirectory, fileFolder);
 			ChooseFileListBoxItems = new ObservableCollection<ListBoxItem>
 			{
 				new ListBoxItem() { Content = "<none>" }
@@ -80,7 +80,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 		private void ImportFile()
 		{
 			if (string.IsNullOrEmpty(fullFileDirectoryPath))
-				fullFileDirectoryPath = LevelSetManager.GetInstance().FilePathWithoutExtension;
+				fullFileDirectoryPath = LevelSetManager.GetInstance().LevelSetResourceDirectory;
 			OpenFileDialog openFileDialog = new OpenFileDialog
 			{
 				DefaultExt = fileTypeExtension,
@@ -90,10 +90,11 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			if (openFileDialog.ShowDialog(this) == true)
 			{
 				string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(openFileDialog.SafeFileName);
+				string fileName = Path.GetFileName(openFileDialog.SafeFileName);
 				ChooseFileListBoxItems.Add(new ListBoxItem() { Content = fileNameWithoutExtension });
 				if (!Directory.Exists(fullFileDirectoryPath))
 					Directory.CreateDirectory(fullFileDirectoryPath);
-				File.Copy(openFileDialog.FileName, Path.Combine(fullFileDirectoryPath, fileNameWithoutExtension));
+				File.Copy(openFileDialog.FileName, Path.Combine(fullFileDirectoryPath, fileName));
 			}
 		}
 

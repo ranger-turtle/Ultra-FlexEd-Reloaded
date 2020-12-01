@@ -52,6 +52,7 @@
     <Compile Include="NewLevelSetFormatter.cs" />
     <Compile Include="OldLevelSetFormatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceChecker.cs" />
     <Compile Include="SmallUtilities.cs" />
   </ItemGroup>
   <ItemGroup>

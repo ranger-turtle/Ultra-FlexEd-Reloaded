@@ -52,6 +52,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializableCopier.cs" />
     <Compile Include="SoundLibrary.cs" />
+    <Compile Include="UltraFlexBallReloadedFileLoader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

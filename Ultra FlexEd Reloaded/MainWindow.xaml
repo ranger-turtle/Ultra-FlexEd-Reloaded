@@ -20,6 +20,7 @@
 		<CommandBinding Command="{x:Static main:MainWindow.MoveLevelDownCommand}" Executed="MoveLevelDown" CanExecute="CanMoveLevelDown"/>
 		<CommandBinding Command="{x:Static main:MainWindow.StartFlexBallCommand}" Executed="StartGame_Clicked"/>
 		<CommandBinding Command="{x:Static main:MainWindow.TestLevelCommand}" Executed="TestLevel_Clicked"/>
+		<CommandBinding Command="{x:Static main:MainWindow.CheckResourcesCommand}" Executed="CheckLevelSetResources_Clicked" CanExecute="CanCheckLevelSetResources" />
 	</Window.CommandBindings>
 	<Window.Resources>
 		<ContextMenu x:Key="BrickContextMenu">
@@ -67,32 +68,12 @@
 				<Separator/>
 				<MenuItem Header="Level Set Properties" Click="LevelSetProperties_Clicked" />
 				<Separator/>
+				<MenuItem Header="Check Level Set Resources..." Command="{x:Static main:MainWindow.CheckResourcesCommand}" />
+				<Separator/>
 				<MenuItem Header="_Exit" Click="Exit"/>
 			</MenuItem>
 			<MenuItem Header="_Level">
-				<MenuItem Header="_Add">
-					<MenuItem.Icon>
-						<Image Source="icons/add.png"/>
-					</MenuItem.Icon>
-				</MenuItem>
-				<MenuItem Header="_Insert">
-					<MenuItem.Icon>
-						<Image Source="icons/add.png"/>
-					</MenuItem.Icon>
-				</MenuItem>
-				<MenuItem Header="_Clear">
-					<MenuItem.Icon>
-						<Image Source="icons/clear.png"/>
-					</MenuItem.Icon>
-				</MenuItem>
-				<MenuItem Header="_Delete">
-					<MenuItem.Icon>
-						<Image Source="icons/delete.png"/>
-					</MenuItem.Icon>
-				</MenuItem>
-				<Separator/>
-				<MenuItem Header="Level Name"/>
-				<MenuItem Header="Import background..."/>
+				<MenuItem Header="Level Properties" Click="EditLevel_Clicked" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
 			</MenuItem>
 		</Menu>
 		<Grid DockPanel.Dock="Bottom">

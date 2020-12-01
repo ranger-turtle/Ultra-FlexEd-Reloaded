@@ -101,6 +101,11 @@ namespace Ultra_FlexEd_Reloaded
 				levelSetManager.SetTesters(new UltraFlexBall2000LevelTester(appSettings.UltraFlexBall2000Path), new UltraFlexBallReloadedLevelTester(appSettings.UltraFlexBallReloadedPath));
 				levelSetManager.UpdateTitle = ChangeTitle;
 			}
+			catch (ResourceCheckFailException rcfe)
+			{
+				new ResourceCheckErrorMessageBox(rcfe.MissingResourceNames, "Some default bricks are corrupt. Program will shut down.").ShowDialog();
+				Application.Current.Shutdown(1);
+			}
 			catch (Exception e)
 			{
 				MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -169,25 +174,28 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void AddBrick_Clicked(object sender, RoutedEventArgs e)
 		{
-			BrickWindow brickWindow = new BrickWindow(ConvertListBoxItemsToBrickMetadata())
+			PromptToAddFile(this, () =>
 			{
-				Owner = this
-			};
-			bool? confirmed = brickWindow.ShowDialog();
-			if (confirmed == true)
-			{
-				try
+				BrickWindow brickWindow = new BrickWindow(ConvertListBoxItemsToBrickMetadata())
 				{
-					BrickProperties brickProperties = brickWindow.DataContext as BrickProperties;
-					levelSetManager.AddBrickToLevelSet(brickWindow.BrickName, brickProperties, brickWindow.MainFrameSheetPath, null);
-					AddNewBrickTypeToListBox(brickProperties.Id, brickWindow.BrickName);
-					MessageBox.Show($@"Brick ""{brickWindow.BrickName}"" added successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-				}
-				catch (IOException ioe)
+					Owner = this
+				};
+				bool? confirmed = brickWindow.ShowDialog();
+				if (confirmed == true)
 				{
-					MessageBox.Show(ioe.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					try
+					{
+						BrickProperties brickProperties = brickWindow.DataContext as BrickProperties;
+						levelSetManager.AddBrickToLevelSet(brickWindow.BrickName, brickProperties, brickWindow.MainFrameSheetPath, null);
+						AddNewBrickTypeToListBox(brickProperties.Id, brickWindow.BrickName);
+						MessageBox.Show($@"Brick ""{brickWindow.BrickName}"" added successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+					}
+					catch (IOException ioe)
+					{
+						MessageBox.Show(ioe.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					}
 				}
-			}
+			});
 		}
 
 		private void ExecuteMenuCommandFromListItem<T>(object sender, Action<T> action) where T : UIElement
@@ -247,11 +255,11 @@ namespace Ultra_FlexEd_Reloaded
 			if (result == MessageBoxResult.Yes)
 			{
 				levelSetManager.RemoveBrick(imageListBoxItem.BrickId);
-				RefreshBoard();
 				int removedItemIndex = BrickListBoxItems.IndexOf(imageListBoxItem);
 				int offset = removedItemIndex != BrickListBoxItems.Count - 1 ? 1 : -1;
 				BrickListBox.SelectedItem = BrickListBoxItems[removedItemIndex + offset];
 				BrickListBoxItems.Remove(imageListBoxItem);
+				RefreshBoard();
 			}
 		}
 

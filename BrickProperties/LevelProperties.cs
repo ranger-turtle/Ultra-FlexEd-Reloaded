@@ -9,7 +9,7 @@ namespace LevelSetData
 		public string BackgroundName { get; set; } = "<level-set-default>";
 		public string Music { get; set; } = "<level-set-default>";
 
-		public SoundLibrary SoundLibrary { get; set; } = new SoundLibrary();
+		public SoundLibrary SoundLibrary { get; set; } = new SoundLibrary("<level-set-default>");
 
 		public object Clone()
 		{

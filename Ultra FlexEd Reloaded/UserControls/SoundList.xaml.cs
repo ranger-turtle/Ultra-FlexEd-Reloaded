@@ -52,12 +52,10 @@ namespace Ultra_FlexEd_Reloaded.UserControls
 			DependencyProperty.Register("IncludeLevelSetDefault", typeof(bool), typeof(SoundList));
 
 
-		private Dictionary<string, SoundLibrary.SoundLibraryPropertyAccessor> changeSoundFileActions;
-
 		public SoundList()
 		{
 			InitializeComponent();
-			foreach (var key in SoundLibrary.SoundNames)
+			foreach (var key in SoundLibrary.GetSoundKeys())
 				ComboBox.Items.Add(key);
 		}
 
@@ -69,7 +67,7 @@ namespace Ultra_FlexEd_Reloaded.UserControls
 			};
 			if (soundChooseWindow.ShowDialog() == true)
 			{
-				SoundLibrary.FromStringKey(ComboBox.SelectedItem.ToString()).SetValue(soundChooseWindow.ChosenFileName);
+				SoundLibrary.SetSound(ComboBox.SelectedItem.ToString(), soundChooseWindow.ChosenFileName);
 				HitSound.Text = soundChooseWindow.ChosenFileName;
 			}
 		}
@@ -81,7 +79,7 @@ namespace Ultra_FlexEd_Reloaded.UserControls
 
 		private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			HitSound.Text = SoundLibrary.FromStringKey(e.AddedItems[0].ToString()).GetValue();
+			HitSound.Text = SoundLibrary.FromStringKey(e.AddedItems[0].ToString());
 			ChangeButton.IsEnabled = true;
 		}
 	}

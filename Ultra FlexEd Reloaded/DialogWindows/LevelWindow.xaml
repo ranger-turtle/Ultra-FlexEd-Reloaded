@@ -6,7 +6,7 @@
 		xmlns:local ="clr-namespace:Ultra_FlexEd_Reloaded.UserControls"
         mc:Ignorable="d"
 		x:Name="NewLevelWin"
-        Title="Add New Level" Height="258.142" Width="452">
+        Title="Add New Level" Height="281.142" Width="514">
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
@@ -34,16 +34,16 @@
 			<Label Content="Level Name" VerticalAlignment="Center" />
 			<TextBox x:Name="levelNameField" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding Name}" VerticalAlignment="Center"/>
 		</StackPanel>
-			<StackPanel Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1">
-				<Label Content="Default Background Name" VerticalContentAlignment="Center"/>
-				<TextBox x:Name="DefaultBackgroundTextBox" IsEnabled="False" MinWidth="150" Text="{Binding BackgroundName}"/>
-				<Button Content="Change" Click="BackgroundButton_Click"/>
-			</StackPanel>
-			<StackPanel Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="2">
-				<Label Content="Default Music Name" MinWidth="150" VerticalContentAlignment="Center"/>
-				<TextBox x:Name="MusicTextBox" IsEnabled="False" MinWidth="150" Text="{Binding Music}"/>
-				<Button Content="Change" Click="MusicButton_Click"/>
-			</StackPanel>
+		<StackPanel Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1">
+			<Label Content="Background Name" VerticalContentAlignment="Center"/>
+			<TextBox x:Name="DefaultBackgroundTextBox" IsEnabled="False" MinWidth="150" Text="{Binding BackgroundName}"/>
+			<Button Content="Change" Click="BackgroundButton_Click"/>
+		</StackPanel>
+		<StackPanel Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="2">
+			<Label Content="Music Name" MinWidth="110" VerticalContentAlignment="Center"/>
+			<TextBox x:Name="MusicTextBox" IsEnabled="False" MinWidth="150" Text="{Binding Music}"/>
+			<Button Content="Change" Click="MusicButton_Click"/>
+		</StackPanel>
 		<local:SoundList x:Name="SoundSection" IncludeLevelSetDefault="True" SoundLibrary="{Binding SoundLibrary, Mode=TwoWay}" Grid.Row="3" HorizontalAlignment="Left" />
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Column="1" Grid.Row="6">
 			<Button Content="OK" IsDefault="True" Click="Ok_Clicked"/>

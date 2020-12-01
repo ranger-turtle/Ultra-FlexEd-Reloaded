@@ -8,7 +8,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 		private void NextBrickButton_Clicked(object sender, RoutedEventArgs e)
 			=> ChangeReferenceBrickId((id, imgsrc, imglbl) =>
 			{
-				(DataContext as BrickProperties).NextBrickId = id;
+				(DataContext as BrickProperties).NextBrickTypeId = id;
 				NextBrickImage.Source = imgsrc;
 				NextBrickLabel.Content = imglbl;
 			});

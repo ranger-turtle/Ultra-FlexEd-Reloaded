@@ -43,7 +43,7 @@ namespace LevelSetManagement
 				}
 				else if (brickProperties.IsDetonator)
 				{
-					_detonateIds.Add(brickProperties.DetonateId);
+					_detonateIds.Add(brickProperties.OldBrickTypeId);
 					return 124;
 				}
 				else if (_detonateIds.Exists(id => id == brickProperties.Id))
@@ -104,7 +104,7 @@ namespace LevelSetManagement
 					else
 						return 20;
 				}
-				else if (brickProperties.NextBrickId > 1)
+				else if (brickProperties.NextBrickTypeId > 1)
 					return 49;
 				else if (brickProperties.IsExplosive)
 				{
@@ -133,7 +133,7 @@ namespace LevelSetManagement
 				else if (brickProperties.AlwaysPowerUpYielding)
 					return 90;
 				else
-					return (brickProperties.Id - 126) % 15 + 1;
+					return (brickProperties.Id - LevelSetManager.DEFAULT_BRICK_QUANTITY + 1) % 15 + 1;
 			}
 			else
 				return brickProperties.Id;

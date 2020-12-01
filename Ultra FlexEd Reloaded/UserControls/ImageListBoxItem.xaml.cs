@@ -40,7 +40,8 @@ namespace Ultra_FlexEd_Reloaded.UserControls
 			string singleBrickDirectory = $"{brickDirectory}/{brickName}";
 			string extension = Path.GetExtension($"{singleBrickDirectory}/frames.png");
 			BitmapImage bitmapImage = BitmapMethods.GetImageWithCacheOnLoad(new Uri($"{singleBrickDirectory}/frames.png", UriKind.Relative));
-			Image.Source = new CroppedBitmap(bitmapImage, new Int32Rect(0, 0, BrickProperties.PIXEL_WIDTH, BrickProperties.PIXEL_HEIGHT));
+			int frames = (int)Math.Floor(bitmapImage.PixelHeight / (bitmapImage.PixelWidth * BrickProperties.STANDARD_DIMENSION_RATIO));
+			Image.Source = new CroppedBitmap(bitmapImage, new Int32Rect(0, 0, bitmapImage.PixelWidth, (bitmapImage.PixelHeight / frames)));
 			Label.Content = brickName;
 		}
 

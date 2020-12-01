@@ -3,12 +3,15 @@ using LevelSetManagement;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Ultra_FlexEd_Reloaded.DialogWindows;
+using Ultra_FlexEd_Reloaded.UserControls;
 
 namespace Ultra_FlexEd_Reloaded
 {
@@ -16,6 +19,8 @@ namespace Ultra_FlexEd_Reloaded
 	{
 		public static readonly RoutedCommand StartFlexBallCommand = new RoutedCommand("StartFlexBallCommand", typeof(MenuItem), new InputGestureCollection { new KeyGesture(Key.T, ModifierKeys.Control) });
 		public static readonly RoutedCommand TestLevelCommand = new RoutedCommand("TestLevelCommand", typeof(MenuItem), new InputGestureCollection { new KeyGesture(Key.T, ModifierKeys.Control | ModifierKeys.Shift) });
+
+		public static readonly RoutedCommand CheckResourcesCommand = new RoutedCommand("CheckResourcesCommand", typeof(MenuItem), new InputGestureCollection { new KeyGesture(Key.R, ModifierKeys.Control) });
 
 		private const string FileTypeFilter = "Ultra FlexBall Reloaded Level Sets (.nlev)|*.nlev|Ultra FlexBall 2000 Level Sets (.lev)|*.lev";
 		private AppSettings appSettings = AppSettings.LoadSettings();
@@ -55,17 +60,29 @@ namespace Ultra_FlexEd_Reloaded
 			{
 				try
 				{
-					levelSetManager.LoadLevelSetFile(openFileDialog.FileName);
+					try
+					{
+						levelSetManager.LoadLevelSetFile(openFileDialog.FileName);
+					}
+					catch (ResourceCheckFailException rcf)
+					{
+						//MessageBox.Show("Level set contains bricks whose type files are missing. They will be cleared.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+						new ResourceCheckErrorMessageBox(rcf.MissingResourceNames).ShowDialog();
+					}
 					LevelListBoxItems.Clear();
+					BrickListBoxItems = new ObservableCollection<ImageListBoxItem>(BrickListBoxItems.TakeWhile(blbi => blbi.BrickId <= LevelSetManager.DEFAULT_BRICK_QUANTITY));
+					SortedDictionary<int, string> brickNames = levelSetManager.GetCustomBrickNames();
+					foreach (var name in brickNames)
+						AddNewBrickTypeToListBox(name.Key, name.Value);
 					for (int i = 0; i < levelSetManager.LevelCount; i++)
 						LevelListBoxItems.Add(PrepareLevelToListBox(SmallUtilities.GetLevelNameForGUI(levelSetManager.GetLevel(i).LevelProperties.Name, i)));
 					BrickListBox.SelectedIndex = 0;
 					LevelListBox.SelectedIndex = 0;
 					RefreshBoard();
 				}
-				catch (FileFormatException ffe)
+				catch (IOException ioe)
 				{
-					MessageBox.Show(ffe.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					MessageBox.Show(ioe.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
 				catch (KeyNotFoundException)//After file with unknown extension open attempt
 				{
@@ -76,7 +93,7 @@ namespace Ultra_FlexEd_Reloaded
 
 		private bool? Save()
 		{
-			if (levelSetManager.LevelLoaded)
+			if (levelSetManager.LevelSetLoaded)
 			{
 				levelSetManager.SaveFile();
 				return true;
@@ -113,9 +130,9 @@ namespace Ultra_FlexEd_Reloaded
 		internal void PromptToAddFile(Window owner, Action setLevelAttribute)
 		{
 			LevelSetManager levelSetManager = LevelSetManager.GetInstance();
-			if (!levelSetManager.LevelLoaded || levelSetManager.CurrentFormatType != FormatType.New)
+			if (!levelSetManager.LevelSetLoaded || levelSetManager.CurrentFormatType != FormatType.New)
 			{
-				MessageBoxResult dialogResult = MessageBox.Show($"To add custom hit brick sound, you need do save your level set in new format first.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+				MessageBoxResult dialogResult = MessageBox.Show($"To add custom resource, you need do save your level set in new format first.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 				if (SaveAs(owner) == true)
 					setLevelAttribute();
 			}
@@ -125,7 +142,10 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void LevelSetProperties_Clicked(object sender, RoutedEventArgs e)
 		{
-			LevelSetWindow levelSetWindow = new LevelSetWindow(levelSetManager.CopyCurrentLevelSetProperties());
+			LevelSetWindow levelSetWindow = new LevelSetWindow(levelSetManager.CopyCurrentLevelSetProperties())
+			{
+				Owner = this
+			};
 			bool? confirmed = levelSetWindow.ShowDialog();
 			if (confirmed == true)
 			{
@@ -155,7 +175,7 @@ namespace Ultra_FlexEd_Reloaded
 		private void TestLevel_Clicked(object sender, ExecutedRoutedEventArgs e)
 		{
 			bool test = true;
-			if (!levelSetManager.LevelLoaded && !levelSetManager.Changed)
+			if (!levelSetManager.LevelSetLoaded && !levelSetManager.Changed)
 			{
 				MessageBox.Show("This level set is empty. Please add something.", LevelSetManager.MAIN_TITLE, MessageBoxButton.OK, MessageBoxImage.Warning);
 				test = false;
@@ -182,7 +202,7 @@ namespace Ultra_FlexEd_Reloaded
 		private void StartGame_Clicked(object sender, ExecutedRoutedEventArgs e)
 		{
 			bool test = true;
-			if (!levelSetManager.LevelLoaded && !levelSetManager.Changed)
+			if (!levelSetManager.LevelSetLoaded && !levelSetManager.Changed)
 			{
 				MessageBox.Show("This level set is empty. Please add something.", LevelSetManager.MAIN_TITLE, MessageBoxButton.OK, MessageBoxImage.Warning);
 				test = false;
@@ -205,6 +225,23 @@ namespace Ultra_FlexEd_Reloaded
 				}
 			}
 		}
+
+		private void CheckLevelSetResources_Clicked(object sender, ExecutedRoutedEventArgs e)
+		{
+			try
+			{
+				levelSetManager.CheckResources();
+				MessageBox.Show("Level set resource check succeeded.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+			}
+			catch (ResourceCheckFailException rcf)
+			{
+				new ResourceCheckErrorMessageBox(rcf.MissingResourceNames).ShowDialog();
+				foreach (var id in rcf.MissingBrickIds)
+					levelSetManager.ClearBlocksOfType(id);
+			}
+		}
+
+		private void CanCheckLevelSetResources(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = levelSetManager.LevelSetLoaded && levelSetManager.CurrentFormatType == FormatType.New;
 
 		protected override void OnClosing(CancelEventArgs e)
 		{

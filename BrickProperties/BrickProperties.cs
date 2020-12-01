@@ -3,11 +3,15 @@
 //BONUS Do distinct hit sounds for each hit type (other for ball hit, other for bullet hit)
 //BONUS Do distinct brick animation after breaking with Space Djoel
 //BONUS Make advanced fuse bricks which can destroy more than one brick and more than one way and
-//TODO Do distinct break animation for each hit type (for example, blue pushing block flames when it is broken with explosion but it fades when it is destroyed with bullet)
-//TODO Do always special hit flag (on special hit, the special hit sound is made and white particles are sprinkled (such when hitting an explosive or power-up yielding))
-//TODO Do custom brick break animation
+//UNDONE Do custom brick break animation
 namespace LevelSetData
 {
+	[Serializable]
+	public enum GraphicType
+	{
+		Smooth, Pixel
+	}
+
 	[Serializable]
 	public enum BreakAnimationType
 	{
@@ -30,13 +34,6 @@ namespace LevelSetData
 	public enum ChimneyType
 	{
 		None, Vertical, Sprinkling
-	}
-
-	//Detonator breaks bricks surpassing all detonation types
-	[Serializable]
-	public enum DetonatorType
-	{
-		Breaking, Changing
 	}
 
 	[Serializable]
@@ -72,7 +69,6 @@ namespace LevelSetData
 		None, Horizontal, Vertical, Oblique
 	}
 
-	//BONUS implement serialization skipping unnecessary data
 	/**
 	 * <summary><para>Properties of the brick saved in the *.brick file.</para>
 	 * <para>Id of the brick is count from 1.</para></summary>
@@ -87,15 +83,16 @@ namespace LevelSetData
 			public byte Green { get; set; }
 			public byte Blue { get; set; }
 		}
-		public const int PIXEL_WIDTH = 60;
-		public const int PIXEL_HEIGHT = 30;
+		public const int PIXEL_WIDTH = 30;
+		public const int PIXEL_HEIGHT = 15;
+		public const float STANDARD_DIMENSION_RATIO = (float)PIXEL_HEIGHT / PIXEL_WIDTH;
 
 		#region General
 		public int Id { get; set; }
 		public float[] FrameDurations { get; set; } = new float[] { 0.4f };
 		public bool StartAnimationFromRandomFrame { get; set; }
 		//public byte Durability { get; set; } = 1;
-		public int NextBrickId { get; set; }
+		public int NextBrickTypeId { get; set; }
 		public byte ExplosionRadius { get; set; } = 0;
 		private bool _requiredToComplete = true;
 		public bool RequiredToComplete
@@ -107,6 +104,7 @@ namespace LevelSetData
 				if (value == true) NormalResistant = false;
 			}
 		}
+		public GraphicType GraphicType { get; set; }
 		//special hit sound is made and white particles are sprinkled (such when hitting an explosive or power-up yielding)
 		public bool AlwaysSpecialHit { get; set; }
 		public int Points { get; set; } = 10;
@@ -114,8 +112,8 @@ namespace LevelSetData
 		#endregion
 
 		#region Power-up yield properties
-		public int PowerUpMeterUnits { get; set; } = 5;
 		public bool AlwaysPowerUpYielding { get; set; }
+		public int PowerUpMeterUnits { get; set; } = 5;
 		public YieldedPowerUp YieldedPowerUp { get; set; } = YieldedPowerUp.Any;
 		#endregion
 
@@ -178,13 +176,9 @@ namespace LevelSetData
 		#endregion
 
 		#region Detonator properties
-		public int DetonateId { get; set; }
-		public DetonationRange DetonationRange { get; set; }
-		public DetonatorType DetonatorType { get; set; }
-		#region Change bricks properties
 		public int OldBrickTypeId { get; set; }
 		public int NewBrickTypeId { get; set; }
-		#endregion
+		public DetonationRange DetonationRange { get; set; }
 		#endregion
 
 		#region Triggers
@@ -210,7 +204,9 @@ namespace LevelSetData
 
 		public bool IsSequential => SequenceDirection != Direction.None;
 
-		public bool IsDetonator => DetonateId > 0;
+		public bool IsDetonator => OldBrickTypeId > 0 && NewBrickTypeId == 0;
+
+		public bool IsChangingDetonator => OldBrickTypeId > 0 && NewBrickTypeId > 0;
 
 		public bool IsChimneyLike => ChimneyType != ChimneyType.None;
 

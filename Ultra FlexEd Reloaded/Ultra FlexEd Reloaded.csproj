@@ -130,6 +130,9 @@
     <Compile Include="DialogWindows\MultipleBrickChooseWindow.cs">
       <DependentUpon>MultipleBrickChooseWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DialogWindows\ResourceCheckErrorMessageBox.xaml.cs">
+      <DependentUpon>ResourceCheckErrorMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DialogWindows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -199,6 +202,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="DialogWindows\ResourceCheckErrorMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DialogWindows\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
