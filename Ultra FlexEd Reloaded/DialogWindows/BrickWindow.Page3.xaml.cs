@@ -56,7 +56,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			=> SetBallBreakAnimationTypeSectionVisibility((BreakAnimationType)e.AddedItems[0] == BreakAnimationType.Custom);
 
 		private void ImportBallBreakAnimationFramesheet(object sender, RoutedEventArgs e)
-			=> ImportImage((bitmapImage, fileName) => AddOptionalImageMetadata("ballbreak", BallBreakAnimationSpritesheet, bitmapImage, fileName, CheckImageDimensions));
+			=> OpenImage((bitmapImage, fileName) => AddOptionalImageMetadata("ballbreak", BallBreakAnimationSpritesheet, bitmapImage, fileName, CheckImageDimensions));
 
 
 		private void SetExplosionBreakAnimationTypeSectionVisibility(bool visible)
@@ -66,7 +66,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			=> SetExplosionBreakAnimationTypeSectionVisibility((BreakAnimationType)e.AddedItems[0] == BreakAnimationType.Custom);
 
 		private void ImportExplosionBreakAnimationFramesheet(object sender, RoutedEventArgs e)
-			=> ImportImage((bitmapImage, fileName) => AddOptionalImageMetadata("explosionbreak", ExplosionBreakAnimationSpritesheet, bitmapImage, fileName, CheckImageDimensions));
+			=> OpenImage((bitmapImage, fileName) => AddOptionalImageMetadata("explosionbreak", ExplosionBreakAnimationSpritesheet, bitmapImage, fileName, CheckImageDimensions));
 
 
 		private void SetBulletBreakAnimationTypeSectionVisibility(bool visible)
@@ -76,6 +76,6 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			=> SetBulletBreakAnimationTypeSectionVisibility((BreakAnimationType)e.AddedItems[0] == BreakAnimationType.Custom);
 
 		private void ImportBulletBreakAnimationFramesheet(object sender, RoutedEventArgs e)
-			=> ImportImage((bitmapImage, fileName) => AddOptionalImageMetadata("bulletbreak", BulletBreakAnimationSpritesheet, bitmapImage, fileName, CheckImageDimensions));
+			=> OpenImage((bitmapImage, fileName) => AddOptionalImageMetadata("bulletbreak", BulletBreakAnimationSpritesheet, bitmapImage, fileName, CheckImageDimensions));
 	}
 }

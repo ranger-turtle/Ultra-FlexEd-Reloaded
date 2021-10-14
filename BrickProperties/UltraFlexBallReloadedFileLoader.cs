@@ -12,6 +12,7 @@ namespace LevelSetData
 	{
 		public const string newTypeLevelSetFileSignature = "nuLev";
 		public const string brickFileSignature = "ufbrb";
+		public const string cutsceneMagicNumber = "ufbrcts";
 
 		public static LevelSet LoadLevelSet(string levelSetFilePath)
 		{
@@ -26,6 +27,8 @@ namespace LevelSetData
 						levelSet.LevelSetProperties.Name = levelSetReader.ReadString();
 						levelSet.LevelSetProperties.DefaultBackgroundName = levelSetReader.ReadString();
 						levelSet.LevelSetProperties.DefaultMusic = levelSetReader.ReadString();
+						levelSet.LevelSetProperties.DefaultLeftWallName = levelSetReader.ReadString();
+						levelSet.LevelSetProperties.DefaultRightWallName = levelSetReader.ReadString();
 						//BONUS write internal function after upgrade to next C# version
 						int customSoundInLevelSetSoundLibraryCount = levelSetReader.ReadInt32();
 						for (int i = 0; i < customSoundInLevelSetSoundLibraryCount; i++)
@@ -48,6 +51,11 @@ namespace LevelSetData
 								string value = levelSetReader.ReadString();
 								level.LevelProperties.SoundLibrary.SetSound(key, value);
 							}
+							level.LevelProperties.IsQuoteTip = levelSetReader.ReadBoolean();
+							level.LevelProperties.CharacterName = levelSetReader.ReadString();
+							level.LevelProperties.Quote = levelSetReader.ReadString();
+							level.LevelProperties.LeftWallName = levelSetReader.ReadString();
+							level.LevelProperties.RightWallName = levelSetReader.ReadString();
 							for (int i = 0; i < LevelSet.ROWS; i++)
 							{
 								for (int j = 0; j < LevelSet.COLUMNS; j++)
@@ -79,6 +87,7 @@ namespace LevelSetData
 						BrickProperties brickProperties = new BrickProperties();
 #pragma warning restore IDE0017 // Simplify object initialization
 						brickProperties.Id = brickReader.ReadInt32();
+						brickProperties.Name = Path.GetFileNameWithoutExtension(brickFilePath);
 						int frameDurationCount = brickReader.ReadInt32();
 						brickProperties.FrameDurations = new float[frameDurationCount];
 						for (int i = 0; i < frameDurationCount; i++)
@@ -141,18 +150,22 @@ namespace LevelSetData
 						{
 							brickProperties.ParticleX = brickReader.ReadByte();
 							brickProperties.ParticleY = brickReader.ReadByte();
-							brickProperties.Color1 = new BrickProperties.Color()
+							brickProperties.ChimneyColourSchemeType = (ChimneyColourSchemeType)brickReader.ReadInt32();
+							if (brickProperties.ChimneyColourSchemeType == ChimneyColourSchemeType.TwoColours)
 							{
-								Red = brickReader.ReadByte(),
-								Green = brickReader.ReadByte(),
-								Blue = brickReader.ReadByte()
-							};
-							brickProperties.Color2 = new BrickProperties.Color()
-							{
-								Red = brickReader.ReadByte(),
-								Green = brickReader.ReadByte(),
-								Blue = brickReader.ReadByte()
-							};
+								brickProperties.Color1 = new BrickProperties.Color()
+								{
+									Red = brickReader.ReadByte(),
+									Green = brickReader.ReadByte(),
+									Blue = brickReader.ReadByte()
+								};
+								brickProperties.Color2 = new BrickProperties.Color()
+								{
+									Red = brickReader.ReadByte(),
+									Green = brickReader.ReadByte(),
+									Blue = brickReader.ReadByte()
+								};
+							}
 						}
 						#endregion
 
@@ -204,6 +217,29 @@ namespace LevelSetData
 						throw new IOException("Invalid Ultra FlexBall Reloaded brick file loaded.");
 				}
 
+			}
+		}
+
+		public static string[] LoadCutsceneDialogues(string cutscenePath)
+		{
+			using (FileStream fileStream = File.OpenRead(cutscenePath))
+			{
+				using (BinaryReader cutsceneReader = new BinaryReader(fileStream))
+				{
+					string fileSignature = cutsceneReader.ReadString();
+					if (fileSignature == cutsceneMagicNumber)
+					{
+						List<string> cutsceneDialogues = new List<string>();
+						int dialogueCount = cutsceneReader.ReadInt32();
+						for (int i = 0; i < dialogueCount; i++)
+						{
+							cutsceneDialogues.Add(cutsceneReader.ReadString());
+						}
+						return cutsceneDialogues.ToArray();
+					}
+					else
+						throw new IOException("Invalid Ultra FlexBall Reloaded cutscene file loaded.");
+				}
 			}
 		}
 	}

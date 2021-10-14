@@ -89,10 +89,8 @@ namespace Ultra_FlexEd_Reloaded
 		private void EditLevel(ListBoxItem listBoxItem)
 		{
 			int index = LevelListBoxItems.IndexOf(listBoxItem);
-			LevelWindow levelWindow = new LevelWindow(levelSetManager.CopyCurrentLevelProperties())
-			{
-				Owner = this
-			};
+			Window levelWindow = LevelEditWindowFactory.GenerateLevelEditWindow(levelSetManager.CurrentFormatType, levelSetManager.CopyCurrentLevelProperties());
+			levelWindow.Owner = this;
 			if (levelWindow.ShowDialog() == true)
 			{
 				LevelProperties levelProperties = levelWindow.DataContext as LevelProperties;

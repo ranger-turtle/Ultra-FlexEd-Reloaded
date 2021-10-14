@@ -12,16 +12,17 @@ namespace LevelSetManagement
 	{
 		private List<string> corruptBrickNames = new List<string>();
 
-		public void CheckLevelSetResources(string levelSetFileName, LevelSet levelSet, List<BrickProperties> brickProperties, SortedDictionary<int, string> brickNames)
+		public void CheckLevelSetResources(string levelSetFileName, LevelSet levelSet, List<BrickProperties> brickProperties)
 		{
 			List<string> missingResourceNames = new List<string>();
 			List<int> missingBrickIds = new List<int>();
+			List<BrickProperties> customBrickProperties = brickProperties.SkipWhile(b => b.Id <= LevelSetManager.DEFAULT_BRICK_QUANTITY).ToList();
 
 			CheckSounds(levelSetFileName, levelSet, missingResourceNames);
 			CheckMusic(levelSetFileName, levelSet, missingResourceNames);
 			CheckBackgrounds(levelSetFileName, levelSet, missingResourceNames);
-			CheckBricks(levelSetFileName, levelSet, brickProperties, brickNames, missingResourceNames, missingBrickIds);
-			CheckIfNonExistentBricksWereAdded(levelSet, brickNames, missingBrickIds);
+			CheckBricks(levelSetFileName, levelSet, customBrickProperties, missingResourceNames, missingBrickIds);
+			CheckIfNonExistentBricksWereAdded(levelSet, brickProperties.Select(bp => bp.Id).ToList(), missingBrickIds);
 
 			if (missingResourceNames.Count > 0)
 				throw new ResourceCheckFailException()
@@ -94,7 +95,7 @@ namespace LevelSetManagement
 			}
 		}
 
-		private void CheckBricks(string levelSetFileName, LevelSet levelSet, List<BrickProperties> brickProperties, SortedDictionary<int, string> brickNames, List<string> missingResourceNames, List<int> missingBrickIds)
+		private void CheckBricks(string levelSetFileName, LevelSet levelSet, List<BrickProperties> customBrickProperties, List<string> missingResourceNames, List<int> missingBrickIds)
 		{
 			string brickDirectory = $"{levelSetFileName}/Bricks";
 
@@ -103,20 +104,20 @@ namespace LevelSetManagement
 				missingResourceNames.Add($"{corruptBrickName} is corrupt.");
 			}
 
-			for (int i = 0; i < brickProperties.Count; i++)
+			for (int i = 0; i < customBrickProperties.Count; i++)
 			{
-				int idOfCheckedBrick = brickProperties[i].Id;
-				string brickHitSound = brickProperties[i].HitSoundName;
+				int idOfCheckedBrick = customBrickProperties[i].Id;
+				string brickHitSound = customBrickProperties[i].HitSoundName;
 				string brickHitSoundPath = $"{levelSetFileName}/Sounds/{brickHitSound}.wav";
 				if (NotSpecialResourceName(brickHitSound) && !File.Exists(brickHitSoundPath))
-					missingResourceNames.Add($"{brickHitSoundPath} assigned to hit sound of brick \"{brickNames[idOfCheckedBrick]}\"");
-				string brickFramePath = $"{brickDirectory}/{brickNames[idOfCheckedBrick]}/frames.png";
+					missingResourceNames.Add($"{brickHitSoundPath} assigned to hit sound of brick \"{customBrickProperties[i].Name}\"");
+				string brickFramePath = $"{brickDirectory}/{customBrickProperties[i].Name}/frames.png";
 				if (!File.Exists(brickFramePath))
 				{
-					missingResourceNames.Add($"{brickFramePath} assigned to brick \"{brickNames[idOfCheckedBrick]}\"");
+					missingResourceNames.Add($"{brickFramePath} assigned to brick \"{customBrickProperties[i].Name}\"");
 					if (levelSet.Levels.Select(l => l.Bricks.Cast<BrickInLevel>()).SelectMany(bc => bc).Any(b => b.BrickId == idOfCheckedBrick))
 					{
-						missingResourceNames.Add($"Brick \"{brickNames[idOfCheckedBrick]}\"");
+						missingResourceNames.Add($"Brick \"{customBrickProperties[i].Name}\"");
 						missingBrickIds.Add(idOfCheckedBrick);
 					}
 				}
@@ -139,12 +140,12 @@ namespace LevelSetManagement
 				};
 		}
 
-		private void CheckIfNonExistentBricksWereAdded(LevelSet levelSet, SortedDictionary<int, string> brickNames, List<int> missingBrickIds)
+		private void CheckIfNonExistentBricksWereAdded(LevelSet levelSet, List<int> brickIds, List<int> missingBrickIds)
 		{
 			List<int> uniqueIdsUsedInLevelSet = levelSet.Levels.Select(l => l.Bricks.Cast<BrickInLevel>()).SelectMany(b => b).Select(b => b.BrickId).Distinct().ToList();
 			foreach (int brickId in uniqueIdsUsedInLevelSet)
 			{
-				if (!brickNames.ContainsKey(brickId) && brickId != 0)
+				if (!brickIds.Contains(brickId) && brickId != 0)
 				{
 					missingBrickIds.Add(brickId);
 				}

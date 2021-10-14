@@ -9,5 +9,8 @@ namespace LevelSetData
 		public string DefaultBackgroundName { get; set; } = "<none>";
 		public string DefaultMusic { get; set; } = "<none>";
 		public SoundLibrary DefaultSoundLibrary { get; set; } = new SoundLibrary("<game-default>");
+		
+		public string DefaultLeftWallName { get; set; } = "<none>";
+		public string DefaultRightWallName { get; set; } = "<none>";
 	}
 }

@@ -80,9 +80,9 @@ namespace Ultra_FlexEd_Reloaded
 					}
 				}
 				BrickListBoxItems = new ObservableCollection<ImageListBoxItem>();
-				SortedDictionary<int, string> brickNames = levelSetManager.BrickNames;
-				foreach (var name in brickNames)
-					AddNewBrickTypeToListBox(name.Key, name.Value);
+				List<BrickProperties> brickTypes = levelSetManager.Bricks;
+				foreach (var brickType in brickTypes)
+					AddNewBrickTypeToListBox(brickType.Id, brickType.Name);
 				if (levelSetManager.Bricks.Count > 0)
 				{
 					BrickListBox.SelectedItem = BrickListBoxItems[0];
@@ -186,9 +186,9 @@ namespace Ultra_FlexEd_Reloaded
 					try
 					{
 						BrickProperties brickProperties = brickWindow.DataContext as BrickProperties;
-						levelSetManager.AddBrickToLevelSet(brickWindow.BrickName, brickProperties, brickWindow.MainFrameSheetPath, null);
-						AddNewBrickTypeToListBox(brickProperties.Id, brickWindow.BrickName);
-						MessageBox.Show($@"Brick ""{brickWindow.BrickName}"" added successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+						levelSetManager.AddBrickToLevelSet(brickProperties, brickWindow.MainFrameSheetPath, null);
+						AddNewBrickTypeToListBox(brickProperties.Id, brickProperties.Name);
+						MessageBox.Show($@"Brick ""{brickProperties.Name}"" added successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 					}
 					catch (IOException ioe)
 					{
@@ -217,7 +217,7 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void EditBrick(ImageListBoxItem imageListBoxItem)
 		{
-			BrickWindow brickWindow = new BrickWindow(ConvertListBoxItemsToBrickMetadata(), levelSetManager.GetBrickById(imageListBoxItem.BrickId), imageListBoxItem.Label.Content as string, levelSetManager.CurrentLevelName)
+			BrickWindow brickWindow = new BrickWindow(ConvertListBoxItemsToBrickMetadata(), levelSetManager.GetBrickById(imageListBoxItem.BrickId), levelSetManager.CurrentLevelName)
 			{
 				Owner = this
 			};
@@ -228,14 +228,14 @@ namespace Ultra_FlexEd_Reloaded
 				{
 					BrickProperties brickProperties = brickWindow.DataContext as BrickProperties;
 					imageListBoxItem.ClearImage();
-					levelSetManager.UpdateBrick(brickWindow.BrickName, brickProperties, brickWindow.MainFrameSheetPath, brickWindow.OptionalImagePaths);
-					imageListBoxItem.Update(levelSetManager.GetBrickFolder(imageListBoxItem.BrickId), brickWindow.BrickName);
+					levelSetManager.UpdateBrick(brickProperties, brickWindow.MainFrameSheetPath, brickWindow.OptionalImagePaths);
+					imageListBoxItem.Update(levelSetManager.GetBrickFolder(imageListBoxItem.BrickId), brickProperties.Name);
 					foreach (BrickView brickView in bricksInEditor)
 						if (imageListBoxItem.BrickId == brickView.BrickId)
 							brickView.Image.Source = imageListBoxItem.Image.Source;
 					if (imageListBoxItem.BrickId == levelSetManager.CurrentBrickId)
 						CurrentBitmap = imageListBoxItem.Image.Source;
-					MessageBox.Show($@"Brick ""{brickWindow.BrickName}"" changed successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+					MessageBox.Show($@"Brick ""{brickProperties.Name}"" changed successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 				}
 				catch (IOException ioe)
 				{

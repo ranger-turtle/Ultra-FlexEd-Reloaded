@@ -142,10 +142,8 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void LevelSetProperties_Clicked(object sender, RoutedEventArgs e)
 		{
-			LevelSetWindow levelSetWindow = new LevelSetWindow(levelSetManager.CopyCurrentLevelSetProperties())
-			{
-				Owner = this
-			};
+			Window levelSetWindow = LevelEditWindowFactory.GenerateLevelSetWindow(levelSetManager.CurrentFormatType, levelSetManager.CopyCurrentLevelSetProperties());
+			levelSetWindow.Owner = this;
 			bool? confirmed = levelSetWindow.ShowDialog();
 			if (confirmed == true)
 			{

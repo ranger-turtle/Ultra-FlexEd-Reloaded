@@ -37,6 +37,12 @@ namespace LevelSetData
 	}
 
 	[Serializable]
+	public enum ChimneyColourSchemeType
+	{
+		TwoColours, WholeHueRange
+	}
+
+	[Serializable]
 	public enum DetonationRange
 	{
 		One, All
@@ -89,6 +95,7 @@ namespace LevelSetData
 
 		#region General
 		public int Id { get; set; }
+		public string Name { get; set; } = "New Brick";
 		public float[] FrameDurations { get; set; } = new float[] { 0.4f };
 		public bool StartAnimationFromRandomFrame { get; set; }
 		//public byte Durability { get; set; } = 1;
@@ -157,6 +164,7 @@ namespace LevelSetData
 
 		#region Chimney-like brick properties
 		public ChimneyType ChimneyType { get; set; }
+		public ChimneyColourSchemeType ChimneyColourSchemeType { get; set; }
 		public byte ParticleX { get; set; }
 		public byte ParticleY { get; set; }
 		public Color Color1 { get; set; }
@@ -188,10 +196,10 @@ namespace LevelSetData
 		#endregion
 
 		#region Moving brick properties
+		public MovingBrickType MovingBrickType { get; set; }
 		public int BoundOne { get; set; }
 		public int BoundTwo { get; set; }
 		public float BrickMoveInterval { get; set; }
-		public MovingBrickType MovingBrickType { get; set; }
 		#endregion
 
 		public bool IsExplosive => ExplosionRadius > 0;
@@ -204,9 +212,7 @@ namespace LevelSetData
 
 		public bool IsSequential => SequenceDirection != Direction.None;
 
-		public bool IsDetonator => OldBrickTypeId > 0 && NewBrickTypeId == 0;
-
-		public bool IsChangingDetonator => OldBrickTypeId > 0 && NewBrickTypeId > 0;
+		public bool IsDetonator => OldBrickTypeId > 0;
 
 		public bool IsChimneyLike => ChimneyType != ChimneyType.None;
 

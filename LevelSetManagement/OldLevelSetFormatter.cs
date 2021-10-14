@@ -7,6 +7,7 @@ using LevelSetData;
 
 namespace LevelSetManagement
 {
+	//FIXME remove bugs causing crash on new to old type conversion
 	internal class OldLevelSetFormatter : ILevelSetFormatter
 	{
 		private readonly int LEVEL_SET_NAME_LENGTH = 176;
@@ -160,8 +161,7 @@ namespace LevelSetManagement
 					level.LevelProperties.Name = Encoding.Default.GetString(bytes, 0, Math.Min(Array.FindIndex(bytes, b => b == 0), LEVEL_NAME_LENGTH - 1));
 					fileStream.Read(bytes, 0, BG_NAME_LENGTH);
 					string backgroundName = Encoding.Default.GetString(bytes, 0, Math.Min(Array.FindIndex(bytes, b => b == 0), BG_NAME_LENGTH - 1));
-					if (backgroundName != string.Empty)
-						level.LevelProperties.BackgroundName = backgroundName;
+					level.LevelProperties.BackgroundName = backgroundName;
 					for (int j = 0; j < 25; j++)
 					{
 						for (int k = 0; k < 20; k++)
@@ -191,8 +191,13 @@ namespace LevelSetManagement
 				fileStream.Write(levelSetNameToSave, 0, levelSetNameToSave.Length);
 				foreach (Level level in levelSet.Levels)
 				{
+					string backgroundName = level.LevelProperties.BackgroundName;
+					if (backgroundName == "<level-set-default>")
+						backgroundName = levelSet.LevelSetProperties.DefaultBackgroundName;
+					else if (backgroundName == "<none>")
+						backgroundName = string.Empty;
 					SaveString(fileStream, Encoding.Default.GetBytes(level.LevelProperties.Name ?? string.Empty), levelNameToSave);
-					SaveString(fileStream, Encoding.Default.GetBytes(level.LevelProperties.BackgroundName ?? string.Empty), backgroundNameToSave);
+					SaveString(fileStream, Encoding.Default.GetBytes(backgroundName), backgroundNameToSave);
 					foreach (BrickInLevel brickInLevel in level.Bricks)
 					{
 						int idToSave = brickInLevel.BrickId;

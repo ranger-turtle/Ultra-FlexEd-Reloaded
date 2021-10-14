@@ -8,12 +8,14 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Ultra_FlexEd_Reloaded</RootNamespace>
     <AssemblyName>Ultra FlexEd Reloaded</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,10 +28,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -62,8 +62,8 @@
     <StartupObject>Ultra_FlexEd_Reloaded.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ColorPickerWPF, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ColorPickerWPF.1.0.9\lib\net461\ColorPickerWPF.dll</HintPath>
+    <Reference Include="ColorPickerWPF, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ColorPickerWPF.1.0.7\lib\net452\ColorPickerWPF.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -81,9 +81,8 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WriteableBitmapEx.Wpf, Version=1.6.7.0, Culture=neutral, PublicKeyToken=50375ca6144f1c69, processorArchitecture=MSIL">
-      <HintPath>..\packages\WriteableBitmapEx.1.6.7\lib\net40\WriteableBitmapEx.Wpf.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="WriteableBitmapEx.Wpf, Version=1.5.0.0, Culture=neutral, PublicKeyToken=50375ca6144f1c69, processorArchitecture=MSIL">
+      <HintPath>..\packages\WriteableBitmapEx.1.5.0.0\lib\net40\WriteableBitmapEx.Wpf.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +114,9 @@
     <Compile Include="DialogWindows\CreateOrImportLevelWindow.xaml.cs">
       <DependentUpon>CreateOrImportLevelWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DialogWindows\CutsceneWindow.xaml.cs">
+      <DependentUpon>CutsceneWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DialogWindows\FileChooseAndImportWindow.xaml.cs">
       <DependentUpon>FileChooseAndImportWindow.xaml</DependentUpon>
     </Compile>
@@ -130,12 +132,19 @@
     <Compile Include="DialogWindows\MultipleBrickChooseWindow.cs">
       <DependentUpon>MultipleBrickChooseWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DialogWindows\OldTypeLevelSetWindow.xaml.cs">
+      <DependentUpon>OldTypeLevelSetWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\OldTypeLevelWindow.xaml.cs">
+      <DependentUpon>OldTypeLevelWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DialogWindows\ResourceCheckErrorMessageBox.xaml.cs">
       <DependentUpon>ResourceCheckErrorMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="DialogWindows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LevelEditWindowFactory.cs" />
     <Compile Include="MainWindow.MenuOptions.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -166,6 +175,10 @@
     <Compile Include="UserControls\SoundList.xaml.cs">
       <DependentUpon>SoundList.xaml</DependentUpon>
     </Compile>
+    <Page Include="DialogWindows\CutsceneWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DialogWindows\MultipleBrickChooseWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -202,6 +215,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="DialogWindows\OldTypeLevelSetWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\OldTypeLevelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DialogWindows\ResourceCheckErrorMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

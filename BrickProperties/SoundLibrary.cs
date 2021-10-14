@@ -31,10 +31,29 @@ namespace LevelSetData
 			"Mega Missile Shoot",
 			"Mega Explosion",
 			"Protective Barrier Hit",
-			"Win"
+			"Win",
+
+			"Ball Grow",
+			"Ball Shrink",
+			"Explosive Ball",
+			"Split Ball",
+			"Penetrating Ball",
+			"Descending Bricks",
+			"Space Djoel",
+			"Extra Paddle",
+			"Shooter",
+			"Protective Barrier",
+			"Explosive Multiplier",
+			"Magnet Paddle",
+			"Mega Split",
+			"Paddle Shrink",
+			"Paddle Grow",
+			"Regular Multiplier",
+			"Mega Missile",
+			"Megajocke"
 		};
 
-		private string defaultValue;
+		private readonly string defaultValue;
 
 		private Dictionary<string, string> soundLibraryDictionary;
 

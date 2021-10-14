@@ -7,12 +7,13 @@ using LevelSetData;
 
 namespace LevelSetManagement
 {
-	//TODO add automatic update events (e.g. onBrickUpdate, onLevelUpdate)
-	//TODO add brick import (cannot add bricks with mere copying brick file due to possible id conflicts)
+	//BONUS try to optimize manager moving operations on brick to Brick Manager and on cutscenes to Cutscene Manager.
+	//BONUS Move all primary IO operations from UFB assembly to here.
 	public class LevelSetManager
 	{
 		public class CheckResourcesFailException : Exception { }
 		public class BrickCorruptException : Exception { }
+		public class InvalidCutsceneException : Exception { }
 
 		public const string MAIN_TITLE = "Ultra FlexEd Reloaded";
 
@@ -20,7 +21,6 @@ namespace LevelSetManagement
 		public const string DEFAULT_BRICK_DIRECTORY = "Default Bricks";
 
 		public const string EMPTY_ELEMENT_PLACEHOLDER = "<none>";
-
 		private readonly Comparison<BrickProperties> brickPropertyComparison = (bp1, bp2) => bp1.Id.CompareTo(bp2.Id);
 
 		#region eventHandlers
@@ -49,7 +49,6 @@ namespace LevelSetManagement
 
 		private LevelSet _levelSet = new LevelSet();
 		public List<BrickProperties> Bricks { get; } = new List<BrickProperties>();
-		public SortedDictionary<int, string> BrickNames { get; private set; } = new SortedDictionary<int, string>();
 		public string FilePath { get; private set; }
 		public string LevelSetResourceDirectory => Path.Combine(Path.GetDirectoryName(FilePath), Path.GetFileNameWithoutExtension(FilePath));
 
@@ -58,7 +57,7 @@ namespace LevelSetManagement
 
 		public BrickProperties CurrentBrick => Bricks.Find(b => b.Id == CurrentBrickId);
 		private Level CurrentLevel => _levelSet.Levels[CurrentLevelIndex];
-		public string CurrentBrickName => BrickNames[CurrentBrickId];
+		public string CurrentBrickName => CurrentBrick.Name;
 		public string CurrentLevelName => _levelSet.Levels[CurrentLevelIndex].LevelProperties.Name;
 		public FormatType CurrentFormatType => LevelSetLoaded ? formatTypes[Path.GetExtension(FilePath)] : FormatType.New;
 		public bool LevelSetLoaded => !string.IsNullOrEmpty(FilePath);
@@ -121,8 +120,7 @@ namespace LevelSetManagement
 				{
 					BrickProperties brickProperties = UltraFlexBallReloadedFileLoader.LoadBrick(brickPath);
 					Bricks.Add(brickProperties);
-					BrickNames[brickProperties.Id] = Path.GetFileNameWithoutExtension(brickPath);
-					CheckBrickFileSystem(directory, BrickNames[brickProperties.Id]);
+					CheckBrickFileSystem(directory, brickProperties.Name);
 				}
 				catch (IOException)
 				{
@@ -144,7 +142,7 @@ namespace LevelSetManagement
 
 		public string GetBrickFolder(int brickId) => brickId <= DEFAULT_BRICK_QUANTITY ? DEFAULT_BRICK_DIRECTORY : $"{LevelSetResourceDirectory}/Bricks";
 
-		public SortedDictionary<int, string> GetCustomBrickNames() => new SortedDictionary<int, string>(BrickNames.SkipWhile(bn => bn.Key <= DEFAULT_BRICK_QUANTITY).ToDictionary(k => k.Key, v => v.Value));
+		public SortedDictionary<int, string> GetCustomBrickNames() => new SortedDictionary<int, string>(Bricks.SkipWhile(bn => bn.Id <= DEFAULT_BRICK_QUANTITY).ToDictionary(k => k.Id, v => v.Name));
 
 		public void LoadLevelSetFile(string filepath)
 		{
@@ -155,8 +153,6 @@ namespace LevelSetManagement
 			FilePath = filepath;
 			if (Bricks.Count > DEFAULT_BRICK_QUANTITY)//if custom bricks were loaded
 			{
-				for (int i = DEFAULT_BRICK_QUANTITY; i < Bricks.Count; i++)
-					BrickNames.Remove(Bricks[i].Id);
 				Bricks.RemoveRange(DEFAULT_BRICK_QUANTITY, Bricks.Count - DEFAULT_BRICK_QUANTITY);
 			}
 			//if loaded level set includes custom bricks
@@ -225,7 +221,7 @@ namespace LevelSetManagement
 			return ids[i - 1] + 1;
 		}
 
-		public void AddBrickToLevelSet(string brickName, BrickProperties brick, string frameSheetPath, Dictionary<string, string> optionalImagePaths)
+		public void AddBrickToLevelSet(BrickProperties brick, string frameSheetPath, Dictionary<string, string> optionalImagePaths)
 		{
 			if (frameSheetPath == null) throw new NullReferenceException("Frame sheet paths cannot be null.");
 			int[] ids = Bricks.Select(b => b.Id).ToArray();
@@ -237,28 +233,55 @@ namespace LevelSetManagement
 			brick.Id = firstAbsentId;
 			Bricks.Add(brick);
 			Bricks.Sort(brickPropertyComparison);
-			BrickNames[firstAbsentId] = brickName;
-			SaveBrick(brickName, brick, frameSheetPath, optionalImagePaths);
+			SaveBrick(brick, frameSheetPath, optionalImagePaths);
 		}
 
-		public void UpdateBrick(string brickName, BrickProperties brick, string frameSheetPath, Dictionary<string, string> optionalFilePaths)
+		public BrickProperties ImportLocalBrick(int brickTypeId, out string frameSheetPath, out Dictionary<string, string> optionalImagePaths)
 		{
-			string oldBrickName = BrickNames[brick.Id];
-			BrickNames[brick.Id] = brickName;
-			Bricks[Bricks.FindIndex(b => b.Id == brick.Id)] = brick;
-			if (oldBrickName != brickName)
+			BrickProperties brickProperties = SerializableCopier.Clone(GetBrickById(brickTypeId));
+			string brickFolder = Path.Combine(GetBrickFolder(brickTypeId), brickProperties.Name);
+			frameSheetPath = Path.Combine(brickFolder, "frames.png");
+
+			optionalImagePaths = new Dictionary<string, string>();
+
+			string hitBrickPath = Path.Combine(brickFolder, "hit.png");
+
+			if (File.Exists(hitBrickPath))
+				optionalImagePaths.Add("hit", hitBrickPath);
+
+			string ballAnimationPath = Path.Combine(brickFolder, "ballbreak.png");
+			string explosionAnimationPath = Path.Combine(brickFolder, "explosionbreak.png");
+			string bulletAnimationPath = Path.Combine(brickFolder, "bulletbreak.png");
+
+			if (File.Exists(ballAnimationPath))
+				optionalImagePaths.Add("ballbreak", ballAnimationPath);
+			if (File.Exists(explosionAnimationPath))
+				optionalImagePaths.Add("explosionbreak", explosionAnimationPath);
+			if (File.Exists(bulletAnimationPath))
+				optionalImagePaths.Add("bulletbreak", bulletAnimationPath);
+
+			brickProperties.Name += " - Copy";
+			return brickProperties;
+		}
+
+		public void UpdateBrick(BrickProperties brick, string frameSheetPath, Dictionary<string, string> optionalFilePaths)
+		{
+			int changedBrickTypeIndex = Bricks.FindIndex(b => b.Id == brick.Id);
+			string oldBrickName = Bricks[changedBrickTypeIndex].Name;
+			Bricks[changedBrickTypeIndex] = brick;
+			if (oldBrickName != brick.Name)
 			{
-				Directory.Move($"{GetBrickFolder(brick.Id)}/{oldBrickName}/", $"{GetBrickFolder(brick.Id)}/{brickName}/");
-				File.Move($"{GetBrickFolder(brick.Id)}/{oldBrickName}.brick", $"{GetBrickFolder(brick.Id)}/{brickName}.brick");
+				Directory.Move($"{GetBrickFolder(brick.Id)}/{oldBrickName}/", $"{GetBrickFolder(brick.Id)}/{brick.Name}/");
+				File.Move($"{GetBrickFolder(brick.Id)}/{oldBrickName}.brick", $"{GetBrickFolder(brick.Id)}/{brick.Name}.brick");
 			}
-			SaveBrick(brickName, brick, frameSheetPath, optionalFilePaths);
+			SaveBrick(brick, frameSheetPath, optionalFilePaths);
 		}
 
 		//BONUS try implementing brick file compression
-		private void SaveBrick(string brickName, BrickProperties brick, string mainFrameSheetPath, Dictionary<string, string> optionalBrickImagePaths)
+		private void SaveBrick(BrickProperties brick, string mainFrameSheetPath, Dictionary<string, string> optionalBrickImagePaths)
 		{
 			string brickFolder = GetBrickFolder(brick.Id);
-			string brickSheetFolder = $"{brickFolder}/{brickName}";
+			string brickSheetFolder = $"{brickFolder}/{brick.Name}";
 			Directory.CreateDirectory(brickSheetFolder);
 			SaveBrickFile(brickSheetFolder, brick);
 			if (mainFrameSheetPath != null)
@@ -343,12 +366,16 @@ namespace LevelSetManagement
 					{
 						brickWriter.Write(brickProperties.ParticleX);
 						brickWriter.Write(brickProperties.ParticleY);
-						brickWriter.Write(brickProperties.Color1.Red);
-						brickWriter.Write(brickProperties.Color1.Green);
-						brickWriter.Write(brickProperties.Color1.Blue);
-						brickWriter.Write(brickProperties.Color2.Red);
-						brickWriter.Write(brickProperties.Color2.Green);
-						brickWriter.Write(brickProperties.Color2.Blue);
+						brickWriter.Write((int)brickProperties.ChimneyColourSchemeType);
+						if (brickProperties.ChimneyColourSchemeType == ChimneyColourSchemeType.TwoColours)
+						{
+							brickWriter.Write(brickProperties.Color1.Red);
+							brickWriter.Write(brickProperties.Color1.Green);
+							brickWriter.Write(brickProperties.Color1.Blue);
+							brickWriter.Write(brickProperties.Color2.Red);
+							brickWriter.Write(brickProperties.Color2.Green);
+							brickWriter.Write(brickProperties.Color2.Blue);
+						}
 					}
 					#endregion
 
@@ -398,9 +425,8 @@ namespace LevelSetManagement
 
 		public void RemoveBrick(int brickId)
 		{
-			string brickName = BrickNames[brickId];
+			string brickName = GetBrickById(brickId).Name;
 			string brickFolder = GetBrickFolder(brickId);
-			BrickNames.Remove(brickId);
 			Bricks.Remove(Bricks.Find(b => b.Id == brickId));
 			ClearBlocksOfType(brickId);
 			Directory.Delete($"{brickFolder}/{brickName}", true);
@@ -487,6 +513,69 @@ namespace LevelSetManagement
 			UpdateTitle(CurrentAppTitle);
 		}
 
+		#region cutscenes
+		public void CreateCutscene(string cutsceneName, string[] dialogues, string[] imagePaths, string musicPath)
+		{
+			if (dialogues.Length != imagePaths.Length)
+				throw new InvalidCutsceneException();
+			string cutsceneDir = Path.Combine(LevelSetResourceDirectory, cutsceneName);
+			Directory.CreateDirectory(cutsceneDir);
+			string cutscenePath = Path.Combine(cutsceneDir, $"{cutsceneName}.cutscene");
+			string outputMusiMusic = Path.Combine(cutsceneDir, $"music.ogg");
+			if (musicPath != outputMusiMusic && !string.IsNullOrEmpty(musicPath))
+				File.Copy(musicPath, outputMusiMusic);
+			using (FileStream fileStream = File.Create(cutscenePath))
+			{
+				using (BinaryWriter binaryWriter = new BinaryWriter(fileStream))
+				{
+					binaryWriter.Write(UltraFlexBallReloadedFileLoader.cutsceneMagicNumber);
+					binaryWriter.Write(dialogues.Length);
+					for (int i = 0; i < dialogues.Length; i++)
+					{
+						string outputImageName = Path.Combine(cutsceneDir, $"frame{i + 1}.jpg");
+						if (imagePaths[i] != outputImageName)
+							File.Copy(imagePaths[i], outputImageName);
+						binaryWriter.Write(dialogues[i]);
+					}
+				}
+			}
+		}
+
+		public void ImportCutscene(string cutsceneName, out string[] dialogues, out string[] imagePaths, out string musicPath)
+		{
+			string cutsceneDir = Path.Combine(LevelSetResourceDirectory, cutsceneName);
+			string cutscenePath = Path.Combine(cutsceneDir, $"{cutsceneName}.cutscene");
+			if (File.Exists(cutscenePath))
+			{
+				imagePaths = Directory.EnumerateFiles(cutsceneDir, "*.jpg").ToArray();
+				musicPath = Path.Combine(cutsceneDir, "music.ogg");
+				if (!File.Exists(musicPath))
+					musicPath = null;
+				using (FileStream fileStream = File.OpenRead(cutscenePath))
+				{
+					using (BinaryReader BinaryReader = new BinaryReader(fileStream))
+					{
+						string cutsceneMagicNumber = BinaryReader.ReadString();
+						if (cutsceneMagicNumber != UltraFlexBallReloadedFileLoader.cutsceneMagicNumber)
+							throw new IOException("Invalid cutscene file.");
+						int dialogueCount = BinaryReader.ReadInt32();
+						if (dialogueCount != imagePaths.Length)
+							throw new IOException("Dialogues are mismatched with frames (their count not equal).");
+						dialogues = new string[dialogueCount];
+						for (int i = 0; i < dialogueCount; i++)
+							dialogues[i] = BinaryReader.ReadString();
+					}
+				}
+			}
+			else
+			{
+				dialogues = null;
+				imagePaths = null;
+				musicPath = null;
+			}
+		}
+		#endregion
+
 		/**
 		 * Get Brick by Id.
 		 * <param name="id">Id of the brick</param>
@@ -501,9 +590,8 @@ namespace LevelSetManagement
 
 		public void CheckResources()
 		{
-			List<BrickProperties> customBricks = Bricks.SkipWhile(b => b.Id <= DEFAULT_BRICK_QUANTITY).ToList();
 			string levelSetFileName = LevelSetResourceDirectory;
-			resourceChecker.CheckLevelSetResources(levelSetFileName, _levelSet, customBricks, BrickNames);
+			resourceChecker.CheckLevelSetResources(levelSetFileName, _levelSet, Bricks);
 		}
 	}
 }

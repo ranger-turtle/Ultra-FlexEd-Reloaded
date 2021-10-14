@@ -15,12 +15,12 @@ namespace Ultra_FlexEd_Reloaded
 
 		public void TestLevelSet(string levelSetName)
 		{
-			Process.Start(GamePath, $"\"-s:{levelSetName}.nlev\"");
+			Process.Start(GamePath, $"\"-s:{levelSetName}\"");
 		}
 
 		public void TestLevel(string levelSetName, int levelNum)
 		{
-			Process.Start(GamePath, $"\"-s:{levelSetName}.nlev\" -l:{levelNum}");
+			Process.Start(GamePath, $"\"-s:{levelSetName}\" -l:{levelNum}");
 		}
 
 		public void SetPath(string path)

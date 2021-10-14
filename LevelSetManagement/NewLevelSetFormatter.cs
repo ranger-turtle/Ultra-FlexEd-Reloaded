@@ -1,4 +1,5 @@
-﻿#define NEW
+﻿#define NEWLOAD
+#define NEWSAVE
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -12,7 +13,7 @@ namespace LevelSetManagement
 	{
 		public LevelSet Load(string filepath)
 		{
-#if NEW
+#if NEWLOAD
 			return UltraFlexBallReloadedFileLoader.LoadLevelSet(filepath);
 #else
 			using (FileStream fileStream = File.OpenRead(filepath))
@@ -29,15 +30,20 @@ namespace LevelSetManagement
 
 		public void Save(string filepath, LevelSet levelSet)
 		{
-#if NEW
+#if NEWSAVE
 			using (FileStream fileStream = File.Open(filepath, FileMode.Create))
 			{
 				using (BinaryWriter binaryWriter = new BinaryWriter(fileStream))
 				{
 					binaryWriter.Write(UltraFlexBallReloadedFileLoader.newTypeLevelSetFileSignature);
 					binaryWriter.Write(levelSet.LevelSetProperties.Name);
-					binaryWriter.Write(levelSet.LevelSetProperties.DefaultBackgroundName);
+					string defaultBackgroundName = levelSet.LevelSetProperties.DefaultBackgroundName;
+					if (defaultBackgroundName == string.Empty)
+						defaultBackgroundName = "<none>";
+					binaryWriter.Write(defaultBackgroundName);
 					binaryWriter.Write(levelSet.LevelSetProperties.DefaultMusic);
+					binaryWriter.Write(levelSet.LevelSetProperties.DefaultLeftWallName);
+					binaryWriter.Write(levelSet.LevelSetProperties.DefaultRightWallName);
 					//BONUS write internal function after upgrade to next C# version
 					Dictionary<string, string> changedLevelSetSoundNames = levelSet.LevelSetProperties.DefaultSoundLibrary.GetChangedSoundKeys();
 					binaryWriter.Write(changedLevelSetSoundNames.Count);
@@ -50,7 +56,10 @@ namespace LevelSetManagement
 					foreach (Level level in levelSet.Levels)
 					{
 						binaryWriter.Write(level.LevelProperties.Name);
-						binaryWriter.Write(level.LevelProperties.BackgroundName);
+						string backgroundName = level.LevelProperties.BackgroundName;
+						if (backgroundName == string.Empty)
+							backgroundName = "<none>";
+						binaryWriter.Write(backgroundName);
 						binaryWriter.Write(level.LevelProperties.Music);
 						Dictionary<string, string> changedLevelSoundNames = level.LevelProperties.SoundLibrary.GetChangedSoundKeys();
 						binaryWriter.Write(changedLevelSoundNames.Count);
@@ -59,6 +68,11 @@ namespace LevelSetManagement
 							binaryWriter.Write(keyName.Key);
 							binaryWriter.Write(keyName.Value);
 						}
+						binaryWriter.Write(level.LevelProperties.IsQuoteTip);
+						binaryWriter.Write(level.LevelProperties.CharacterName);
+						binaryWriter.Write(level.LevelProperties.Quote);
+						binaryWriter.Write(level.LevelProperties.LeftWallName);
+						binaryWriter.Write(level.LevelProperties.RightWallName);
 						foreach (BrickInLevel brickInLevel in level.Bricks)
 						{
 							binaryWriter.Write(brickInLevel.BrickId);

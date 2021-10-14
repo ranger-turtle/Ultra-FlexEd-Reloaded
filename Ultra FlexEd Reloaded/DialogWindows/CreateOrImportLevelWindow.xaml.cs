@@ -73,7 +73,8 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			switch (Method)
 			{
 				case NewLevelMethod.Create:
-					LevelWindow levelWindow = new LevelWindow();
+					Window levelWindow = LevelEditWindowFactory.GenerateLevelAddWindow(_levelSetManager.CurrentFormatType);
+					levelWindow.Owner = Owner;
 					bool? result = levelWindow.ShowDialog();
 					if (result == true)
 					{

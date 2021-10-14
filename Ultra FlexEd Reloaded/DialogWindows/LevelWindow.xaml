@@ -6,12 +6,16 @@
 		xmlns:local ="clr-namespace:Ultra_FlexEd_Reloaded.UserControls"
         mc:Ignorable="d"
 		x:Name="NewLevelWin"
-        Title="Add New Level" Height="281.142" Width="514">
+        Title="Add New Level" Height="470.142" Width="559">
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
 			<RowDefinition/>
 			<RowDefinition/>
 			<RowDefinition/>
@@ -35,17 +39,44 @@
 			<TextBox x:Name="levelNameField" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="{Binding Name}" VerticalAlignment="Center"/>
 		</StackPanel>
 		<StackPanel Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1">
-			<Label Content="Background Name" VerticalContentAlignment="Center"/>
+			<Label Content="Background Name" VerticalContentAlignment="Center" MinWidth="108"/>
 			<TextBox x:Name="DefaultBackgroundTextBox" IsEnabled="False" MinWidth="150" Text="{Binding BackgroundName}"/>
 			<Button Content="Change" Click="BackgroundButton_Click"/>
 		</StackPanel>
 		<StackPanel Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="2">
-			<Label Content="Music Name" MinWidth="110" VerticalContentAlignment="Center"/>
+			<Label Content="Music Name" MinWidth="108" VerticalContentAlignment="Center"/>
 			<TextBox x:Name="MusicTextBox" IsEnabled="False" MinWidth="150" Text="{Binding Music}"/>
 			<Button Content="Change" Click="MusicButton_Click"/>
 		</StackPanel>
-		<local:SoundList x:Name="SoundSection" IncludeLevelSetDefault="True" SoundLibrary="{Binding SoundLibrary, Mode=TwoWay}" Grid.Row="3" HorizontalAlignment="Left" />
-		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Column="1" Grid.Row="6">
+		<StackPanel Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="3">
+			<Label Content="Left Wall Name" MinWidth="108" VerticalContentAlignment="Center"/>
+			<TextBox x:Name="LeftWallTextBox" IsEnabled="False" MinWidth="150" Text="{Binding LeftWallName}"/>
+			<Button Content="Change" Click="LeftWallButton_Click"/>
+		</StackPanel>
+		<StackPanel Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="4">
+			<Label Content="Right Wall Name" MinWidth="108" VerticalContentAlignment="Center"/>
+			<TextBox x:Name="RightWallTextBox" IsEnabled="False" MinWidth="150" Text="{Binding RightWallName}"/>
+			<Button Content="Change" Click="RightWallButton_Click"/>
+		</StackPanel>
+		<local:SoundList x:Name="SoundSection" IncludeLevelSetDefault="True" SoundLibrary="{Binding SoundLibrary, Mode=TwoWay}" Grid.Row="5" HorizontalAlignment="Left" />
+		<GroupBox Header="Level Beginning Quote Properties" Grid.Row="6" Grid.RowSpan="2">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<TextBox Text="{Binding Quote}" TextWrapping="Wrap"/>
+				<StackPanel Orientation="Vertical" Grid.Column="1">
+					<CheckBox IsChecked="{Binding IsQuoteTip}" Content="Is Quote Tip" Margin="5,0,0,0"/>
+					<Label Content="Avatar Name" MinWidth="50" VerticalContentAlignment="Center"/>
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="2" Margin="5,0,0,0">
+						<TextBox x:Name="AvatarTextBox" IsEnabled="False" MinWidth="140" Text="{Binding CharacterName}"/>
+						<Button Content="Change" Click="AvatarButton_Click"/>
+					</StackPanel>
+				</StackPanel>
+			</Grid>
+		</GroupBox>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Column="1" Grid.Row="8">
 			<Button Content="OK" IsDefault="True" Click="Ok_Clicked"/>
 			<Button Content="Cancel" Click="Cancel_Clicked"/>
 		</StackPanel>

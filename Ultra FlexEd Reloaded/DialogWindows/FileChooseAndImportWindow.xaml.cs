@@ -94,7 +94,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 				ChooseFileListBoxItems.Add(new ListBoxItem() { Content = fileNameWithoutExtension });
 				if (!Directory.Exists(fullFileDirectoryPath))
 					Directory.CreateDirectory(fullFileDirectoryPath);
-				File.Copy(openFileDialog.FileName, Path.Combine(fullFileDirectoryPath, fileName));
+				File.Copy(openFileDialog.FileName, Path.Combine(fullFileDirectoryPath, fileName), overwrite: true);
 			}
 		}
 
