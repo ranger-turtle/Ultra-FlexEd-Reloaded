@@ -210,7 +210,6 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			}
 		}
 
-		//TODO make support for any image whose width is multiply of 30 and height of 15
 		/**<summary>
 		 <para>Checks if width and height of <c><paramref name="bitmapImage"/></c> are multiplies of standard dimensions
 		 of brick image declared in BrickProperties.</para>

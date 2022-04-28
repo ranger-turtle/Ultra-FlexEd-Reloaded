@@ -2,8 +2,7 @@
 
 //BONUS Do distinct hit sounds for each hit type (other for ball hit, other for bullet hit)
 //BONUS Do distinct brick animation after breaking with Space Djoel
-//BONUS Make advanced fuse bricks which can destroy more than one brick and more than one way and
-//UNDONE Do custom brick break animation
+//BONUS Make scripting possibility
 namespace LevelSetData
 {
 	[Serializable]
