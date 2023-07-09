@@ -12,8 +12,8 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
     {
 		public int[] ChosenIds
 		{
-			get { return (int[])GetValue(ChosenIdProperty); }
-			set { SetValue(ChosenIdProperty, value); }
+			get => (int[])GetValue(ChosenIdProperty);
+			set => SetValue(ChosenIdProperty, value);
 		}
 
 		// Using a DependencyProperty as the backing store for ChosenId.  This enables animation, styling, binding, etc...

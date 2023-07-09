@@ -77,7 +77,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 		internal BrickWindow(List<BrickMetadata> brickData)
 		{
 			InitializeComponent();
-			DataContext = new BrickProperties();
+			DataContext = new BrickProperties(126);
 			FrameSlider.ValueChanged += FrameSlider_ValueChanged;
 			//RequiredToCompleteCheckBox.Checked += RequiredToCompleteCheckBox_Checked;
 			//NormalResistantCheckBox.Checked += NormalResistantCheckBox_Checked;
@@ -93,7 +93,7 @@ namespace Ultra_FlexEd_Reloaded.DialogWindows
 			DataContext = SerializableCopier.Clone(brickProperties);
 			Title = $"Edit Brick {brickProperties.Name}";
 			#region Main Brick Metadata load
-			string brickFileDirectory = LevelSetManagement.LevelSetManager.GetInstance().GetBrickFolder(brickProperties.Id);
+			string brickFileDirectory = LevelSetManager.GetInstance().GetBrickFolder(brickProperties.Id);
 			var brickFilePath = Path.GetFullPath($"{brickFileDirectory}/{brickProperties.Name}/frames.png");
 			BitmapImage bitmapImage = BitmapMethods.GetImageWithCacheOnLoad(new Uri(brickFilePath, UriKind.Relative));
 			mainBrickImageMetadata.Image = bitmapImage;

@@ -218,5 +218,15 @@ namespace LevelSetData
 		public bool IsMoving => MovingBrickType != MovingBrickType.None;
 
 		public bool IsRegular => !IsExplosive && !IsTeleporter && !TeleportExit && !IsFuse && !IsBallThrusting && !IsSequential && !IsDetonator && !IsChimneyLike && !AlwaysPowerUpYielding && !NormalResistant && !IsMoving;
+
+		public BrickProperties(int id)
+		{
+			if (id > 0)
+				Id = id;
+			else
+				throw new InvalidIdException();
+		}
+
+		public class InvalidIdException : Exception { }
 	}
 }

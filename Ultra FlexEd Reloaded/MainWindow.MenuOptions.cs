@@ -27,13 +27,13 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void New_Clicked(object sender, ExecutedRoutedEventArgs e)
 		{
-			if (levelSetManager.Changed)
+			if (LevelSetManager.Changed)
 			{
 				MessageBoxResult result = ShowSaveQuestion();
 				if (result != MessageBoxResult.Cancel)
 				{
 					if (result == MessageBoxResult.OK)
-						levelSetManager.SaveFile();
+						LevelSetManager.SaveFile();
 					Reset();
 				}
 			}
@@ -50,7 +50,7 @@ namespace Ultra_FlexEd_Reloaded
 			};
 			bool? dialogResult = openFileDialog.ShowDialog(this);
 			MessageBoxResult result = MessageBoxResult.Yes;
-			if (levelSetManager.Changed)
+			if (LevelSetManager.Changed)
 			{
 				result = ShowSaveQuestion();
 				if (result == MessageBoxResult.Yes)
@@ -62,7 +62,7 @@ namespace Ultra_FlexEd_Reloaded
 				{
 					try
 					{
-						levelSetManager.LoadLevelSetFile(openFileDialog.FileName);
+						LevelSetManager.LoadLevelSetFile(openFileDialog.FileName);
 					}
 					catch (ResourceCheckFailException rcf)
 					{
@@ -71,11 +71,11 @@ namespace Ultra_FlexEd_Reloaded
 					}
 					LevelListBoxItems.Clear();
 					BrickListBoxItems = new ObservableCollection<ImageListBoxItem>(BrickListBoxItems.TakeWhile(blbi => blbi.BrickId <= LevelSetManager.DEFAULT_BRICK_QUANTITY));
-					SortedDictionary<int, string> brickNames = levelSetManager.GetCustomBrickNames();
+					SortedDictionary<int, string> brickNames = LevelSetManager.GetCustomBrickNames();
 					foreach (var name in brickNames)
 						AddNewBrickTypeToListBox(name.Key, name.Value);
-					for (int i = 0; i < levelSetManager.LevelCount; i++)
-						LevelListBoxItems.Add(PrepareLevelToListBox(SmallUtilities.GetLevelNameForGUI(levelSetManager.GetLevel(i).LevelProperties.Name, i)));
+					for (int i = 0; i < LevelSetManager.LevelCount; i++)
+						LevelListBoxItems.Add(PrepareLevelToListBox(SmallUtilities.GetLevelNameForGUI(LevelSetManager.GetLevel(i).LevelProperties.Name, i)));
 					BrickListBox.SelectedIndex = 0;
 					LevelListBox.SelectedIndex = 0;
 					RefreshBoard();
@@ -93,9 +93,9 @@ namespace Ultra_FlexEd_Reloaded
 
 		private bool? Save()
 		{
-			if (levelSetManager.LevelSetLoaded)
+			if (LevelSetManager.LevelSetLoaded)
 			{
-				levelSetManager.SaveFile();
+				LevelSetManager.SaveFile();
 				return true;
 			}
 			else
@@ -120,12 +120,12 @@ namespace Ultra_FlexEd_Reloaded
 			{
 				if (Path.GetExtension(saveFileDialog.FileName) == ".lev")
 					MessageBox.Show($"This old format does not support custom brick types, music and sounds.{Environment.NewLine}More info in Readme.txt", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-				levelSetManager.SaveFile(saveFileDialog.FileName);
+				LevelSetManager.SaveFile(saveFileDialog.FileName);
 			}
 			return dialogResult;
 		}
 
-		private void CanSave(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = levelSetManager.Changed;
+		private void CanSave(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = LevelSetManager.Changed;
 
 		internal void PromptToAddFile(Window owner, Action setLevelAttribute)
 		{
@@ -142,12 +142,12 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void LevelSetProperties_Clicked(object sender, RoutedEventArgs e)
 		{
-			Window levelSetWindow = LevelEditWindowFactory.GenerateLevelSetWindow(levelSetManager.CurrentFormatType, levelSetManager.CopyCurrentLevelSetProperties());
+			Window levelSetWindow = LevelEditWindowFactory.GenerateLevelSetWindow(LevelSetManager.CurrentFormatType, LevelSetManager.CopyCurrentLevelSetProperties());
 			levelSetWindow.Owner = this;
 			bool? confirmed = levelSetWindow.ShowDialog();
 			if (confirmed == true)
 			{
-				levelSetManager.UpdateLevelSet(levelSetWindow.DataContext as LevelSetProperties);
+				LevelSetManager.UpdateLevelSet(levelSetWindow.DataContext as LevelSetProperties);
 			}
 		}
 
@@ -161,7 +161,7 @@ namespace Ultra_FlexEd_Reloaded
 				appSettings.SaveSettings();
 				try
 				{
-					levelSetManager.SetTesterPaths(appSettings.UltraFlexBall2000Path, appSettings.UltraFlexBallReloadedPath);
+					LevelSetManager.SetTesterPaths(appSettings.UltraFlexBall2000Path, appSettings.UltraFlexBallReloadedPath);
 				}
 				catch (FileNotFoundException ex)
 				{
@@ -173,12 +173,12 @@ namespace Ultra_FlexEd_Reloaded
 		private void TestLevel_Clicked(object sender, ExecutedRoutedEventArgs e)
 		{
 			bool test = true;
-			if (!levelSetManager.LevelSetLoaded && !levelSetManager.Changed)
+			if (!LevelSetManager.LevelSetLoaded && !LevelSetManager.Changed)
 			{
 				MessageBox.Show("This level set is empty. Please add something.", LevelSetManager.MAIN_TITLE, MessageBoxButton.OK, MessageBoxImage.Warning);
 				test = false;
 			}
-			if (levelSetManager.Changed)
+			if (LevelSetManager.Changed)
 			{
 				MessageBoxResult result = MessageBox.Show("To test level, you must save your level first. Do you want to save?", LevelSetManager.MAIN_TITLE, MessageBoxButton.YesNo, MessageBoxImage.Warning);
 				test = result == MessageBoxResult.Yes ? Save().GetValueOrDefault() : false;
@@ -187,7 +187,7 @@ namespace Ultra_FlexEd_Reloaded
 			{
 				try
 				{
-					levelSetManager.CurrentTester.TestLevel(levelSetManager.FilePath, levelSetManager.CurrentLevelIndex);
+					LevelSetManager.CurrentTester.TestLevel(LevelSetManager.FilePath, LevelSetManager.CurrentLevelIndex);
 				}
 				catch (Win32Exception w32e)
 				{
@@ -200,12 +200,12 @@ namespace Ultra_FlexEd_Reloaded
 		private void StartGame_Clicked(object sender, ExecutedRoutedEventArgs e)
 		{
 			bool test = true;
-			if (!levelSetManager.LevelSetLoaded && !levelSetManager.Changed)
+			if (!LevelSetManager.LevelSetLoaded && !LevelSetManager.Changed)
 			{
 				MessageBox.Show("This level set is empty. Please add something.", LevelSetManager.MAIN_TITLE, MessageBoxButton.OK, MessageBoxImage.Warning);
 				test = false;
 			}
-			if (levelSetManager.Changed)
+			if (LevelSetManager.Changed)
 			{
 				MessageBoxResult result = MessageBox.Show("To test level set, you must save your level first. Do you want to save?", LevelSetManager.MAIN_TITLE, MessageBoxButton.YesNo, MessageBoxImage.Warning);
 				test = result == MessageBoxResult.Yes ? Save().GetValueOrDefault() : false;
@@ -214,7 +214,7 @@ namespace Ultra_FlexEd_Reloaded
 			{
 				try
 				{
-					levelSetManager.CurrentTester.TestLevelSet(levelSetManager.FilePath);
+					LevelSetManager.CurrentTester.TestLevelSet(LevelSetManager.FilePath);
 				}
 				catch (Win32Exception w32e)
 				{
@@ -228,25 +228,25 @@ namespace Ultra_FlexEd_Reloaded
 		{
 			try
 			{
-				levelSetManager.CheckResources();
+				LevelSetManager.CheckResources();
 				MessageBox.Show("Level set resource check succeeded.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 			}
 			catch (ResourceCheckFailException rcf)
 			{
 				new ResourceCheckErrorMessageBox(rcf.MissingResourceNames).ShowDialog();
 				foreach (var id in rcf.MissingBrickIds)
-					levelSetManager.ClearBlocksOfType(id);
+					LevelSetManager.ClearBlocksOfType(id);
 			}
 		}
 
-		private void CanCheckLevelSetResources(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = levelSetManager.LevelSetLoaded && levelSetManager.CurrentFormatType == FormatType.New;
+		private void CanCheckLevelSetResources(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = LevelSetManager.LevelSetLoaded && LevelSetManager.CurrentFormatType == FormatType.New;
 
 		protected override void OnClosing(CancelEventArgs e)
 		{
 			EraseSelection();
-			if (levelSetManager != null)
+			if (LevelSetManager != null)
 			{
-				if (levelSetManager.Changed)
+				if (LevelSetManager.Changed)
 				{
 					MessageBoxResult result = ShowSaveQuestion();
 					e.Cancel = result == MessageBoxResult.Cancel;

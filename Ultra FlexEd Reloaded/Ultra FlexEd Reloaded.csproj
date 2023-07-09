@@ -93,6 +93,7 @@
     <Compile Include="AppSettings.cs" />
     <Compile Include="BitmapMethods.cs" />
     <Compile Include="BrickInEditorPrimaryData.cs" />
+    <Compile Include="ClipboardManager.cs" />
     <Compile Include="DialogWindows\BrickChooseWindow.xaml.cs">
       <DependentUpon>BrickChooseWindow.xaml</DependentUpon>
     </Compile>
@@ -144,6 +145,13 @@
     <Compile Include="DialogWindows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FillTool.cs" />
+    <Compile Include="PickBrickTool.cs" />
+    <Compile Include="RectangleTool.cs" />
+    <Compile Include="LineTool.cs" />
+    <Compile Include="SelectTool.cs" />
+    <Compile Include="SingleBrickTool.cs" />
+    <Compile Include="ToolCommand.cs" />
     <Compile Include="LevelEditWindowFactory.cs" />
     <Compile Include="MainWindow.MenuOptions.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -157,6 +165,7 @@
     <Compile Include="MainWindow.xaml.LevelHandle.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ToolManager.cs" />
     <Compile Include="UltraFlexBall2000LevelTester.cs" />
     <Compile Include="UltraFlexBallReloadedLevelTester.cs" />
     <Compile Include="UserControls\AutoGreyableImage.cs" />

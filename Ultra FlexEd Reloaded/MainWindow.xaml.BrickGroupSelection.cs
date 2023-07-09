@@ -9,9 +9,8 @@ namespace Ultra_FlexEd_Reloaded
 {
 	public partial class MainWindow : Window
 	{
-		//FIXME remove selection capturing
 		//TODO Add copying section to clipboard
-		private class BrickGroupSelection
+		internal class BrickGroupSelection
 		{
 			public int Width { get; set; }
 			public int Height { get; set; }
@@ -34,6 +33,12 @@ namespace Ultra_FlexEd_Reloaded
 			public bool IsBrickInSelection(int x, int y) =>
 				x >= BeginX && x < BeginX + Width && y >= BeginY && y < BeginY + Height;
 
+			public void SetLastBrickCoordinates(int x, int y)
+			{
+				LastX = x;
+				LastY = y;
+			}
+
 			public void AnchorSelection()
 			{
 				if (BeginX >= 0)
@@ -51,9 +56,8 @@ namespace Ultra_FlexEd_Reloaded
 				window.UpdateLevelSet();
 			}
 
-			public void SelectRectangle(object sender, RoutedEventArgs e)
+			public void SelectRectangle(BrickView brick)
 			{
-				BrickView brick = sender as BrickView;
 				window.RefreshBoard();
 				int endX = Grid.GetColumn(brick);
 				int endY = Grid.GetRow(brick);
@@ -85,13 +89,10 @@ namespace Ultra_FlexEd_Reloaded
 				}
 			}
 
-			public void ConfirmSelection(object sender, RoutedEventArgs e)
+			public void ConfirmSelection()
 			{
 				BeginX = SwapBeginX;
 				BeginY = SwapBeginY;
-				window.EraseHoverEvent(null, null);
-				Mouse.Capture(null);
-				window.SwitchMouseEvents(window.HandleSelection, window.HandleSelection);
 				SelectedBricksInEditor = new BrickInEditorPrimaryData[Height, Width];
 				for (int i = 0; i < LevelSet.ROWS; i++)
 				{
@@ -101,15 +102,37 @@ namespace Ultra_FlexEd_Reloaded
 						{
 							BrickView brickView = window.bricksInEditor[i, j];
 							SelectedBricksInEditor[i - BeginY, j - BeginX] = new BrickInEditorPrimaryData(brickView.BrickId, brickView.Image.Source, brickView.Hidden);
-							window.levelSetManager.UpdateBrickInLevel(j, i, new BrickInLevel());
+							window.LevelSetManager.UpdateBrickInLevel(j, i, new BrickInLevel());
 						}
 					}
 				}
 			}
 
-			public void Move(object sender, MouseEventArgs e)
+			public void CopyToClipboard()
 			{
-				BrickView brickView = sender as BrickView;
+				int firstLen = SelectedBricksInEditor.GetLength(0);
+				int secondLen = SelectedBricksInEditor.GetLength(1);
+				ClipboardData[,] dataForClipboard = new ClipboardData[firstLen, secondLen];
+				for (int i = 0; i < firstLen; i++)
+				{
+					for (int j = 0; j < secondLen; j++)
+					{
+						dataForClipboard[i, j] = SelectedBricksInEditor[i, j] != null
+							? new ClipboardData(SelectedBricksInEditor[i, j].BrickId, SelectedBricksInEditor[i, j].Hidden)
+							: null;
+					}
+				}
+				window.ClipboardManager.CopyBrickIndicesToClipboard(dataForClipboard);
+			}
+
+			public void CutToClipboard(BrickView brickView)
+			{
+				CopyToClipboard();
+				window.RefreshBoard();
+			}
+
+			public void Move(BrickView brickView)
+			{
 				BeginX += Grid.GetColumn(brickView) - LastX;
 				BeginY += Grid.GetRow(brickView) - LastY;
 				window.RefreshBoard();
@@ -130,54 +153,106 @@ namespace Ultra_FlexEd_Reloaded
 				LastX = Grid.GetColumn(brickView);
 				LastY = Grid.GetRow(brickView);
 			}
-		}
 
-		private BrickGroupSelection brickGroupSelection;
-
-		private bool SelectionExists => brickGroupSelection != null;
-
-		private void EraseSelection()
-		{
-			if (SelectionExists)
+			public void Paste(BrickView brickView)
 			{
-				brickGroupSelection.AnchorSelection();
-				brickGroupSelection = null;
+				AnchorSelection();
+				ClipboardData[,] clipboardData = window.ClipboardManager.GetBrickIndicesFromClipboard();
+				BeginX = Grid.GetColumn(brickView);
+				BeginY = Grid.GetRow(brickView);
+				Height = clipboardData.GetLength(0);
+				Width = clipboardData.GetLength(1);
+				SelectedBricksInEditor = new BrickInEditorPrimaryData[Height, Width];
+				for (int y = Math.Max(BeginY, 0), i = 0; y < Math.Min(BeginY + Height, LevelSet.ROWS); y++, i++)
+				{
+					for (int x = Math.Max(BeginX, 0), j = 0; x < Math.Min(BeginX + Width, LevelSet.COLUMNS); x++, j++)
+					{
+						if (clipboardData[i, j] != null)
+						{
+							int brickId = clipboardData[i, j].BrickId;
+							SelectedBricksInEditor[i, j] = new BrickInEditorPrimaryData(brickId, window.BrickListBoxItems[brickId - 1].Image.Source, clipboardData[i, j].Hidden);
+							window.bricksInEditor[y, x].BrickId = SelectedBricksInEditor[i, j].BrickId;
+							window.bricksInEditor[y, x].Image.Source = SelectedBricksInEditor[i, j].Image;
+							window.bricksInEditor[y, x].Hidden = SelectedBricksInEditor[i, j].Hidden;
+						}
+						if (x == BeginX || x == BeginX + Width - 1 || y == BeginY || y == BeginY + Height - 1)
+							window.bricksInEditor[y, x].SelectionBorder = true;
+					}
+				}
+				LastX = Grid.GetColumn(brickView);
+				LastY = Grid.GetRow(brickView);
 			}
 		}
 
-		private void PrepareForNewSelection()
+		public static readonly RoutedCommand CutCommand = new RoutedCommand("CutCommand", typeof(MenuItem));
+		public static readonly RoutedCommand CopyCommand = new RoutedCommand("CopyCommand", typeof(MenuItem));
+		public static readonly RoutedCommand PasteCommand = new RoutedCommand("PasteCommand", typeof(MenuItem));
+
+		public BrickView ContextMenuBrickView { get; set; }
+
+		internal BrickGroupSelection CurrentBrickGroupSelection { get; private set; }
+
+		private bool SelectionExists => CurrentBrickGroupSelection != null;
+
+		internal void EraseSelection()
 		{
-			SwitchMouseEvents(BeginSelectRectangle, BeginSelectRectangle);
-			SwitchReleaseEvent(null);
+			if (SelectionExists)
+			{
+				CurrentBrickGroupSelection.AnchorSelection();
+				CurrentBrickGroupSelection = null;
+			}
 		}
 
-		private void BeginSelectRectangle(object sender, RoutedEventArgs e)
+		internal void BeginSelectRectangle(BrickView brickView)
 		{
-			BrickView brickView = sender as BrickView;
-			brickGroupSelection = new BrickGroupSelection(this, Grid.GetColumn(brickView), Grid.GetRow(brickView));
-			brickGroupSelection.SelectRectangle(sender, e);
-			Mouse.Capture(Bricks, CaptureMode.SubTree);
-			SwitchHoverEvent(brickGroupSelection.SelectRectangle);
-			SwitchReleaseEvent(brickGroupSelection.ConfirmSelection);
+			CurrentBrickGroupSelection = new BrickGroupSelection(this, Grid.GetColumn(brickView), Grid.GetRow(brickView));
+			CurrentBrickGroupSelection.SelectRectangle(brickView);
 		}
 
-		public void HandleSelection(object sender, MouseButtonEventArgs e)
+		public bool HandleSelection(BrickView brickView)
 		{
-			BrickView brickView = sender as BrickView;
-			if (brickGroupSelection.IsBrickInSelection(Grid.GetColumn(brickView), Grid.GetRow(brickView)))
+			if (CurrentBrickGroupSelection.IsBrickInSelection(Grid.GetColumn(brickView), Grid.GetRow(brickView)))
 			{
 				//Clicked selection
-				brickGroupSelection.LastX = Grid.GetColumn(sender as BrickView);
-				brickGroupSelection.LastY = Grid.GetRow(sender as BrickView);
-				SwitchHoverEvent(brickGroupSelection.Move);
-				SwitchReleaseEvent(EraseHoverEvent);
+				CurrentBrickGroupSelection.LastX = Grid.GetColumn(brickView);
+				CurrentBrickGroupSelection.LastY = Grid.GetRow(brickView);
+				return true;
 			}
 			else
 			{
 				//Clicked outside selection
 				EraseSelection();
-				PrepareForNewSelection();
+				return false;
 			}
+		}
+
+		internal void SwitchContextMenuOnBoard(bool active)
+		{
+			ContextMenu brickContextMenu = FindResource("BrickContextMenu") as ContextMenu;
+			foreach (BrickView brickView in bricksInEditor)
+				brickView.ContextMenu = active ? brickContextMenu : null;
+		}
+
+		private void CanCut(object sender, CanExecuteRoutedEventArgs e) => CanCopy(sender, e);
+
+		internal void Cut_Clicked(object sender, ExecutedRoutedEventArgs e)
+		{
+			CurrentBrickGroupSelection.CutToClipboard(ContextMenuBrickView);
+		}
+
+		private void CanCopy(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = CurrentBrickGroupSelection?.IsBrickInSelection(Grid.GetColumn(ContextMenuBrickView), Grid.GetRow(ContextMenuBrickView)) == true;
+
+		internal void Copy_Clicked(object sender, ExecutedRoutedEventArgs e)
+		{
+			CurrentBrickGroupSelection.CopyToClipboard();
+		}
+
+		private void CanPaste(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = ClipboardManager.ProperDataPresent();
+
+		internal void Paste_Clicked(object sender, ExecutedRoutedEventArgs e)
+		{
+			CurrentBrickGroupSelection = new BrickGroupSelection(this, Grid.GetColumn(ContextMenuBrickView), Grid.GetRow(ContextMenuBrickView));
+			CurrentBrickGroupSelection.Paste(ContextMenuBrickView);
 		}
 	}
 }

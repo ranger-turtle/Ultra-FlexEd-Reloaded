@@ -25,7 +25,7 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void AddLevel()
 		{
-			CreateOrImportLevelWindow createOrImportLevelWindow = new CreateOrImportLevelWindow(levelSetManager)
+			CreateOrImportLevelWindow createOrImportLevelWindow = new CreateOrImportLevelWindow(LevelSetManager)
 			{
 				Owner = this
 			};
@@ -33,7 +33,7 @@ namespace Ultra_FlexEd_Reloaded
 			if (result == true)
 			{
 				Level level = createOrImportLevelWindow.Level;
-				levelSetManager.AddLevel(level);
+				LevelSetManager.AddLevel(level);
 				LevelListBoxItems.Add(PrepareLevelToListBox(level.LevelProperties.Name));
 				ShowSuccessMessage(level.LevelProperties.Name);
 			}
@@ -48,7 +48,7 @@ namespace Ultra_FlexEd_Reloaded
 		{
 			int index = LevelListBoxItems.IndexOf(levelListBoxItem);
 			InsertLevel(index);
-			levelSetManager.CurrentLevelIndex++;
+			LevelSetManager.CurrentLevelIndex++;
 		}
 
 		private void InsertAfterLevel_Clicked(object sender, RoutedEventArgs e)
@@ -67,7 +67,7 @@ namespace Ultra_FlexEd_Reloaded
 
 		private void InsertLevel(int index)
 		{
-			CreateOrImportLevelWindow createOrImportLevelWindow = new CreateOrImportLevelWindow(levelSetManager)
+			CreateOrImportLevelWindow createOrImportLevelWindow = new CreateOrImportLevelWindow(LevelSetManager)
 			{
 				Owner = this
 			};
@@ -75,7 +75,7 @@ namespace Ultra_FlexEd_Reloaded
 			if (result == true)
 			{
 				Level level = createOrImportLevelWindow.Level;
-				levelSetManager.InsertLevel(index, level);
+				LevelSetManager.InsertLevel(index, level);
 				LevelListBoxItems.Insert(index, PrepareLevelToListBox(level.LevelProperties.Name));
 				ShowSuccessMessage(level.LevelProperties.Name);
 			}
@@ -89,12 +89,12 @@ namespace Ultra_FlexEd_Reloaded
 		private void EditLevel(ListBoxItem listBoxItem)
 		{
 			int index = LevelListBoxItems.IndexOf(listBoxItem);
-			Window levelWindow = LevelEditWindowFactory.GenerateLevelEditWindow(levelSetManager.CurrentFormatType, levelSetManager.CopyCurrentLevelProperties());
+			Window levelWindow = LevelEditWindowFactory.GenerateLevelEditWindow(LevelSetManager.CurrentFormatType, LevelSetManager.CopyCurrentLevelProperties());
 			levelWindow.Owner = this;
 			if (levelWindow.ShowDialog() == true)
 			{
 				LevelProperties levelProperties = levelWindow.DataContext as LevelProperties;
-				levelSetManager.UpdateLevelProperties(index, levelProperties);
+				LevelSetManager.UpdateLevelProperties(index, levelProperties);
 				LevelListBoxItems[index].Content = levelProperties.Name;
 			}
 		}
@@ -104,7 +104,7 @@ namespace Ultra_FlexEd_Reloaded
 			int oldIndex = LevelListBox.SelectedIndex;
 			int newIndex = LevelListBox.SelectedIndex - 1;
 			LevelListBoxItems.Move(oldIndex, newIndex);
-			levelSetManager.MoveLevel(oldIndex, newIndex);
+			LevelSetManager.MoveLevel(oldIndex, newIndex);
 		}
 
 		private void MoveLevelDown(object sender, ExecutedRoutedEventArgs e)
@@ -112,7 +112,7 @@ namespace Ultra_FlexEd_Reloaded
 			int oldIndex = LevelListBox.SelectedIndex;
 			int newIndex = LevelListBox.SelectedIndex + 1;
 			LevelListBoxItems.Move(oldIndex, newIndex);
-			levelSetManager.MoveLevel(oldIndex, newIndex);
+			LevelSetManager.MoveLevel(oldIndex, newIndex);
 		}
 
 		private void CanMoveLevelUp(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = LevelListBox.SelectedIndex > 0;
@@ -128,14 +128,14 @@ namespace Ultra_FlexEd_Reloaded
 		private void RemoveLevel(ListBoxItem levelListBoxItem)
 		{
 			int index = LevelListBoxItems.IndexOf(levelListBoxItem);
-			MessageBoxResult result = MessageBox.Show($"Are you sure to delete level {levelSetManager.CurrentLevelName}?", LevelSetManagement.LevelSetManager.MAIN_TITLE, MessageBoxButton.YesNo, MessageBoxImage.Question);
+			MessageBoxResult result = MessageBox.Show($"Are you sure to delete level {LevelSetManager.CurrentLevelName}?", LevelSetManagement.LevelSetManager.MAIN_TITLE, MessageBoxButton.YesNo, MessageBoxImage.Question);
 			if (result == MessageBoxResult.Yes)
 			{
-				levelSetManager.RemoveLevel(index);
+				LevelSetManager.RemoveLevel(index);
 				LevelListBoxItems.RemoveAt(index);
 			}
 		}
 
-		private void CanRemoveLevel(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = levelSetManager.LevelCount > 1;
+		private void CanRemoveLevel(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = LevelSetManager.LevelCount > 1;
 	}
 }

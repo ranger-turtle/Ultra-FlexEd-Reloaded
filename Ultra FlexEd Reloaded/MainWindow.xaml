@@ -20,9 +20,13 @@
 		<CommandBinding Command="{x:Static main:MainWindow.MoveLevelDownCommand}" Executed="MoveLevelDown" CanExecute="CanMoveLevelDown"/>
 		<CommandBinding Command="{x:Static main:MainWindow.StartFlexBallCommand}" Executed="StartGame_Clicked"/>
 		<CommandBinding Command="{x:Static main:MainWindow.TestLevelCommand}" Executed="TestLevel_Clicked"/>
+
+		<CommandBinding Command="{x:Static main:MainWindow.CutCommand}" Executed="Cut_Clicked" CanExecute="CanCut"/>
+		<CommandBinding Command="{x:Static main:MainWindow.CopyCommand}" Executed="Copy_Clicked" CanExecute="CanCopy"/>
+		<CommandBinding Command="{x:Static main:MainWindow.PasteCommand}" Executed="Paste_Clicked" CanExecute="CanPaste"/>
 	</Window.CommandBindings>
 	<Window.Resources>
-		<ContextMenu x:Key="BrickContextMenu">
+		<ContextMenu x:Key="BrickTypeContextMenu">
 			<MenuItem Header="_Edit" Click="EditBrick_Clicked" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
 			<MenuItem Header="_Remove" Click="RemoveBrick_Clicked" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
 		</ContextMenu>
@@ -34,6 +38,11 @@
 			<MenuItem Header="Move _Down" Command="{x:Static main:MainWindow.MoveLevelDownCommand}"/>
 			<!--<MenuItem Header="E_xport..." />-->
 			<MenuItem Header="_Remove" Command="{x:Static main:MainWindow.RemoveLevelCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+		</ContextMenu>
+		<ContextMenu x:Key="BrickContextMenu">
+			<MenuItem Header="Cut" Command="{x:Static main:MainWindow.CutCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+			<MenuItem Header="Copy" Command="{x:Static main:MainWindow.CopyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+			<MenuItem Header="Paste" Command="{x:Static main:MainWindow.PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
 		</ContextMenu>
 	</Window.Resources>
 	<DockPanel>
@@ -172,6 +181,7 @@
 						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="20"/>
@@ -183,10 +193,11 @@
 					<controls:LockableToggleButton x:Name="LineButton" Content="L" Checked="LineButton_Checked" Grid.Column="2" ToolTip="Line"/>
 					<controls:LockableToggleButton x:Name="RectangleButton" Content="R" Checked="RectangleButton_Checked" Grid.Column="3" ToolTip="Rectangle"/>
 					<controls:LockableToggleButton x:Name="SelectButton" Content="S" Checked="SelectButton_Checked" Grid.Column="4" ToolTip="Select Rectangle"/>
-					<Button Content="UP" Command="{x:Static main:MainWindow.MoveLevelUpCommand}" Grid.Column="5" ToolTip="Move Current Level Up"/>
+					<controls:LockableToggleButton x:Name="PickButton" Content="I" Checked="PickBrick_Checked" Grid.Column="5" ToolTip="Pick Brick"/>
+					<Button Content="L↑" Command="{x:Static main:MainWindow.MoveLevelUpCommand}" Grid.Column="6" ToolTip="Move Current Level Up"/>
 					<Button Content="+B" Click="AddBrick_Clicked" Grid.Row="1" Grid.Column="0" ToolTip="Add New Brick"/>
 					<Button Content="+L" Click="AddLevel_Clicked" Grid.Row="1" Grid.Column="1"/>
-					<Button Content="DOWN" Command="{x:Static main:MainWindow.MoveLevelDownCommand}" Grid.Row="1" Grid.Column="5" ToolTip="Move Current Level Down"/>
+					<Button Content="L↓" Command="{x:Static main:MainWindow.MoveLevelDownCommand}" Grid.Row="1" Grid.Column="6" ToolTip="Move Current Level Down"/>
 					<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="6">
 						<StackPanel.Resources>
 							<Style TargetType="Label">

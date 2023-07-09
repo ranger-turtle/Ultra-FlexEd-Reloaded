@@ -22,7 +22,7 @@ namespace Ultra_FlexEd_Reloaded.UserControls
 			set
 			{
 				SetValue(LockToggleProperty, value);
-				if (value == false) IsChecked = false;
+				 IsChecked = value;
 			}
 		}
 

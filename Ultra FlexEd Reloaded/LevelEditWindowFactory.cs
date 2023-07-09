@@ -1,10 +1,5 @@
 ﻿using LevelSetData;
 using LevelSetManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Ultra_FlexEd_Reloaded.DialogWindows;
 
